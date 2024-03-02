@@ -1,1 +1,3 @@
-# boom-battle
+# Boom Battle
+
+4th Semester project.
