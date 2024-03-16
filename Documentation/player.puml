@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+Common.IActor <|-- Player.PlayerControlSystem
+Common.IDamageable <|-- Player.PlayerControlSystem
+Common.Entity <|-- Player.Player
+Common.IEntityProcessingService <|-- Player.PlayerControlSystem
+Common.IGamePluginService <|-- Player.PlayerPlugin
+
+component Common {
+    interface IActor {
+    }
+
+    interface IDamageable {
+    }
+
+    interface Entity {
+    }
+
+    interface IEntityProcessingService {
+    }
+
+    interface IGamePluginService {
+    }
+}
+
+component Player {
+    class Player {
+    }
+
+    class PlayerControlSystem {
+    - IWeapon[] placeableWeapons
+    + placeWeapon()
+    + takeDamage()
+    + process()
+    }
+
+    class PlayerPlugin {
+    - Entity playerEntity
+    + createPlayer()
+    + start()
+    + stop()
+    }
+}
+
+@enduml
