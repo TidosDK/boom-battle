@@ -1,8 +1,8 @@
 @startuml
-package Common {
-    component Common {
+component Common {
+    package Common {
 
-        component services {
+        package services {
             interface IActor {
                 speed
                 move()
@@ -31,7 +31,7 @@ package Common {
             }
         }
 
-        component data {
+        package data {
             class World {
                 entities
                 addEntity()
@@ -68,8 +68,8 @@ package Common {
 '
 '	}
 }
-package Bomb{
-    component BombSystem {
+component Bomb{
+    package BombSystem {
         class Bomb implements Common.Common.services.IWeapon{
             - timeOfPlacement: Long
             - timeTillExplosion: Long
