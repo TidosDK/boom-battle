@@ -90,6 +90,29 @@ component Bomb{
     }
 }
 
+component Enemy{
+    class enemyControlSystem{
+        placeBomb()
+        move()
+    }
+    component AI{
+    'maybe an interface
+        class PathFinding{
+            calculatePathToPlayer(Player)
+        }
+
+        class BombPlacing {
+            calculateOptimalPlacement(Entity,Bomb))
+        }
+    }
+
+    class EnemyCollisionControlSystem{
+        XCord  'maybe?
+        YCord  'maybe?
+        checkCollision(Map)
+    }
+}
+	
 component Player {
     class Player {
     }
