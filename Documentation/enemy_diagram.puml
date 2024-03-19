@@ -2,17 +2,18 @@
 
 component Enemy{
 
+    class enemyControlSystem{
+        placeBomb()
+        move()
+    }
     component AI{
     'maybe an interface
         class PathFinding{
             calculatePathToPlayer(Player)
-            moveX()
-            moveY()
         }
 
-        class BombPlacing implements IActor{
-            calculateOptimalPlacement(Entity))
-            calculateBombExplosion()
+        class BombPlacing {
+            calculateOptimalPlacement(Entity,Bomb))
         }
     }
 
