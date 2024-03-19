@@ -1,54 +1,55 @@
 @startuml
+package Common {
+    component Common {
 
-component Common {
+        component services {
+            interface IActor {
+                speed
+                move()
+                placeWeapon(IWeapon)
+            }
 
-	component services {
-		interface IActor {
-			speed
-			move()
-			placeWeapon(IWeapon)
-		}
+            interface IWeapon {
+                damagePoints
+            }
 
-		interface IWeapon {
-			damagePoints
-		}
+            interface IDamageable {
+                hitPoints
+            }
 
-		interface IDamageable {
-			hitPoints
-		}
+            interface IGamePluginService {
+                start()
+                stop()
+            }
 
-		interface IGamePluginService {
-			start()
-			stop()
-		}
+            interface IEntityProcessingService {
+                process()
+            }
 
-		interface IEntityProcessingService {
-			process()
-		}
+            interface IPostEntityProcessingService {
+                process()
+            }
+        }
 
-		interface IPostEntityProcessingService {
-			process()
-		}
-	}
+        component data {
+            class World {
+                entities
+                addEntity()
+                removeEntity()
+                getEntity()
+            }
 
-	component data {
-		class World {
-			entities
-			addEntity()
-			removeEntity()
-			getEntity()
-		}
+            class Entity {
+                coordinates
+                direction
 
-		class Entity {
-			coordinates
-			direction
-
-			getCoordinates()
-			setCoordinates(coordinates)
-			getDirection()
-			setDirection(direction)
-		}
-	}
+                getCoordinates()
+                setCoordinates(coordinates)
+                getDirection()
+                setDirection(direction)
+            }
+        }
+    }
 
 
 '	component Parts {
@@ -67,25 +68,28 @@ component Common {
 '
 '	}
 }
+package Bomb{
+    component BombSystem {
+        class Bomb implements Common.Common.services.IWeapon{
+            - timeOfPlacement: Long
+            - timeTillExplosion: Long
+            - damagePoints: int
+            - blastArea: Collections
+            + setBlastArea(Collections)
+            + calcTimeTillExplosion()
+        }
+        Bomb --|> Entity : inherits
 
-component BombSystem {
-    class Bomb implements Common.services.IWeapon{
-        - timeOfPlacement: Long
-        - timeTillExplosion: Long
-        - damagePoints: int
-        - blastArea: Collections
-        + setBlastArea(Collections)
-        + calcTimeTillExplosion()
+        class BombExplosionSystem implements Common.Common.services.IEntityProcessingService {
+            - world: World
+            - gameData: GameData
+            + BombExplosionSystem(GameData, World)
+            + calculateBlastArea(Bomb, World)
+            + process()
+        }
     }
-    Bomb --|> Entity : inherits
+}
 
-    class BombExplosionSystem implements Common.services.IEntityProcessingService {
-        - world: World
-        - gameData: GameData
-        + BombExplosionSystem(GameData, World)
-        + calculateBlastArea(Bomb, World)
-        + process()
-    }
 
 
 @enduml
