@@ -111,6 +111,29 @@ component Enemy{
         YCord  'maybe?
         checkCollision(Map)
     }
+
+    class Enemy {
+        }
+
+        class EnemyControlSystem {
+        - IWeapon[] placeableWeapons
+        + placeWeapon()
+        + takeDamage()
+        + process()
+        }
+
+        class EnemyPlugin {
+        - Entity playerEntity
+        + createPlayer()
+        + start()
+        + stop()
+        }
+
+        Common.Common.services.IActor <|.. Enemy.EnemyControlSystem
+        Common.Common.services.IDamageable <|.. Enemy.EnemyControlSystem
+        Common.Common.data.Entity <|-- Enemy.Enemy
+        Common.Common.services.IEntityProcessingService <|.. Enemy.EnemyControlSystem
+        Common.Common.services.IGamePluginService <|.. Enemy.EnemyPlugin
 }
 	
 component Player {
