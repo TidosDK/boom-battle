@@ -1,0 +1,27 @@
+@startuml
+
+component Enemy{
+
+    component AI{
+    'maybe an interface
+        class PathFinding{
+            calculatePathToPlayer(Player)
+            moveX()
+            moveY()
+        }
+
+        class BombPlacing implements IActor{
+            calculateOptimalPlacement(Entity))
+            calculateBombExplosion()
+        }
+    }
+
+    class EnemyCollisionControlSystem{
+        XCord  'maybe?
+        YCord  'maybe?
+        checkCollision(Map)
+    }
+}
+
+
+@enduml
