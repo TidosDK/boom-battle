@@ -90,6 +90,31 @@ component Bomb{
     }
 }
 
+component Player {
+    class Player {
+    }
+
+    class PlayerControlSystem {
+    - IWeapon[] placeableWeapons
+    + placeWeapon()
+    + takeDamage()
+    + process()
+    }
+
+    class PlayerPlugin {
+    - Entity playerEntity
+    + createPlayer()
+    + start()
+    + stop()
+    }
+
+    Common.Common.services.IActor <|.. Player.PlayerControlSystem
+    Common.Common.services.IDamageable <|.. Player.PlayerControlSystem
+    Common.Common.data.Entity <|-- Player.Player
+    Common.Common.services.IEntityProcessingService <|.. Player.PlayerControlSystem
+    Common.Common.services.IGamePluginService <|.. Player.PlayerPlugin
+}
+
 
 
 @enduml
