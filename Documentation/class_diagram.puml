@@ -68,5 +68,24 @@ component Common {
 '	}
 }
 
+component BombSystem {
+    class Bomb implements Common.services.IWeapon{
+        - timeOfPlacement: Long
+        - timeTillExplosion: Long
+        - damagePoints: int
+        - blastArea: Collections
+        + setBlastArea(Collections)
+        + calcTimeTillExplosion()
+    }
+    Bomb --|> Entity : inherits
+
+    class BombExplosionSystem implements Common.services.IEntityProcessingService {
+        - world: World
+        - gameData: GameData
+        + BombExplosionSystem(GameData, World)
+        + calculateBlastArea(Bomb, World)
+        + process()
+    }
+
 
 @enduml
