@@ -1,0 +1,150 @@
+@startuml
+component Common {
+    package Common {
+
+        package services {
+            interface IActor {
+                speed
+                move()
+                placeWeapon(IWeapon)
+            }
+
+            interface IWeapon {
+                getDamagePoints()
+                setDamagePoints()
+            }
+
+            interface ICollidable {
+                getCollidable()
+                setCollidable()
+            }
+
+            interface IDamageable {
+                getHitPoints()
+                setHitPoints()
+            }
+
+            interface IGamePluginService {
+                start()
+                stop()
+            }
+
+            interface IEntityProcessingService {
+                process()
+            }
+
+            interface IPostEntityProcessingService {
+                postProcess()
+            }
+        }
+
+        package data {
+            class World {
+                entities
+                map
+                addEntity()
+                removeEntity()
+                getEntity()
+            }
+
+            class Entity {
+                coordinates
+                direction
+
+                getCoordinates()
+                setCoordinates(coordinates)
+                getDirection()
+                setDirection(direction)
+            }
+        }
+    }
+
+
+'	component Parts {
+'		interface EntityPart {
+'			process()
+'		}
+'
+'		class LifePart implements EntityPart {
+'		}
+'
+'		class MovingPart implements EntityPart {
+'		}
+'
+'		class PositionPart implements EntityPart {
+'		}
+'
+'	}
+}
+component Bomb{
+    package BombSystem {
+        class Bomb implements Common.Common.services.IWeapon{
+            - timeOfPlacement: Long
+            - timeTillExplosion: Long
+            - damagePoints: int
+            - blastArea: Collections<Coordinates>
+            + setBlastArea(Collections<Coordinates>)
+            + calcTimeTillExplosion()
+        }
+        Bomb --|> Entity : inherits
+
+        class BombExplosionSystem implements Common.Common.services.IEntityProcessingService {
+            - world: World
+            + BombExplosionSystem(World)
+            + calculateBlastArea(Bomb, World)
+            + process()
+        }
+    }
+}
+
+component Enemy{
+    class enemyControlSystem{
+        placeBomb()
+        move()
+    }
+    component AI{
+    'maybe an interface
+        class PathFinding{
+            calculatePathToPlayer(Player)
+        }
+
+        class BombPlacing {
+            calculateOptimalPlacement(Entity, Bomb))
+        }
+    }
+
+    class EnemyCollisionControlSystem{
+        XCord  'maybe?
+        YCord  'maybe?
+        checkCollision(Map)
+    }
+}
+
+component Player {
+    class Player {
+    }
+
+    class PlayerControlSystem {
+    - IWeapon[] placeableWeapons
+    + placeWeapon()
+    + takeDamage()
+    + process()
+    }
+
+    class PlayerPlugin {
+    - Entity playerEntity
+    + createPlayer()
+    + start()
+    + stop()
+    }
+
+    Common.Common.services.IActor <|.. Player.PlayerControlSystem
+    Common.Common.services.IDamageable <|.. Player.PlayerControlSystem
+    Common.Common.data.Entity <|-- Player.Player
+    Common.Common.services.IEntityProcessingService <|.. Player.PlayerControlSystem
+    Common.Common.services.IGamePluginService <|.. Player.PlayerPlugin
+}
+
+
+
+@enduml
