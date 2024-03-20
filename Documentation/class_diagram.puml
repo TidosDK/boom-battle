@@ -99,10 +99,6 @@ component Bomb{
 }
 
 component Enemy{
-    class enemyControlSystem{
-        placeBomb()
-        move()
-    }
     component AI{
     'maybe an interface
         class PathFinding{
@@ -128,6 +124,7 @@ component Enemy{
         + placeWeapon()
         + takeDamage()
         + process()
+        + move()
         }
 
         class EnemyPlugin {
@@ -153,6 +150,7 @@ component Player {
     + placeWeapon()
     + takeDamage()
     + process()
+    + move()
     }
 
     class PlayerPlugin {
