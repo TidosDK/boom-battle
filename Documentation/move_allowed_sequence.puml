@@ -1,0 +1,19 @@
+@startuml
+participant IEntityProcessingService
+participant Player
+participant Map
+
+IEntityProcessingService -> Player: process
+activate Player
+note left of Player: Player has input for movement
+Player -> Map: isMovementAllowed
+activate Map
+Map -> Map: checkMovement
+activate Map
+Map -> Map: isTileOccupied
+Map --> Map: allowed
+deactivate Map
+Map --> Player: MovementAllowed
+deactivate Map
+
+@enduml
