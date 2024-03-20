@@ -6,15 +6,22 @@ component Common {
             interface IActor {
                 speed
                 move()
-                placeWeapon(IWeapon)
+                placeWeapon()
             }
 
             interface IWeapon {
-                damagePoints
+                getDamagePoints()
+                setDamagePoints()
+            }
+
+            interface ICollidable {
+                getCollidable()
+                setCollidable()
             }
 
             interface IDamageable {
-                hitPoints
+                getHitPoints()
+                setHitPoints()
             }
 
             interface IGamePluginService {
@@ -27,13 +34,14 @@ component Common {
             }
 
             interface IPostEntityProcessingService {
-                process()
+                postProcess()
             }
         }
 
         package data {
             class World {
                 entities
+                map
                 addEntity()
                 removeEntity()
                 getEntity()
@@ -71,20 +79,20 @@ component Common {
 component Bomb{
     package BombSystem {
         class Bomb implements Common.Common.services.IWeapon{
-            - timeOfPlacement: Long
-            - timeTillExplosion: Long
-            - damagePoints: int
-            - blastArea: Collections
-            + setBlastArea(Collections)
+            - timeOfPlacement
+            - timeTillExplosion
+            - damagePoints
+            - blastArea
+            + setBlastArea()
             + calcTimeTillExplosion()
         }
         Bomb --|> Entity : inherits
 
         class BombExplosionSystem implements Common.Common.services.IEntityProcessingService {
-            - world: World
-            - gameData: GameData
-            + BombExplosionSystem(GameData, World)
-            + calculateBlastArea(Bomb, World)
+            - world
+            - gameData
+            + BombExplosionSystem()
+            + calculateBlastArea()
             + process()
         }
     }
@@ -98,18 +106,18 @@ component Enemy{
     component AI{
     'maybe an interface
         class PathFinding{
-            calculatePathToPlayer(Player)
+            calculatePathToPlayer()
         }
 
         class BombPlacing {
-            calculateOptimalPlacement(Entity,Bomb))
+            calculateOptimalPlacement())
         }
     }
 
     class EnemyCollisionControlSystem{
         XCord  'maybe?
         YCord  'maybe?
-        checkCollision(Map)
+        checkCollision()
     }
 }
 	
@@ -118,14 +126,14 @@ component Player {
     }
 
     class PlayerControlSystem {
-    - IWeapon[] placeableWeapons
+    - IWeapon
     + placeWeapon()
     + takeDamage()
     + process()
     }
 
     class PlayerPlugin {
-    - Entity playerEntity
+    - Entity
     + createPlayer()
     + start()
     + stop()
