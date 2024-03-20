@@ -28,6 +28,10 @@ component Common {
                 start()
                 stop()
             }
+            interface IMap {
+                getWidth()
+                getHeight()
+                }
 
             interface IEntityProcessingService {
                 process()
@@ -45,7 +49,9 @@ component Common {
                 addEntity()
                 removeEntity()
                 getEntity()
+                getMap()
             }
+
 
             class Entity {
                 coordinates
@@ -56,8 +62,21 @@ component Common {
                 getDirection()
                 setDirection(direction)
             }
+            class Map {
+                - width: int
+                - height: int
+                - map: Grid
+                + getMap(): Grid
+                + setMap(Grid)
+                + updateTile(coord, value)
+                + isMoveAllowed(Entity, newCoordinates): boolean
+                - isTileOccupied(coord): boolean
+                }
+
+
         }
     }
+    note left of Map: Grid is a map of coordinates and booleans to represent obstacles
 
 
 '	component Parts {
@@ -116,7 +135,6 @@ component Enemy{
     class EnemyCollisionControlSystem{
         XCord  'maybe?
         YCord  'maybe?
-        checkCollision(Map)
     }
 }
 

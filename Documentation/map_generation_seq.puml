@@ -1,0 +1,25 @@
+@startuml
+participant Map
+participant MapGenerator
+participant World
+
+
+World -> Map: constructMap
+activate World
+activate Map
+Map -> MapGenerator: generateMap
+activate MapGenerator
+activate Map
+MapGenerator -> World: getEntities
+activate World
+World --> MapGenerator: Entities
+deactivate World
+MapGenerator --> Map: setMap
+deactivate MapGenerator
+deactivate Map
+Map --> World: wasMapGenerated
+deactivate World
+deactivate Map
+
+@enduml
+```
