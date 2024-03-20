@@ -11,7 +11,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage window) throws Exception {
+    public void start(Stage window) {
 
     }
 

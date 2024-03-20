@@ -9,9 +9,6 @@
     <artifactId>Common</artifactId>
     <packaging>jar</packaging>
     <name>Common</name>
-    
-    <dependencies>
-    </dependencies>
     <build>
         <plugins>
             <plugin>
