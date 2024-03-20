@@ -40,6 +40,10 @@ component Common {
             interface IPostEntityProcessingService {
                 postProcess()
             }
+
+            interface IMapGenerator {
+                generateMap(World)
+            }
         }
 
         package data {
@@ -161,6 +165,13 @@ component Player {
     Common.Common.data.Entity <|-- Player.Player
     Common.Common.services.IEntityProcessingService <|.. Player.PlayerControlSystem
     Common.Common.services.IGamePluginService <|.. Player.PlayerPlugin
+}
+
+component MapGenerator {
+    package SomeMapGenerator {
+        class TheMapGenerator implements Common.Common.services.IMapGenerator {
+            + generateMap()
+        }
 }
 
 
