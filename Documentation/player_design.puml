@@ -1,0 +1,32 @@
+@startuml
+component Common {
+}
+
+component Player {
+    class Player {
+    }
+
+    class PlayerControlSystem {
+    - weapons: IWeapon[]
+    + placeWeapon()
+    + takeDamage(amount: int)
+    + process()
+    + move(direction: Enum)
+    }
+
+    class PlayerPlugin {
+    - player: Entity
+    + createPlayer(): Player
+    + start()
+    + stop()
+    }
+
+    skinparam SequenceMessageAlign center
+    Common <|-- Player.Player: Entity
+    Common <|.. Player.PlayerControlSystem: IActor \n IDamageable \n IEntityProcessingService
+    Common <|.. Player.PlayerPlugin: IGamePluginService
+}
+
+
+
+@enduml
