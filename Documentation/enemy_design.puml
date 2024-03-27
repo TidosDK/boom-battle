@@ -1,0 +1,32 @@
+@startuml
+component Common {
+}
+
+component Enemy {
+    class Enemy {
+    }
+
+    class EnemyControlSystem {
+    - weapons: IWeapon[]
+    + placeWeapon()
+    + takeDamage(amount: int)
+    + process()
+    + move(direction: Enum)
+    }
+
+    class EnemyPlugin {
+    - Enemy: Entity
+    + createEnemy(): Enemy
+    + start()
+    + stop()
+    }
+
+    skinparam SequenceMessageAlign center
+    Common <|-- Enemy.Enemy: Entity
+    Common <|.. Enemy.EnemyControlSystem: IActor \n IDamageable \n IEntityProcessingService
+    Common <|.. Enemy.EnemyPlugin: IGamePluginService
+}
+
+
+
+@enduml
