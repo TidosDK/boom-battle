@@ -1,0 +1,57 @@
+@startuml
+
+participant Bomb
+participant DeltaTime
+participant World
+participant ICollision
+
+
+activate Bomb
+Bomb->DeltaTime: startTimer(TimeTillExplosion)
+
+activate DeltaTime
+DeltaTime->DeltaTime: Check Timer
+
+alt Timer has run out
+	DeltaTime-->Bomb: Timer Ran Out
+	deactivate DeltaTime
+	break
+	end
+end
+
+Bomb -> Bomb: handleExplosion()
+Bomb -> World: getMapWithObjects()
+activate World
+
+World --> Bomb: returns map with objects
+deactivate World
+
+loop For each direction in map till Bomb Explosion Range
+	loop For each step in direction
+		Bomb -> ICollision: handleCollision()
+		activate ICollision
+		ICollision --> Bomb
+		deactivate ICollision
+		alt If collision
+			alt If destructible object
+				Bomb -> World: destroyObject(object)
+				activate World
+				World --> Bomb
+				deactivate World
+			end
+			break
+			end
+		end
+	end
+end
+
+Bomb -> World: destroyObject(this)
+activate World
+
+World --> Bomb
+deactivate World
+
+deactivate Bomb
+
+
+@enduml
