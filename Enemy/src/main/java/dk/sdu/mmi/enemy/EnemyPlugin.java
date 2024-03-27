@@ -1,7 +1,10 @@
 package dk.sdu.mmi.enemy;
 
-public class EnemyPlugin {  // Implements IGamePluginService
-    // private Entity player;
+import dk.sdu.mmmi.common.services.IGamePluginService;
+import dk.sdu.mmmi.common.data.Entity;
+
+public class EnemyPlugin implements IGamePluginService {
+    private Entity player;
     public Enemy createPlayer() {
         return new Enemy();
     }
