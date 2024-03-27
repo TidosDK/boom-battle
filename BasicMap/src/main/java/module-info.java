@@ -1,2 +1,4 @@
-module $MODULE_NAME$ {
+
+module BasicMap {
+    requires Common;
 }
