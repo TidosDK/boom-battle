@@ -21,12 +21,26 @@ component Enemy {
     + stop()
     }
 
+
     skinparam SequenceMessageAlign center
     Common <|-- Enemy.Enemy: Entity
     Common <|.. Enemy.EnemyControlSystem: IActor \n IDamageable \n IEntityProcessingService
     Common <|.. Enemy.EnemyPlugin: IGamePluginService
 }
 
+component AI{
+    class PathFinding{
+    + calculatePathToPlayer(player : entity)
+    +
+    }
+    class BombPlacing {
+    + calculateOptimalPlacement())
+    }
+    interface IPathFindingAndBomb{
+    + pathFind()
+    + bombPlacement()
+    }
+}
 
 
 @enduml
