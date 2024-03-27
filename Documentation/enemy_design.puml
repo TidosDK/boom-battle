@@ -31,11 +31,15 @@ component Enemy {
 component AI{
     class PathFinding{
     + calculatePathToPlayer(player : entity)
-    +
+    'maybe Greedy Best-First Search
+    + aStar(startNode, goalNode)
+    + calculateHeuristic()
     }
+
     class BombPlacing {
     + calculateOptimalPlacement())
     }
+
     interface IPathFindingAndBomb{
     + pathFind()
     + bombPlacement()
