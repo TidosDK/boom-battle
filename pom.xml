@@ -14,13 +14,17 @@
         <module>Core</module>
         <module>Common</module>
     </modules>
+
     <properties>
         <java>java</java>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.9</maven.compiler.source>
         <maven.compiler.target>1.9</maven.compiler.target>
+        <gdx.version3>1.9.13</gdx.version3>
+        <gdx.version2>1.11.0</gdx.version2>
+        <gdx.version>1.12.1</gdx.version>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -28,8 +32,49 @@
                 <artifactId>javafx-controls</artifactId>
                 <version>21.0.2</version>
             </dependency>
+
+            <!-- LibGDX -->
+            <dependency>
+                <groupId>com.badlogicgames.gdx</groupId>
+                <artifactId>gdx</artifactId>
+                <version>${gdx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.badlogicgames.gdx</groupId>
+                <artifactId>gdx-platform</artifactId>
+                <version>${gdx.version}</version>
+                <classifier>natives-desktop</classifier>
+            </dependency>
+            <dependency>
+                <groupId>com.badlogicgames.gdx</groupId>
+                <artifactId>gdx-backend-lwjgl3</artifactId>
+                <version>${gdx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.badlogicgames.gdx</groupId>
+                <artifactId>gdx-box2d</artifactId>
+                <version>${gdx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.badlogicgames.gdx</groupId>
+                <artifactId>gdx-box2d-platform</artifactId>
+                <classifier>natives-desktop</classifier>
+                <version>${gdx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.badlogicgames.gdx</groupId>
+                <artifactId>gdx-freetype</artifactId>
+                <version>${gdx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.badlogicgames.gdx</groupId>
+                <artifactId>gdx-freetype-platform</artifactId>
+                <classifier>natives-desktop</classifier>
+                <version>${gdx.version}</version>
+            </dependency>
+
         </dependencies>
-    </dependencyManagement>    
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
@@ -75,8 +120,8 @@
                         I still wanted to do it for clarity, but for some reason that results
                         in "java.lang.module.FindException: Module monitor.observer.zero not found";
                         strange... -->
-<!--                        <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:8000</argument>                        -->
-                        <argument>--module=Core/dk.sdu.mmmi.main.Main</argument>
+                        <!--                        <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:8000</argument>                        -->
+                        <argument>--module=Core/dk.sdu.mmmi.main.GameLauncher</argument>
                         <argument>--add-modules javafx.graphics</argument>
                     </arguments>
                 </configuration>
