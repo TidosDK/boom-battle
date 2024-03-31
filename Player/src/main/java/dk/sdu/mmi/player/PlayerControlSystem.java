@@ -10,6 +10,20 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     // @Override
     public void process() {
         throw new UnsupportedOperationException("Not supported yet.");
+        /*
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            this.move(Direction.LEFT);
+            }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            this.move(Direction.RIGHT);
+            }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            this.move(Direction.UP);
+            }
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            this.move(Direction.DOWN);
+            }
+         */
     }
 
     // @Override
@@ -25,5 +39,28 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     // @Override
     public void move(Enum direction) {
         throw new UnsupportedOperationException("Not supported yet.");
+        /*
+        // TODO: Check for collision with obstacles.
+        switch(direction) {
+            case LEFT:
+                this.player.setX(this.player.getX() - 1 * Gdx.graphics.getDeltaTime());
+                break;
+            case RIGHT:
+                this.player.setX(this.player.getX() + 1 * Gdx.graphics.getDeltaTime());
+                break;
+            case UP:
+                this.player.setY(this.player.getY() + 1 * Gdx.graphics.getDeltaTime());
+                break;
+            case DOWN:
+                this.player.setY(this.player.getY() - 1 * Gdx.graphics.getDeltaTime());
+                break;
+           }
+
+        // make sure the sprite stays within the screen bounds
+        if(this.player.getX() < 0) this.player.setX(0);
+        if(this.player.getX() > map.getWidth() - this.player.getWidth()) this.player.setX(800 - this.player.getWidth());
+        if(this.player.getY() < 0) this.player.setY(0);
+        if(this.player.getY() > map.getHeight() - this.player.getHeight()) this.player.setY(800 - this.player.getHeight());
+        */
     }
 }
