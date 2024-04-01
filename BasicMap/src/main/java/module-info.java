@@ -1,0 +1,4 @@
+
+module BasicMap {
+    requires Common;
+}
