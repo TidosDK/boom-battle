@@ -39,7 +39,7 @@ activate Bomb
 				ICollision --> Bomb
 				deactivate ICollision
 
-				alt If collision and destuctible object/entity
+				alt If collision and destructible object/entity
 					Bomb -> World: destroyObject(object)
 					activate World
 
