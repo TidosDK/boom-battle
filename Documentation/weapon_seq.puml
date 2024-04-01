@@ -7,51 +7,60 @@ participant ICollision
 
 
 activate Bomb
-Bomb->DeltaTime: startTimer(TimeTillExplosion)
 
-activate DeltaTime
-DeltaTime->DeltaTime: Check Timer
+	Bomb->DeltaTime: startTimer(TimeTillExplosion)
 
-alt Timer has run out
-	DeltaTime-->Bomb: Timer Ran Out
-	deactivate DeltaTime
-	break
-	end
-end
-
-Bomb -> Bomb: handleExplosion()
-Bomb -> World: getMapWithObjects()
-activate World
-
-World --> Bomb: returns map with objects
-deactivate World
-
-loop For each direction in map till Bomb Explosion Range
-	loop For each step in direction
-		Bomb -> ICollision: handleCollision()
-		activate ICollision
-		ICollision --> Bomb
-		deactivate ICollision
-		alt If collision
-			alt If destructible object
-				Bomb -> World: destroyObject(object)
-				activate World
-				World --> Bomb
-				deactivate World
-			end
-			break
-			end
+	activate DeltaTime
+	loop Forever
+	DeltaTime -> DeltaTime: Check Timer
+		alt Timer ran out
+			DeltaTime-->Bomb: break loop
+			deactivate DeltaTime
 		end
 	end
-end
 
-Bomb -> World: destroyObject(this)
-activate World
+	Bomb -> Bomb: handleExplosion()
+	activate Bomb
 
-World --> Bomb
-deactivate World
+		' Map data is both objects and entities
+		Bomb -> World: getMapData()
+		activate World
+
+		World --> Bomb: returns map data
+		deactivate World
+
+
+		loop For each cardinal direction
+			loop For each step in direction until explosion range
+
+				Bomb -> ICollision: handleCollision(mapData, coordinates)
+				activate ICollision
+
+				ICollision --> Bomb
+				deactivate ICollision
+
+				alt If collision and destuctible object/entity
+					Bomb -> World: destroyObject(object)
+					activate World
+
+					World --> Bomb
+					deactivate World
+					break
+					end
+				end
+			end
+		end
+
+		Bomb -> World: removeObject(this)
+		activate World
+
+		Bomb -> Bomb: stop()
+
+		World --> Bomb
+		deactivate World
+
+	deactivate Bomb
 
 deactivate Bomb
-
 
 @enduml
