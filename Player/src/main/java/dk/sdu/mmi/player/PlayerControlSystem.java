@@ -1,7 +1,11 @@
 package dk.sdu.mmi.player;
 
-public class PlayerControlSystem { // Implements IActor, IDamageable, IEntityProcessingService
-    // private IWeapon[] weapons;
+import dk.sdu.mmmi.common.services.IActor;
+import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.IWeapon;
+
+public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
+    private IWeapon[] weapons;
 
     // @Override
     public void process() {

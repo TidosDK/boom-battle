@@ -23,7 +23,7 @@ component Enemy {
 
     skinparam SequenceMessageAlign center
     Common <|-- Enemy.Enemy: Entity
-    Common <|.. Enemy.EnemyControlSystem: IActor \n IDamageable \n IEntityProcessingService
+    Common <|.. Enemy.EnemyControlSystem: IActor \n IDamageable \n IEntityProcessingService \n IWeapon
     Common <|.. Enemy.EnemyPlugin: IGamePluginService
 }
 

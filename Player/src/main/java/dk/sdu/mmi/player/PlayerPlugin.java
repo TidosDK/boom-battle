@@ -1,7 +1,10 @@
 package dk.sdu.mmi.player;
 
-public class PlayerPlugin {  // Implements IGamePluginService
-    // private Entity player;
+import dk.sdu.mmmi.common.services.IGamePluginService;
+import dk.sdu.mmmi.common.data.Entity;
+
+public class PlayerPlugin implements IGamePluginService {
+    private Entity player;
     public Player createPlayer() {
         return new Player();
     }
