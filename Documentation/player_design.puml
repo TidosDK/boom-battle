@@ -23,7 +23,7 @@ component Player {
 
     skinparam SequenceMessageAlign center
     Common <|-- Player.Player: Entity
-    Common <|.. Player.PlayerControlSystem: IActor \n IDamageable \n IEntityProcessingService
+    Common <|.. Player.PlayerControlSystem: IActor \n IDamageable \n IEntityProcessingService \n IWeapon
     Common <|.. Player.PlayerPlugin: IGamePluginService
 }
 
