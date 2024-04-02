@@ -1,0 +1,17 @@
+name: generate plantuml
+on: push
+jobs:
+  generate_plantuml:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    name: plantuml
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: plantuml
+      id: plantuml
+      uses: grassedge/generate-plantuml-action@v1.5
+      with:
+        path: Documentation/Compiled_puml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
