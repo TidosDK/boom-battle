@@ -4,21 +4,21 @@ import dk.sdu.mmmi.common.services.ICollidable;
 
 public class Map {
 
-    private ICollidable[][] map;
+    private boolean[][] map;
     private int width;
     private int height;
 
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
-        map = new ICollidable[width][height];
+        map = new boolean[width][height];
     }
 
-    public ICollidable[][] getMap() {
+    public boolean[][] getMap() {
         return map;
     }
 
-    public void setMap(ICollidable[][] map) {
+    public void setMap(boolean[][] map) {
         this.map = map;
     }
 
