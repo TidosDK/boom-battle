@@ -1,41 +1,28 @@
 package dk.sdu.mmmi.common.data;
 
 public class Entity {
-    private MapPosition mapPosition;
-    private float x;
-    private float y;
+    private Coordinates coordinates;
 
 
-    public MapPosition getMapPosition() {
-        return mapPosition;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setMapPosition(MapPosition mapPosition) {
-        this.mapPosition = mapPosition;
+    public void setCoordinates (Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
-    public float getX() {
-        return x;
-    }
 
     public void setX(float x) {
-        if (calcMapPosition(x, this.y)) {
-            this.x = x;
-        }
+        coordinates.setX(x);
     }
 
-    public float getY() {
-        return y;
-    }
 
     public void setY(float y) {
-        if (calcMapPosition(this.x, y)) {
-            this.y = y;
-        }
+        coordinates.setY(y);
     }
 
-    private boolean calcMapPosition(float x, float y){
-        // Calculate the MapPosition based on x and y
-        return true;
+    public GridPosition getGridPosition() {
+        return coordinates.getGridPosition();
     }
 }

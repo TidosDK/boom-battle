@@ -1,8 +1,9 @@
 package dk.sdu.mmmi.BasicMapSystem;
 
 import dk.sdu.mmmi.common.data.Direction;
+import dk.sdu.mmmi.common.data.GridPosition;
 import dk.sdu.mmmi.common.data.Map;
-import dk.sdu.mmmi.common.data.MapPosition;
+import dk.sdu.mmmi.common.data.Coordinates;
 import dk.sdu.mmmi.common.services.ICollidable;
 import dk.sdu.mmmi.common.services.IMap;
 import dk.sdu.mmmi.common.services.IMapProcessingService;
@@ -72,8 +73,9 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
      */
     private void updateMap() {
         for (ICollidable collidable : getCollidables()) {
-            MapPosition position = collidable.getMapPosition();
-            this.setMapTile(position.getX(), position.getY(), true);
+            Coordinates position = collidable.getCoordinates();
+            GridPosition gridPosition = position.getGridPosition();
+            this.setMapTile(gridPosition.getX(), gridPosition.getY(), true);
         }
     }
 
