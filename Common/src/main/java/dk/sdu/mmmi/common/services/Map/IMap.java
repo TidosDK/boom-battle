@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.services;
+package dk.sdu.mmmi.common.services.Map;
 
 import dk.sdu.mmmi.common.data.Direction;
 import dk.sdu.mmmi.common.data.Map;

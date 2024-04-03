@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.services;
+package dk.sdu.mmmi.common.services.Map;
 
 public interface IMapProcessingService {
 
