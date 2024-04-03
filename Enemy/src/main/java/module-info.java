@@ -1,4 +1,3 @@
-module Player {
-    requires Core;
+module Enemy {
     requires Common;
 }

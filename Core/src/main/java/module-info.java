@@ -1,5 +1,5 @@
 module Core {
     requires Common;
-    requires javafx.graphics;
-    opens dk.sdu.mmmi.main to javafx.graphics;
+    requires com.badlogic.gdx;
+    opens dk.sdu.mmmi.main;
 }
