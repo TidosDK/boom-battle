@@ -1,13 +1,10 @@
 package dk.sdu.mmmi.common.data;
 
-/**
- * A dataclass representing a grid position on a map.
- */
-public class MapPosition {
+public class GridPosition {
     private int x;
     private int y;
 
-    public MapPosition(int x, int y) {
+    public GridPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -19,4 +16,5 @@ public class MapPosition {
     public int getY() {
         return y;
     }
+
 }
