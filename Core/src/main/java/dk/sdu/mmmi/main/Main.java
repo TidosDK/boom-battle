@@ -8,8 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
+import dk.sdu.mmmi.common.data.World;
+import dk.sdu.mmmi.common.services.IMapGenerator;
+
+import java.util.Optional;
+import java.util.ServiceLoader;
 
 public class Main extends ApplicationAdapter {
     OrthographicCamera camera;
@@ -31,6 +35,7 @@ public class Main extends ApplicationAdapter {
         player.setOriginCenter();
 //		player.setPosition(Gdx.graphics.getWidth() / 2 - player.getWidth() / 2, Gdx.graphics.getHeight() / 2 - player.getHeight() / 2); // when no camera is used
         player.setPosition(0, 0); // when camera is used
+        createWorld();
     }
 
 
@@ -51,5 +56,15 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         player.getTexture().dispose();
+    }
+
+    private void createWorld() {
+        World world = World.getInstance();
+        ServiceLoader.load(IMapGenerator.class).stream().findFirst().ifPresent(provider -> {
+            IMapGenerator mapGen = provider.get();
+            mapGen.generateMap(world);
+        });
+
+
     }
 }

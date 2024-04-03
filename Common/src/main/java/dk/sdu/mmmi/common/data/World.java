@@ -12,7 +12,7 @@ public class World {
         }
         return instance;
     }
-    
+
     public Map getMap() {
         return map;
     }
