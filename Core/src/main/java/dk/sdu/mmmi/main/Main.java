@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
         camera = new OrthographicCamera(20f, 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth())); // camera should have same aspect ratio as the window, but in meters
         batch = new SpriteBatch();
         entitySprites = new HashMap<>();
-
+      
         // Initial start of plugins
         for (IGamePluginService plugin : getPluginServices()) {
             plugin.start(world, gameData);
@@ -174,5 +174,15 @@ public class Main extends ApplicationAdapter {
      */
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    }
+
+    private void createWorld() {
+        World world = World.getInstance();
+        ServiceLoader.load(IMapGenerator.class).stream().findFirst().ifPresent(provider -> {
+            IMapGenerator mapGen = provider.get();
+            mapGen.generateMap(world);
+        });
+
+
     }
 }

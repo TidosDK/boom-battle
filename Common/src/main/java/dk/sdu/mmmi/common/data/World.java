@@ -8,11 +8,21 @@ import java.util.List;
  * The World class is used to pass the map and entities between the game and the plugins.
  */
 public class World {
+    private static World instance;
     private Map map;
     private ArrayList<Entity> entities;
 
     public World() {
         this.entities = new ArrayList<>();
+    }
+
+    private World() {}
+
+    public static World getInstance() {
+        if (instance == null) {
+            instance = new World();
+        }
+        return instance;
     }
 
     public Map getMap() {
