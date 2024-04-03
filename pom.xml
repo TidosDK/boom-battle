@@ -20,7 +20,9 @@
     <modules>
         <module>Core</module>
         <module>Common</module>
-<!--        <module>assets</module>-->
+        <module>BasicMap</module>
+        <module>Player</module>
+        <module>Enemy</module>
     </modules>
 
     <properties>

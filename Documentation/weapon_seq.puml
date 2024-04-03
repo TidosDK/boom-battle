@@ -1,0 +1,66 @@
+@startuml
+
+participant Bomb
+participant DeltaTime
+participant World
+participant ICollision
+
+
+activate Bomb
+
+	Bomb->DeltaTime: startTimer(TimeTillExplosion)
+
+	activate DeltaTime
+	loop Forever
+	DeltaTime -> DeltaTime: Check Timer
+		alt Timer ran out
+			DeltaTime-->Bomb: break loop
+			deactivate DeltaTime
+		end
+	end
+
+	Bomb -> Bomb: handleExplosion()
+	activate Bomb
+
+		' Map data is both objects and entities
+		Bomb -> World: getMapData()
+		activate World
+
+		World --> Bomb: returns map data
+		deactivate World
+
+
+		loop For each cardinal direction
+			loop For each step in direction until explosion range
+
+				Bomb -> ICollision: handleCollision(mapData, coordinates)
+				activate ICollision
+
+				ICollision --> Bomb
+				deactivate ICollision
+
+				alt If collision and destructible object/entity
+					Bomb -> World: destroyObject(object)
+					activate World
+
+					World --> Bomb
+					deactivate World
+					break
+					end
+				end
+			end
+		end
+
+		Bomb -> World: removeObject(this)
+		activate World
+
+		Bomb -> Bomb: stop()
+
+		World --> Bomb
+		deactivate World
+
+	deactivate Bomb
+
+deactivate Bomb
+
+@enduml
