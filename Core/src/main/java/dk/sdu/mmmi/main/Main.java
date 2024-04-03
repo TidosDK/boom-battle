@@ -14,6 +14,7 @@ import dk.sdu.mmmi.common.data.GameData;
 import dk.sdu.mmmi.common.data.World;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
+import dk.sdu.mmmi.common.services.Map.IMapGenerator;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
         // Setup of game
         gameData = GameData.getInstance();
-        world = new World();
+        world = World.getInstance();
         camera = new OrthographicCamera(20f, 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth())); // camera should have same aspect ratio as the window, but in meters
         batch = new SpriteBatch();
         entitySprites = new HashMap<>();
