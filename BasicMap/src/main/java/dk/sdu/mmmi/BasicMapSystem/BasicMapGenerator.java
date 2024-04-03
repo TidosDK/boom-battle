@@ -1,12 +1,17 @@
 package dk.sdu.mmmi.BasicMapSystem;
 
 import dk.sdu.mmmi.common.data.World;
+import dk.sdu.mmmi.common.data.Map;
 import dk.sdu.mmmi.common.services.IMapGenerator;
 
 public class BasicMapGenerator implements IMapGenerator {
 
 
-    public void generateMap(World world) {throw new UnsupportedOperationException("Not implemented yet");}
+    public void generateMap(World world) {
+        Map map = new BasicMap(10, 10);
+        map.setMap(basicMap(map.getWidth(), map.getHeight()));
+        world.setMap(map);
+    }
 
     /**
      * Generates a default map for the game where every other column has a wall on every other row
