@@ -5,8 +5,8 @@ import dk.sdu.mmmi.common.data.GridPosition;
 import dk.sdu.mmmi.common.data.Map;
 import dk.sdu.mmmi.common.data.Coordinates;
 import dk.sdu.mmmi.common.services.ICollidable;
-import dk.sdu.mmmi.common.services.IMap;
-import dk.sdu.mmmi.common.services.IMapProcessingService;
+import dk.sdu.mmmi.common.services.Map.IMap;
+import dk.sdu.mmmi.common.services.Map.IMapProcessingService;
 
 import java.util.Collection;
 import java.util.ServiceLoader;
