@@ -37,60 +37,11 @@
 
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>dk.sdu.mmmi.cbse</groupId>
                 <artifactId>shadedlibgdx</artifactId>
                 <version>1.0.50</version>
             </dependency>
-
-            <!--            <dependency>-->
-            <!--                <groupId>dk.sdu.mmmi.cbse</groupId>-->
-            <!--                <artifactId>shadedlibgdx</artifactId>-->
-            <!--                <version>1.0.1-SNAPSHOT</version>-->
-            <!--            </dependency>-->
-
-
-            <!-- LibGDX -->
-            <!--            <dependency>-->
-            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
-            <!--                <artifactId>gdx</artifactId>-->
-            <!--                <version>${gdx.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
-            <!--                <artifactId>gdx-platform</artifactId>-->
-            <!--                <version>${gdx.version}</version>-->
-            <!--                <classifier>natives-desktop</classifier>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
-            <!--                <artifactId>gdx-backend-lwjgl3</artifactId>-->
-            <!--                <version>${gdx.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
-            <!--                <artifactId>gdx-box2d</artifactId>-->
-            <!--                <version>${gdx.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
-            <!--                <artifactId>gdx-box2d-platform</artifactId>-->
-            <!--                <classifier>natives-desktop</classifier>-->
-            <!--                <version>${gdx.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
-            <!--                <artifactId>gdx-freetype</artifactId>-->
-            <!--                <version>${gdx.version}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
-            <!--                <artifactId>gdx-freetype-platform</artifactId>-->
-            <!--                <classifier>natives-desktop</classifier>-->
-            <!--                <version>${gdx.version}</version>-->
-            <!--            </dependency>-->
-
         </dependencies>
     </dependencyManagement>
     <build>
