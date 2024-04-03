@@ -21,6 +21,11 @@
     </properties>
 
     <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub ratgen Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ratgen/ShadedLibGDX</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -32,35 +37,8 @@
 
         <!-- LibGDX -->
         <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-platform</artifactId>
-            <classifier>natives-desktop</classifier>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-backend-lwjgl3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-box2d</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-box2d-platform</artifactId>
-            <classifier>natives-desktop</classifier>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-freetype</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-freetype-platform</artifactId>
-            <classifier>natives-desktop</classifier>
+            <groupId>dk.sdu.mmmi.cbse</groupId>
+            <artifactId>shadedlibgdx</artifactId>
         </dependency>
     </dependencies>
 
@@ -78,7 +56,7 @@
                         </goals>
                         <configuration>
                             <includeArtifactIds>
-                                gdx,gdx-platform,gdx-backend-lwjgl3,gdx-box2d,gdx-box2d-platform,gdx-freetype,gdx-freetype-platform
+                                shadedlibgdx
                             </includeArtifactIds>
                             <outputDirectory>../mods-mvn</outputDirectory>
                         </configuration>
@@ -92,8 +70,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.openjfx</groupId>
-                                    <artifactId>javafx-controls</artifactId>
+                                    <groupId>dk.sdu.mmmi.cbse</groupId>
+                                    <artifactId>shadedlibgdx</artifactId>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>../libs</outputDirectory>
                                 </artifactItem>
@@ -105,3 +83,38 @@
         </plugins>
     </build>
 </project>
+
+
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>com.badlogicgames.gdx</groupId>-->
+        <!--            <artifactId>gdx</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.badlogicgames.gdx</groupId>-->
+        <!--            <artifactId>gdx-platform</artifactId>-->
+        <!--            <classifier>natives-desktop</classifier>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.badlogicgames.gdx</groupId>-->
+        <!--            <artifactId>gdx-backend-lwjgl3</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.badlogicgames.gdx</groupId>-->
+        <!--            <artifactId>gdx-box2d</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.badlogicgames.gdx</groupId>-->
+        <!--            <artifactId>gdx-box2d-platform</artifactId>-->
+        <!--            <classifier>natives-desktop</classifier>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.badlogicgames.gdx</groupId>-->
+        <!--            <artifactId>gdx-freetype</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.badlogicgames.gdx</groupId>-->
+        <!--            <artifactId>gdx-freetype-platform</artifactId>-->
+        <!--            <classifier>natives-desktop</classifier>-->
+        <!--        </dependency>-->

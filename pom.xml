@@ -7,12 +7,20 @@
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>AsteroidsJPMS</name>
+
+
     <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub ratgen Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ratgen/ShadedLibGDX</url>
+        </repository>
     </repositories>
 
     <modules>
         <module>Core</module>
         <module>Common</module>
+<!--        <module>assets</module>-->
     </modules>
 
     <properties>
@@ -27,51 +35,59 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-controls</artifactId>
-                <version>21.0.2</version>
+                <groupId>dk.sdu.mmmi.cbse</groupId>
+                <artifactId>shadedlibgdx</artifactId>
+                <version>1.0.50</version>
             </dependency>
 
+            <!--            <dependency>-->
+            <!--                <groupId>dk.sdu.mmmi.cbse</groupId>-->
+            <!--                <artifactId>shadedlibgdx</artifactId>-->
+            <!--                <version>1.0.1-SNAPSHOT</version>-->
+            <!--            </dependency>-->
+
+
             <!-- LibGDX -->
-            <dependency>
-                <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx</artifactId>
-                <version>${gdx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx-platform</artifactId>
-                <version>${gdx.version}</version>
-                <classifier>natives-desktop</classifier>
-            </dependency>
-            <dependency>
-                <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx-backend-lwjgl3</artifactId>
-                <version>${gdx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx-box2d</artifactId>
-                <version>${gdx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx-box2d-platform</artifactId>
-                <classifier>natives-desktop</classifier>
-                <version>${gdx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx-freetype</artifactId>
-                <version>${gdx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.badlogicgames.gdx</groupId>
-                <artifactId>gdx-freetype-platform</artifactId>
-                <classifier>natives-desktop</classifier>
-                <version>${gdx.version}</version>
-            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
+            <!--                <artifactId>gdx</artifactId>-->
+            <!--                <version>${gdx.version}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
+            <!--                <artifactId>gdx-platform</artifactId>-->
+            <!--                <version>${gdx.version}</version>-->
+            <!--                <classifier>natives-desktop</classifier>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
+            <!--                <artifactId>gdx-backend-lwjgl3</artifactId>-->
+            <!--                <version>${gdx.version}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
+            <!--                <artifactId>gdx-box2d</artifactId>-->
+            <!--                <version>${gdx.version}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
+            <!--                <artifactId>gdx-box2d-platform</artifactId>-->
+            <!--                <classifier>natives-desktop</classifier>-->
+            <!--                <version>${gdx.version}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
+            <!--                <artifactId>gdx-freetype</artifactId>-->
+            <!--                <version>${gdx.version}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.badlogicgames.gdx</groupId>-->
+            <!--                <artifactId>gdx-freetype-platform</artifactId>-->
+            <!--                <classifier>natives-desktop</classifier>-->
+            <!--                <version>${gdx.version}</version>-->
+            <!--            </dependency>-->
 
         </dependencies>
     </dependencyManagement>
@@ -106,10 +122,9 @@
                     <workingDirectory>.</workingDirectory>
                     <longModulepath>false</longModulepath>
                     <arguments>
-                        <!--                        
-                                                On Mac Devices this line should not be commented out
-                                                <argument>-XstartOnFirstThread</argument>
-                        -->
+                        <!-- On Mac Devices this line should not be commented out  -->
+                        <argument>-XstartOnFirstThread</argument>
+
                         <argument>-Dorg.lwjgl.util.Debug=true</argument>
                         <argument>-Djava.library.path=libs</argument>
                         <argument>--module-path=mods-mvn</argument>
@@ -122,7 +137,6 @@
                         strange... -->
                         <!--                        <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:8000</argument>                        -->
                         <argument>--module=Core/dk.sdu.mmmi.main.GameLauncher</argument>
-                        <argument>--add-modules javafx.graphics</argument>
                     </arguments>
                 </configuration>
             </plugin>
