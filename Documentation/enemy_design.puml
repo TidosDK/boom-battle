@@ -21,10 +21,37 @@ component Enemy {
     + stop()
     }
 
+
     skinparam SequenceMessageAlign center
     Common <|-- Enemy.Enemy: Entity
     Common <|.. Enemy.EnemyControlSystem: IActor \n IDamageable \n IEntityProcessingService \n IWeapon
     Common <|.. Enemy.EnemyPlugin: IGamePluginService
+}
+
+component AI{
+    class PathFinding{
+    - Int costValues
+    - IMap map
+    + calculatePathToPlayer(player : entity)
+    'maybe Greedy Best-First Search
+    + aStar(startNode, goalNode)
+    + calculateHeuristic()
+    + reconstructPath(Node current)
+    }
+
+    class BombPlacing {
+    - IWeapon[] placeableWeapons
+    + calculateOptimalPlacement())
+    }
+
+    interface IPathFindingAndBomb{
+    + pathFind()
+    + bombPlacement()
+    }
+     skinparam SequenceMessageAlign center
+
+        Common <|.. AI.BombPlacing: IActor \n IDamageable 
+        Common <|.. AI.PathFinding: IMap
 }
 
 

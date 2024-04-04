@@ -1,14 +1,16 @@
-package dk.sdu.mmi.player;
+package dk.sdu.mmmi.enemy;
 
+import dk.sdu.mmmi.common.data.GameData;
+import dk.sdu.mmmi.common.data.World;
 import dk.sdu.mmmi.common.services.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
 
-public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
+public class EnemyControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private IWeapon[] weapons;
 
     // @Override
-    public void process() {
+    public void process(World world, GameData gameData) {
         throw new UnsupportedOperationException("Not supported yet.");
         /*
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {

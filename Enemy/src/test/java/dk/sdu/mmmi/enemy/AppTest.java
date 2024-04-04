@@ -1,4 +1,4 @@
-package dk.sdu.mmi.enemy;
+package dk.sdu.mmmi.enemy;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -16,4 +16,5 @@ deactivate Map
 Map --> Player: MovementAllowed
 deactivate Map
 
+
 @enduml
