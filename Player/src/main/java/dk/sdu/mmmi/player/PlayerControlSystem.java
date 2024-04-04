@@ -7,12 +7,16 @@ import dk.sdu.mmmi.common.data.World;
 import dk.sdu.mmmi.common.services.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
+import dk.sdu.mmmi.common.services.Map.IMap;
+
+import java.util.ServiceLoader;
 
 public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private World world;
     private GameData gameData;
     private Player player;
     private IWeapon[] weapons;
+    private IMap map;
 
     private final float MOVING_SPEED = 10f;
 
@@ -25,7 +29,9 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             this.player = (Player) player;
             checkMovement();
         }
-    }
+
+        ServiceLoader.load(IMap.class).stream().findFirst().ifPresent(provider -> this.map = provider.get());  // TODO: Replace this, when it is implemented on the map side, to get the used map from the world object.
+        }
 
     private void checkMovement() {
         if (gameData.getKeys().isDown(gameData.getKeys().getLEFT())) {
