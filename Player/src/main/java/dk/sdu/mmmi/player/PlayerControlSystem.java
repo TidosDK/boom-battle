@@ -59,6 +59,14 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     public void move(Direction direction) {
         player.setDirection(direction);
 
+        // Check if the game contains a map.
+        if (!(map == null)) {
+            // Check if the player can move in the given direction
+            if(!map.isMoveAllowed((int) player.getX(), (int) player.getY(), direction)) {
+                return;
+            }
+        }
+
         switch (direction) {
             case LEFT:
                 player.setX(player.getX() + (float) (MOVING_SPEED * Math.cos(Math.toRadians(player.getRotation() + 90)) * gameData.getDeltaTime()));
