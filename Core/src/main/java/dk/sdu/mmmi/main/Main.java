@@ -33,10 +33,12 @@ public class Main extends ApplicationAdapter {
     public void create() {
         // Setup of game
         gameData = GameData.getInstance();
-        world = World.getInstance();
+//        world = World.getInstance();
         camera = new OrthographicCamera(20f, 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth())); // camera should have same aspect ratio as the window, but in meters
         batch = new SpriteBatch();
         entitySprites = new HashMap<>();
+
+        this.createWorld();
       
         // Initial start of plugins
         for (IGamePluginService plugin : getPluginServices()) {
@@ -178,7 +180,7 @@ public class Main extends ApplicationAdapter {
     }
 
     private void createWorld() {
-        World world = World.getInstance();
+        this.world = World.getInstance();
         ServiceLoader.load(IMapGenerator.class).stream().findFirst().ifPresent(provider -> {
             IMapGenerator mapGen = provider.get();
             mapGen.generateMap(world);

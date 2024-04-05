@@ -16,7 +16,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     private GameData gameData;
     private Player player;
     private IWeapon[] weapons;
-    private IMap map;
+    private IMap map = null;
 
     private final float MOVING_SPEED = 10f;
 
@@ -30,7 +30,9 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             checkMovement();
         }
 
-        ServiceLoader.load(IMap.class).stream().findFirst().ifPresent(provider -> this.map = provider.get());  // TODO: Replace this, when it is implemented on the map side, to get the used map from the world object.
+        if (world.getMap() instanceof IMap) {
+            map = (IMap) world.getMap();
+        }
         }
 
     private void checkMovement() {
@@ -60,7 +62,8 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         player.setDirection(direction);
 
         // Check if the game contains a map.
-        if (!(map == null)) {
+        if (map != null) {
+            System.out.println("Map is not null");
             // Check if the player can move in the given direction
             if(!map.isMoveAllowed((int) player.getX(), (int) player.getY(), direction)) {
                 return;
