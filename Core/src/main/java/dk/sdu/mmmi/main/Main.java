@@ -62,16 +62,16 @@ public class Main extends ApplicationAdapter {
             }
         }
 
+        for (IEntityProcessingService entityProcessingService : getEntityProcessingServices()) {
+            entityProcessingService.process(world, gameData);
+        }
+
         // Create sprites for new entities
         for (Entity entity : world.getEntities()) {
             if (!entitySprites.containsKey(entity)) {
                 Sprite sprite = createSprite(entity);
                 entitySprites.put(entity, sprite);
             }
-        }
-
-        for (IEntityProcessingService entityProcessingService : getEntityProcessingServices()) {
-            entityProcessingService.process(world, gameData);
         }
 
         for (Entity entity : world.getEntities()) {
