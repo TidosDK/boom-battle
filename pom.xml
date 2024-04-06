@@ -23,6 +23,7 @@
         <module>BasicMap</module>
         <module>Player</module>
         <module>Enemy</module>
+        <module>Weapon</module>
     </modules>
 
     <properties>

@@ -9,7 +9,10 @@ import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
+import java.util.Collection;
 import java.util.ServiceLoader;
+
+import static java.util.stream.Collectors.toList;
 
 public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private World world;
@@ -45,11 +48,17 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         } else if (gameData.getKeys().isDown(gameData.getKeys().getUP())) {
             move(Direction.UP);
         }
+
+        if (gameData.getKeys().isDown(gameData.getKeys().getSPACE())) {
+            this.placeWeapon();
+        }
     }
 
     // @Override
     public void placeWeapon() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (IWeapon weapon : getIWeapon()) {
+            world.addEntity(weapon.createWeapon(this.player, this.gameData));
+        }
     }
 
     // @Override
@@ -88,5 +97,9 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
                 player.setY(player.getY() - (float) (MOVING_SPEED * Math.sin(Math.toRadians(player.getRotation() - 90)) * gameData.getDeltaTime()));
                 break;
         }
+    }
+
+    private Collection<? extends IWeapon> getIWeapon() {
+        return ServiceLoader.load(IWeapon.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
