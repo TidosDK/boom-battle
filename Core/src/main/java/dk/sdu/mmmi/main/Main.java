@@ -16,9 +16,7 @@ import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.Map.IMapGenerator;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.ServiceLoader;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,7 +37,7 @@ public class Main extends ApplicationAdapter {
         entitySprites = new HashMap<>();
 
         this.createWorld();
-      
+
         // Initial start of plugins
         for (IGamePluginService plugin : getPluginServices()) {
             plugin.start(world, gameData);
@@ -54,11 +52,23 @@ public class Main extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         updateKeys();
 
-        // Dispose & delete entities that doesn't exist anymore
-        for (Entity entity : entitySprites.keySet()) {
-            if (!world.getEntities().contains(entity)) {
-                entitySprites.get(entity).getTexture().dispose();
-                entitySprites.remove(entity);
+        // Disposes & delete entities that doesn't exist anymore
+        // Note: We have to add weapons which are going to be removed from the world, as we can't remove elements from
+        // world while we are iterating over it. Otherwise, we will get a ConcurrentModificationException as we are
+        // modifying a collection which we are iterating over.
+        if (entitySprites.keySet().size() != world.getEntities().size()) {
+            List<Entity> entitiesToBeRemoved = new ArrayList<>();
+            for (Entity entity : entitySprites.keySet()) {
+                if (!world.getEntities().contains(entity)) {
+                    entitiesToBeRemoved.add(entity);
+                }
+            }
+
+            if (!entitiesToBeRemoved.isEmpty()) {
+                for (Entity entity : entitiesToBeRemoved) {
+                    entitySprites.get(entity).getTexture().dispose();
+                    entitySprites.remove(entity);
+                }
             }
         }
 
