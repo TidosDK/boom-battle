@@ -9,7 +9,9 @@ import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
@@ -18,7 +20,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     private World world;
     private GameData gameData;
     private Player player;
-    private IWeapon[] weapons;
+    private int maxWeapons = 3;
     private IMap map = null;
 
     private final float MOVING_SPEED = 10f;
@@ -28,15 +30,27 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         this.world = world;
         this.gameData = gameData;
 
+
         for (Entity player : world.getEntities(Player.class)) {
             this.player = (Player) player;
+
+            List<Entity> weaponsToBeRemoved = new ArrayList<>();
+            for (Entity weapon : this.player.getWeapons()) {
+                if (!world.getEntities().contains(weapon)) {
+                    weaponsToBeRemoved.add(weapon);
+                }
+            }
+            for (Entity weapon : weaponsToBeRemoved) {
+                this.player.removeWeapon(weapon);
+            }
+
             checkMovement();
         }
 
         if (world.getMap() instanceof IMap) {
             map = (IMap) world.getMap();
         }
-        }
+    }
 
     private void checkMovement() {
         if (gameData.getKeys().isDown(gameData.getKeys().getLEFT())) {
@@ -49,6 +63,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             move(Direction.UP);
         }
 
+        // Should check for isPressed instead of isDown
         if (gameData.getKeys().isDown(gameData.getKeys().getSPACE())) {
             this.placeWeapon();
         }
@@ -56,8 +71,11 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
 
     // @Override
     public void placeWeapon() {
-        for (IWeapon weapon : getIWeapon()) {
-            world.addEntity(weapon.createWeapon(this.player, this.gameData));
+        if (player.getWeapons().size() < maxWeapons) {
+            for (IWeapon weapon : getIWeapon()) {
+                player.getWeapons().add(weapon.createWeapon(this.player, this.gameData));
+                world.addEntity(player.getWeapons().get(player.getWeapons().size() - 1));
+            }
         }
     }
 

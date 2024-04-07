@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WeaponControlSystem implements IEntityProcessingService, IWeapon {
-
-    private int damagePoints = 2;
-
     @Override
     public synchronized void process(World world, GameData gameData) {
         for (Entity entity : world.getEntities(Weapon.class)) {

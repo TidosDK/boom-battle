@@ -99,28 +99,28 @@ component Common {
 '
 '	}
 }
-component Bomb{
-    package BombSystem {
-        class Bomb implements Common.Common.services.IWeapon{
-            - timeOfPlacement: Long
-            - timeTillExplosion: Long
+component Weapon {
+    package WeaponSystem {
+        class Weapon implements Common.Common.services.IWeapon{
+            - timeOfPlacement: float
+            - timeTillExplosion: float
             - damagePoints: int
-            - blastArea: Collections<Coordinates>
-            + setBlastArea(Collections<Coordinates>)
-            + calcTimeTillExplosion()
+            - blastLength: int
+            + calculateTimeTillExplosion(): float
+            + calculateBlastArea(): Collection<Coordinates>
         }
-        Bomb --|> Entity : inherits
+        Weapon --|> Entity : inherits
 
-        class BombExplosionSystem implements Common.Common.services.IEntityProcessingService {
+        class WeaponExplosionSystem implements Common.Common.services.IEntityProcessingService {
             - world: World
-            + BombExplosionSystem(World)
-            + calculateBlastArea(Bomb, World)
+            + WeaponExplosionSystem(World)
+            + calculateBlastArea(Weapon, World)
             + process()
         }
     }
 }
 
-component Enemy{
+component Enemy {
     class enemyControlSystem{
         placeBomb()
         move()
@@ -132,7 +132,7 @@ component Enemy{
         }
 
         class BombPlacing {
-            calculateOptimalPlacement(Entity, Bomb))
+            calculateOptimalPlacement(Entity, Weapon))
         }
     }
 
