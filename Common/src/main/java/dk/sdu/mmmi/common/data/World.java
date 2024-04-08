@@ -12,11 +12,10 @@ public class World {
     private Map map;
     private ArrayList<Entity> entities;
 
-    public World() {
+
+    private World() {
         this.entities = new ArrayList<>();
     }
-
-    private World() {}
 
     public static World getInstance() {
         if (instance == null) {

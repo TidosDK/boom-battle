@@ -17,8 +17,8 @@ import java.util.ServiceLoader;
  * it is able to be used as a map in the game.
  */
 public class BasicMap extends Map implements IMap, IMapProcessingService {
-    public BasicMap(int width, int height) {
-        super(width, height);
+    public BasicMap() {
+        super(10,10);
     }
 
     @Override
