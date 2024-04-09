@@ -19,7 +19,7 @@ Moving --> Damaged : takes damage
 PlacingBomb --> Damaged : takes damage while placing
 UsingPowerUp --> Damaged : takes damage while using
 
-Damaged --> GameOver : HP reaches 0
+Damaged --> [*] : HP reaches 0
 Damaged --> Idle : damage is not fatal
 
 Idle: Player is not moving or performing any action.
@@ -27,6 +27,5 @@ Moving: Player inputs movement commands.
 PlacingBomb: Player is placing a bomb.
 UsingPowerUp: Player is using a power-up.
 Damaged: Player has taken damage.
-GameOver: Player has lost all health points.
 
 @enduml

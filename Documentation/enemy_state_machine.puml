@@ -8,7 +8,7 @@ Attacking --> Chasing : player moves out of range
 Chasing --> Idle : loses player
 Attacking --> Damaged : takes damage
 Damaged --> Idle : survives damage
-Damaged --> Dead : HP reaches 0
+Damaged --> [*] : HP reaches 0
 
 Idle: Enemy is not engaged in any activity.
 Chasing: Enemy has detected the player and is pursuing them.
