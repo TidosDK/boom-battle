@@ -12,7 +12,6 @@ public class World {
     private Map map;
     private ArrayList<Entity> entities;
 
-
     private World() {
         this.entities = new ArrayList<>();
     }
