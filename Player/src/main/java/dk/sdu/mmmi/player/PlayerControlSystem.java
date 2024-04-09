@@ -62,7 +62,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         }
 
         // Should check for isPressed instead of isDown
-        if (gameData.getKeys().isDown(gameData.getKeys().getSPACE())) {
+        if (gameData.getKeys().isPressed(gameData.getKeys().getSPACE())) {
             this.placeWeapon();
         }
     }

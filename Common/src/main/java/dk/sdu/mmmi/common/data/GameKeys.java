@@ -5,6 +5,7 @@ package dk.sdu.mmmi.common.data;
  */
 public class GameKeys {
     private static boolean[] keys;
+    private static boolean[] pressed_keys;
     private static GameKeys instance = null;
 
     private final int NUM_KEYS = 5;
@@ -15,10 +16,11 @@ public class GameKeys {
     private final int SPACE = 4;
 
     private GameKeys() {
-        this.keys = new boolean[NUM_KEYS];
+        keys = new boolean[NUM_KEYS];
+        pressed_keys = new boolean[NUM_KEYS];
     }
 
-    public static GameKeys getINSTANCE() {
+    public static GameKeys getInstance() {
         if (instance == null) {
             instance = new GameKeys();
         }
@@ -31,6 +33,12 @@ public class GameKeys {
 
     public boolean isDown(int k) {
         return keys[k];
+    }
+
+    public boolean isPressed(int k) {
+        boolean isKeyJustPressed = keys[k] && !pressed_keys[k];
+        pressed_keys[k] = keys[k];
+        return isKeyJustPressed;
     }
 
     public int getUP() {
