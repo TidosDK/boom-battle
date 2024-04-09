@@ -4,9 +4,11 @@ import dk.sdu.mmmi.common.data.*;
 import dk.sdu.mmmi.common.services.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
+import dk.sdu.mmmi.common.services.IWeaponProcessing;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
 import static java.lang.Math.abs;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -70,7 +72,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     // @Override
     public void placeWeapon() {
         if (player.getWeapons().size() < maxWeapons) {
-            for (IWeapon weapon : getIWeapon()) {
+            for (IWeaponProcessing weapon : getIWeaponProcessing()) {
                 player.getWeapons().add(weapon.createWeapon(this.player, this.gameData));
                 world.addEntity(player.getWeapons().get(player.getWeapons().size() - 1));
             }
@@ -99,7 +101,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         if (map != null) {
             System.out.println("Map is not null");
             // Check if the player can move in the given direction
-            if(!map.isMoveAllowed((int) player.getX(), (int) player.getY(), direction)) {
+            if (!map.isMoveAllowed((int) player.getX(), (int) player.getY(), direction)) {
                 return;
             }
         }
@@ -117,14 +119,14 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setY((newY < 0) ? 0 : newY);
                 break;
-            case DOWN:;
-                newY= player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
-                player.setY((newY<0) ? 0 : newY);
+            case DOWN:
+                newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
+                player.setY((newY < 0) ? 0 : newY);
                 break;
         }
     }
 
-    private Collection<? extends IWeapon> getIWeapon() {
-        return ServiceLoader.load(IWeapon.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    private Collection<? extends IWeaponProcessing> getIWeaponProcessing() {
+        return ServiceLoader.load(IWeaponProcessing.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }

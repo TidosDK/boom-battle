@@ -5,11 +5,12 @@ import dk.sdu.mmmi.common.data.GameData;
 import dk.sdu.mmmi.common.data.World;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
+import dk.sdu.mmmi.common.services.IWeaponProcessing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeaponControlSystem implements IEntityProcessingService, IWeapon {
+public class WeaponControlSystem implements IEntityProcessingService, IWeaponProcessing {
     @Override
     public synchronized void process(World world, GameData gameData) {
         for (Entity entity : world.getEntities(Weapon.class)) {

@@ -3,10 +3,11 @@ package dk.sdu.mmmi.WeaponSystem;
 import dk.sdu.mmmi.common.data.Coordinates;
 import dk.sdu.mmmi.common.data.Entity;
 import dk.sdu.mmmi.common.data.GameData;
+import dk.sdu.mmmi.common.services.IWeapon;
 
 import java.util.Collection;
 
-public class Weapon extends Entity {
+public class Weapon extends Entity implements IWeapon {
     private float timeSincePlacement;
     private float timeTillExplosionInSeconds;
     private int damagePoints;
@@ -41,19 +42,21 @@ public class Weapon extends Entity {
         this.timeTillExplosionInSeconds = timeTillExplosionInSeconds;
     }
 
-    public int getDamagePoints() {
-        return this.damagePoints;
-    }
-
-    public void setDamagePoints(int damagePoints) {
-        this.damagePoints = damagePoints;
-    }
-
     public int getBlastLength() {
         return blastLength;
     }
 
     public void setBlastLength(int blastLength) {
         this.blastLength = blastLength;
+    }
+
+    @Override
+    public int getDamagePoints() {
+        return damagePoints;
+    }
+
+    @Override
+    public void setDamagePoints(int damagePoints) {
+        this.damagePoints = damagePoints;
     }
 }

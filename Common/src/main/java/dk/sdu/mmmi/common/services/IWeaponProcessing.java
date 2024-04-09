@@ -1,4 +1,8 @@
 package dk.sdu.mmmi.common.services;
 
-public interface IWeaponProcessing { // Implement this interface
+import dk.sdu.mmmi.common.data.Entity;
+import dk.sdu.mmmi.common.data.GameData;
+
+public interface IWeaponProcessing {
+    Entity createWeapon(Entity weaponPlacer, GameData gameData);
 }
