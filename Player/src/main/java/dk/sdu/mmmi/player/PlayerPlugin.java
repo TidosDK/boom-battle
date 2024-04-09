@@ -9,7 +9,7 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity player;
 
     public Player createPlayer() {
-        return new Player("Player/src/main/resources/personLeft1.png", 2f, 2f);
+        return new Player("Player/src/main/resources/up/up-7.png", 2.2f, 3.3f);
     }
 
 

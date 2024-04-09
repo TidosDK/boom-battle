@@ -114,7 +114,7 @@ public class Main extends ApplicationAdapter {
         Coordinates coords = entity.getCoordinates();
 
         sprite.setPosition(coords.getX(), coords.getY());
-        sprite.setRotation(entity.getRotation());
+//        sprite.setRotation(entity.getRotation());
     }
 
     /**
