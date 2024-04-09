@@ -1,13 +1,12 @@
 package dk.sdu.mmmi.player;
 
-import dk.sdu.mmmi.common.data.Direction;
-import dk.sdu.mmmi.common.data.Entity;
-import dk.sdu.mmmi.common.data.GameData;
-import dk.sdu.mmmi.common.data.World;
+import dk.sdu.mmmi.common.data.*;
 import dk.sdu.mmmi.common.services.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
 import dk.sdu.mmmi.common.services.Map.IMap;
+
+import static java.lang.Math.abs;
 
 public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private World world;
@@ -52,26 +51,37 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
 
     // @Override
     public void move(Direction direction) {
-        System.out.println("Moving player: x: %f, y: %f" + player.getX() + player.getY());
+        float newY;
+        float newX;
         player.setDirection(direction);
         if (World.getInstance().getMap() instanceof IMap) {
             IMap map = (IMap) World.getInstance().getMap();
-            if (!map.isMoveAllowed((int) player.getX(), (int) player.getY(), direction)) {
+            GridPosition coords = player.getGridPosition();
+            if (!map.isMoveAllowed(abs(coords.getX()), abs(coords.getY()), direction)) {
                 return;
             }
         }
+
         switch (direction) {
             case LEFT:
-                player.setX(player.getX() + (float) (MOVING_SPEED * -1 * gameData.getDeltaTime()));
+                newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime());
+                player.setX((newX < 0) ? 0 : newX);
+                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
             case RIGHT:
-                player.setX(player.getY() + (float) (MOVING_SPEED * 1 * gameData.getDeltaTime()));
+                newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime());
+                player.setX((newX < 0) ? 0 : newX);
+                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
             case UP:
-                player.setY(player.getY() + (float) (MOVING_SPEED * -1 * gameData.getDeltaTime()));
+                newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
+                player.setY((newY < 0) ? 0 : newY);
+                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
             case DOWN:;
-                player.setY(player.getY() - (float) (MOVING_SPEED * 1 * gameData.getDeltaTime()));
+                newY= player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
+                player.setY((newY<0) ? 0 : newY);
+                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
         }
     }

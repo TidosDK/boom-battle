@@ -46,21 +46,43 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
 
     @Override
     public boolean isMoveAllowed(int x, int y, Direction direction) {
+        System.out.println("x: " + x + ", y: "+y+", Dir: "+ direction.toString());
         boolean[][] map = this.getMap();
-        if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
+        if (x < 0 || y < 0 ) {
+            System.out.println("Trying to move to a negative position");
             return false;
         }
-        switch (direction) {
-            case UP:
-                return y - 1 >= 0 && !map[x][y - 1];
-            case DOWN:
-                return y + 1 < map[0].length && !map[x][y + 1];
-            case LEFT:
-                return x - 1 >= 0 && !map[x - 1][y];
-            case RIGHT:
-                return x + 1 < map.length && !map[x + 1][y];
-            default:
-                return false;
+        try {
+            switch (direction) {
+                case UP:
+                    if (map[x][y + 1]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case DOWN:
+                    if (map[x][y - 1]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case LEFT:
+                    if (map[x - 1][y]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case RIGHT:
+                    if (map[x + 1][y]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                default:
+                    return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
         }
     }
 
