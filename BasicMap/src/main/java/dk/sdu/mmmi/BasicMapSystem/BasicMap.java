@@ -47,15 +47,18 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     @Override
     public boolean isMoveAllowed(int x, int y, Direction direction) {
         boolean[][] map = this.getMap();
+        if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
+            return false;
+        }
         switch (direction) {
             case UP:
-                return !map[x][y - 1];
+                return y - 1 >= 0 && !map[x][y - 1];
             case DOWN:
-                return !map[x][y + 1];
+                return y + 1 < map[0].length && !map[x][y + 1];
             case LEFT:
-                return !map[x - 1][y];
+                return x - 1 >= 0 && !map[x - 1][y];
             case RIGHT:
-                return !map[x + 1][y];
+                return x + 1 < map.length && !map[x + 1][y];
             default:
                 return false;
         }
