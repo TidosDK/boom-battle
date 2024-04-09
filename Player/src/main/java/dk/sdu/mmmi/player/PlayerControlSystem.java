@@ -34,13 +34,13 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         for (Entity player : world.getEntities(Player.class)) {
             this.player = (Player) player;
 
-            List<Entity> weaponsToBeRemoved = new ArrayList<>();
-            for (Entity weapon : this.player.getWeapons()) {
+            List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
+            for (IWeapon weapon : this.player.getWeapons()) {
                 if (!world.getEntities().contains(weapon)) {
                     weaponsToBeRemoved.add(weapon);
                 }
             }
-            for (Entity weapon : weaponsToBeRemoved) {
+            for (IWeapon weapon : weaponsToBeRemoved) {
                 this.player.removeWeapon(weapon);
             }
 
@@ -73,8 +73,8 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     public void placeWeapon() {
         if (player.getWeapons().size() < maxWeapons) {
             for (IWeaponProcessing weapon : getIWeaponProcessing()) {
-                player.getWeapons().add(weapon.createWeapon(this.player, this.gameData));
-                world.addEntity(player.getWeapons().get(player.getWeapons().size() - 1));
+                player.getWeapons().add((IWeapon) weapon.createWeapon(this.player, this.gameData));
+                world.addEntity((Entity) player.getWeapons().get(player.getWeapons().size() - 1));
             }
         }
     }
