@@ -1,9 +1,9 @@
 package dk.sdu.mmmi.BasicMapSystem;
 
+import dk.sdu.mmmi.common.data.Coordinates;
 import dk.sdu.mmmi.common.data.Direction;
 import dk.sdu.mmmi.common.data.GridPosition;
 import dk.sdu.mmmi.common.data.Map;
-import dk.sdu.mmmi.common.data.Coordinates;
 import dk.sdu.mmmi.common.services.ICollidable;
 import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapProcessingService;
@@ -18,7 +18,7 @@ import java.util.ServiceLoader;
  */
 public class BasicMap extends Map implements IMap, IMapProcessingService {
     public BasicMap() {
-        super(10,10);
+        super(10, 10);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     @Override
-    public boolean setMapTile(int x, int y, boolean isObstacle) throws RuntimeException{
+    public boolean setMapTile(int x, int y, boolean isObstacle) throws RuntimeException {
         if (x < 0 || x >= getMap().length || y < 0 || y >= getMap()[0].length) {
             return false;
         }
@@ -47,20 +47,40 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     @Override
     public boolean isMoveAllowed(int x, int y, Direction direction) {
         boolean[][] map = this.getMap();
-        if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
+        if (x < 0 || y < 0) {
             return false;
         }
-        switch (direction) {
-            case UP:
-                return y - 1 >= 0 && !map[x][y - 1];
-            case DOWN:
-                return y + 1 < map[0].length && !map[x][y + 1];
-            case LEFT:
-                return x - 1 >= 0 && !map[x - 1][y];
-            case RIGHT:
-                return x + 1 < map.length && !map[x + 1][y];
-            default:
-                return false;
+        try {
+            switch (direction) {
+                case UP:
+                    if (map[x][y + 1]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case DOWN:
+                    if (map[x][y - 1]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case LEFT:
+                    if (map[x - 1][y]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case RIGHT:
+                    if (map[x + 1][y]) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                default:
+                    return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
         }
     }
 
@@ -84,6 +104,7 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
 
     /**
      * Gets all collidables from the ServiceLoader.
+     *
      * @return a collection of all collidables
      */
     private Collection<? extends ICollidable> getCollidables() {
