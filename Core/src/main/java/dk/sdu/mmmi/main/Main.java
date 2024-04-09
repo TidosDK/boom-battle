@@ -37,7 +37,7 @@ public class Main extends ApplicationAdapter {
         camera = new OrthographicCamera(20f, 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth())); // camera should have same aspect ratio as the window, but in meters
         batch = new SpriteBatch();
         entitySprites = new HashMap<>();
-      
+        createWorld();
         // Initial start of plugins
         for (IGamePluginService plugin : getPluginServices()) {
             plugin.start(world, gameData);
