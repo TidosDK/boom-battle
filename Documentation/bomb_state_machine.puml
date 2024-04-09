@@ -1,0 +1,13 @@
+@startuml BombStateMachine
+title Bomb State Machine
+
+[*] --> Placed
+Placed --> CountingDown
+CountingDown --> Exploding : countdown reaches 0
+Exploding --> [*] : explosion ends
+
+Placed: Bomb has been placed on the map.
+CountingDown: Bomb is counting down to explosion.
+Exploding: Bomb is exploding.
+
+@enduml
