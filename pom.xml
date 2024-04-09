@@ -23,6 +23,7 @@
         <module>BasicMap</module>
         <module>Player</module>
         <module>Enemy</module>
+        <module>Weapon</module>
     </modules>
 
     <properties>
@@ -47,10 +48,12 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
@@ -76,7 +79,7 @@
                     <longModulepath>false</longModulepath>
                     <arguments>
                         <!-- On Mac Devices this line should not be commented out  -->
-                        <argument>-XstartOnFirstThread</argument>
+<!--                        <argument>-XstartOnFirstThread</argument>-->
 
                         <argument>-Dorg.lwjgl.util.Debug=true</argument>
                         <argument>-Djava.library.path=libs</argument>
@@ -108,6 +111,7 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-clean-plugin</artifactId>
                         <version>3.2.0</version>
                         <configuration>
@@ -135,6 +139,7 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
                         <version>3.0.2</version>
                         <executions>

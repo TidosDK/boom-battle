@@ -6,7 +6,7 @@ package dk.sdu.mmmi.common.data;
 public class GameData {
 
     private static GameData instance = null;
-    private final GameKeys keys = GameKeys.getINSTANCE();
+    private final GameKeys keys = GameKeys.getInstance();
     private float deltaTime = 0;
 
     private GameData() {

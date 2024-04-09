@@ -4,15 +4,24 @@ import dk.sdu.mmmi.common.data.*;
 import dk.sdu.mmmi.common.services.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
+import dk.sdu.mmmi.common.services.IWeaponProcessing;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
 import static java.lang.Math.abs;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.ServiceLoader;
+
+import static java.util.stream.Collectors.toList;
 
 public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private World world;
     private GameData gameData;
     private Player player;
-    private IWeapon[] weapons;
+    private int maxWeapons = 3;
+    private IMap map = null;
 
     private final float MOVING_SPEED = 10f;
 
@@ -21,9 +30,25 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         this.world = world;
         this.gameData = gameData;
 
+
         for (Entity player : world.getEntities(Player.class)) {
             this.player = (Player) player;
+
+            List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
+            for (IWeapon weapon : this.player.getWeapons()) {
+                if (!world.getEntities().contains(weapon)) {
+                    weaponsToBeRemoved.add(weapon);
+                }
+            }
+            for (IWeapon weapon : weaponsToBeRemoved) {
+                this.player.removeWeapon(weapon);
+            }
+
             checkMovement();
+        }
+
+        if (world.getMap() instanceof IMap) {
+            map = (IMap) world.getMap();
         }
     }
 
@@ -37,11 +62,21 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         } else if (gameData.getKeys().isDown(gameData.getKeys().getUP())) {
             move(Direction.UP);
         }
+
+        // Should check for isPressed instead of isDown
+        if (gameData.getKeys().isPressed(gameData.getKeys().getSPACE())) {
+            this.placeWeapon();
+        }
     }
 
     // @Override
     public void placeWeapon() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (player.getWeapons().size() < maxWeapons) {
+            for (IWeaponProcessing weapon : getIWeaponProcessing()) {
+                player.getWeapons().add((IWeapon) weapon.createWeapon(this.player, this.gameData));
+                world.addEntity((Entity) player.getWeapons().get(player.getWeapons().size() - 1));
+            }
+        }
     }
 
     // @Override
@@ -62,6 +97,15 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             }
         }
 
+        // Check if the game contains a map.
+        if (map != null) {
+            System.out.println("Map is not null");
+            // Check if the player can move in the given direction
+            if (!map.isMoveAllowed((int) player.getX(), (int) player.getY(), direction)) {
+                return;
+            }
+        }
+
         switch (direction) {
             case LEFT:
                 newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime());
@@ -75,10 +119,14 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setY((newY < 0) ? 0 : newY);
                 break;
-            case DOWN:;
-                newY= player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
-                player.setY((newY<0) ? 0 : newY);
+            case DOWN:
+                newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
+                player.setY((newY < 0) ? 0 : newY);
                 break;
         }
+    }
+
+    private Collection<? extends IWeaponProcessing> getIWeaponProcessing() {
+        return ServiceLoader.load(IWeaponProcessing.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
