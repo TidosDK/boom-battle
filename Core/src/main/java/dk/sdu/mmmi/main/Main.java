@@ -34,7 +34,11 @@ public class Main extends ApplicationAdapter {
         // Setup of game
         gameData = GameData.getInstance();
         world = World.getInstance();
-        camera = new OrthographicCamera(20f, 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth())); // camera should have same aspect ratio as the window, but in meters
+        camera = new OrthographicCamera();
+        float width = 20f;
+        float height = 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
+        camera.setToOrtho(false, width, height);
+
         batch = new SpriteBatch();
         entitySprites = new HashMap<>();
       
