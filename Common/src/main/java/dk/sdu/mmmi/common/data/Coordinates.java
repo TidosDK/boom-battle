@@ -8,8 +8,8 @@ public class Coordinates {
     private float y;
 
 
-    public Coordinates(float x_discrete, float y) {
-        this.x = x_discrete;
+    public Coordinates(float x, float y) {
+        this.x = x;
         this.y = y;
     }
 
