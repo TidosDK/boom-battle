@@ -7,9 +7,10 @@ import java.util.List;
 
 public class Player extends Entity {
     private List<Entity> weapons;
+
     public Player(String texturePath, float width, float height) {
         super(texturePath, width, height);
-        weapons = new ArrayList<>();
+        weapons = new ArrayList<>(); // TODO: Better data structure
     }
 
     public List<Entity> getWeapons() {
