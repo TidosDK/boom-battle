@@ -66,22 +66,18 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             case LEFT:
                 newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime());
                 player.setX((newX < 0) ? 0 : newX);
-                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
             case RIGHT:
                 newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setX((newX < 0) ? 0 : newX);
-                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
             case UP:
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setY((newY < 0) ? 0 : newY);
-                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
             case DOWN:;
                 newY= player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
                 player.setY((newY<0) ? 0 : newY);
-                System.out.println("Player pos: " + player.getX() + ", " + player.getY());
                 break;
         }
     }
