@@ -8,7 +8,7 @@ public class BasicMapGenerator implements IMapGenerator {
 
 
     public void generateMap(World world) {
-        Map map = new BasicMap(10, 10);
+        Map map = new BasicMap();
         map.setMap(basicMap(map.getWidth(), map.getHeight()));
         world.setMap(map);
     }

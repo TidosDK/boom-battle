@@ -1,12 +1,12 @@
 package dk.sdu.mmmi.player;
 
-import dk.sdu.mmmi.common.data.Direction;
-import dk.sdu.mmmi.common.data.Entity;
-import dk.sdu.mmmi.common.data.GameData;
-import dk.sdu.mmmi.common.data.World;
+import dk.sdu.mmmi.common.data.*;
 import dk.sdu.mmmi.common.services.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IWeapon;
+import dk.sdu.mmmi.common.services.Map.IMap;
+
+import static java.lang.Math.abs;
 
 public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private World world;
@@ -51,24 +51,33 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
 
     // @Override
     public void move(Direction direction) {
+        float newY;
+        float newX;
         player.setDirection(direction);
+        if (World.getInstance().getMap() instanceof IMap) {
+            IMap map = (IMap) World.getInstance().getMap();
+            GridPosition coords = player.getGridPosition();
+            if (!map.isMoveAllowed(abs(coords.getX()), abs(coords.getY()), direction)) {
+                return;
+            }
+        }
 
         switch (direction) {
             case LEFT:
-                player.setX(player.getX() + (float) (MOVING_SPEED * Math.cos(Math.toRadians(player.getRotation() + 90)) * gameData.getDeltaTime()));
-                player.setY(player.getY() - (float) (MOVING_SPEED * Math.sin(Math.toRadians(player.getRotation() + 90)) * gameData.getDeltaTime()));
+                newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime());
+                player.setX((newX < 0) ? 0 : newX);
                 break;
             case RIGHT:
-                player.setX(player.getX() - (float) (MOVING_SPEED * Math.cos(Math.toRadians(player.getRotation() - 90)) * gameData.getDeltaTime()));
-                player.setY(player.getY() + (float) (MOVING_SPEED * Math.sin(Math.toRadians(player.getRotation() - 90)) * gameData.getDeltaTime()));
+                newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime());
+                player.setX((newX < 0) ? 0 : newX);
                 break;
             case UP:
-                player.setX(player.getX() + (float) (MOVING_SPEED * Math.cos(Math.toRadians(player.getRotation() + 90)) * gameData.getDeltaTime()));
-                player.setY(player.getY() + (float) (MOVING_SPEED * Math.sin(Math.toRadians(player.getRotation() + 90)) * gameData.getDeltaTime()));
+                newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
+                player.setY((newY < 0) ? 0 : newY);
                 break;
-            case DOWN:
-                player.setX(player.getX() - (float) (MOVING_SPEED * Math.cos(Math.toRadians(player.getRotation() - 90)) * gameData.getDeltaTime()));
-                player.setY(player.getY() - (float) (MOVING_SPEED * Math.sin(Math.toRadians(player.getRotation() - 90)) * gameData.getDeltaTime()));
+            case DOWN:;
+                newY= player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
+                player.setY((newY<0) ? 0 : newY);
                 break;
         }
     }
