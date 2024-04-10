@@ -18,7 +18,7 @@ import java.util.ServiceLoader;
  */
 public class BasicMap extends Map implements IMap, IMapProcessingService {
     public BasicMap() {
-        super(10, 10);
+        super(11, 11);
     }
 
     @Override
@@ -45,43 +45,53 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     @Override
-    public boolean isMoveAllowed(int x, int y, Direction direction) {
+    public boolean isMoveAllowed(float x, float y, Direction direction) {
         boolean[][] map = this.getMap();
+        int maxX = map.length-1;
+        int maxY = map[0].length -1;
+        int gridX = Math.round(x);
+        int gridY = Math.round(y);
         if (x < 0 || y < 0) {
             return false;
         }
+        System.out.println("Checking move allowed");
+        System.out.println("X: " + x + " Y: " + y);
+        System.out.println("GridX: " + gridX + " GridY: " + gridY);
+        System.out.println("MaxX: " + maxX + " MaxY: " + maxY);
         try {
             switch (direction) {
                 case UP:
-                    if (map[x][y + 1]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    return (gridY == maxY) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY + 1];
                 case DOWN:
-                    if (map[x][y - 1]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    return (gridY == 0) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY - 1];
                 case LEFT:
-                    if (map[x - 1][y]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    return (gridX == 0) ? handleEdgeCases(x, y, direction) : !map[gridX - 1][gridY];
                 case RIGHT:
-                    if (map[x + 1][y]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    return (gridX == maxX) ? handleEdgeCases(x, y, direction) : !map[gridX + 1][gridY];
                 default:
                     return false;
             }
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
+
+    }
+
+    private boolean handleEdgeCases(float x, float y, Direction direction) {
+        System.out.println("Handling edge case");
+        switch (direction) {
+            case UP:
+                return y < getHeight()-1;
+            case DOWN:
+                return y > 0;
+            case LEFT:
+                return x < getWidth()-1;
+            case RIGHT:
+                return x > 0;
+            default:
+                return false;
+        }
+
     }
 
     @Override

@@ -24,8 +24,20 @@ public class BasicMapGenerator implements IMapGenerator {
         // Generate a map where every other column has a wall on every other row
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                map[x][y] = (x % 2 == 1) && (y % 2 == 1);
+                if (x == 0 || y == 0  || x == (width-1) || y == (height-1)) {
+                    map[x][y] = false;
+                } else {
+                    map[x][y] = (x % 2 == 1) && (y % 2 == 1);
+                }
             }
+        }
+
+        // print map
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                System.out.print(map[x][y] ? "X" : "O");
+            }
+            System.out.println();
         }
         return map;
     }
