@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.Data.GameData;
+import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.Map.IMapGenerator;
 
@@ -49,8 +49,14 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         // Update game
+        // Convert RGB to range 0-1
+        float r = 18f / 255f;
+        float g = 120f / 255f;
+        float b = 48f / 255f;
+
+        ScreenUtils.clear(1, 1, 1, 1);
+
         gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
-        ScreenUtils.clear(1, 1, 1, 1); // white background
         batch.setProjectionMatrix(camera.combined);
         updateKeys();
 

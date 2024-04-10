@@ -2,24 +2,50 @@ package dk.sdu.mmmi.WeaponSystem;
 
 import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.Data.GameData;
-import dk.sdu.mmmi.common.services.IWeapon;
+import dk.sdu.mmmi.common.data.Properties.GameData;
+import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
+import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 
 import java.util.Collection;
+import java.util.ServiceLoader;
+
+import static java.util.stream.Collectors.toList;
 
 public class Weapon extends Entity implements IWeapon {
     private float timeSincePlacement;
     private float timeTillExplosionInSeconds;
     private int damagePoints;
     private int blastLength;
+    private ITextureAnimator explosionAnimator;
 
-    public Weapon(String texturePath, float width, float height) {
+    public Weapon(GameData gameData, String texturePath, float width, float height) {
         super(texturePath, width, height);
+
+        if (!getITextureAnimatorController().isEmpty()) {
+            ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
+
+            if (animatorController != null) {
+                explosionAnimator = animatorController.createTextureAnimator(gameData, "Weapon/src/main/resources/planted", 0, 5, 20f);
+            }
+        }
     }
 
     public float calculateTimeTillExplosion(GameData gameData) {
         timeSincePlacement += gameData.getDeltaTime();
         return timeTillExplosionInSeconds - timeSincePlacement;
+    }
+
+    private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {
+        return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    }
+
+    public String getCurrentExplosionAnimatorPath() {
+        if (explosionAnimator == null) {
+            return getTexturePath();
+        } else {
+            return explosionAnimator.getCurrentImagePath();
+        }
     }
 
     public Collection<Coordinates> calculateBlastArea() {
@@ -59,4 +85,5 @@ public class Weapon extends Entity implements IWeapon {
     public void setDamagePoints(int damagePoints) {
         this.damagePoints = damagePoints;
     }
+
 }

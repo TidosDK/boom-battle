@@ -1,7 +1,5 @@
 package dk.sdu.mmmi.common.data.World;
 
-import dk.sdu.mmmi.common.services.ICollidable;
-
 /**
  * Represents a base class for a map.
  * The map is represented as a 2D boolean array.

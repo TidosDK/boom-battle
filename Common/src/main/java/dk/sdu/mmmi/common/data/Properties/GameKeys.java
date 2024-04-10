@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.data.Data;
+package dk.sdu.mmmi.common.data.Properties;
 
 /**
  * This class is used to store the state of the keys used in the game.

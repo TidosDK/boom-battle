@@ -1,6 +1,6 @@
 package dk.sdu.mmmi.common.services;
 
-import dk.sdu.mmmi.common.data.Data.GameData;
+import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
 
 public interface IGamePluginService {

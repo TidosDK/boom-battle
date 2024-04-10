@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.services;
+package dk.sdu.mmmi.common.services.Entity;
 
 import dk.sdu.mmmi.common.data.Entity.Coordinates;
 
