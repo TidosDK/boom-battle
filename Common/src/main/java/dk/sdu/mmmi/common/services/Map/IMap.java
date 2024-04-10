@@ -1,7 +1,6 @@
 package dk.sdu.mmmi.common.services.Map;
 
-import dk.sdu.mmmi.common.data.Direction;
-import dk.sdu.mmmi.common.data.Map;
+import dk.sdu.mmmi.common.data.Entity.Direction;
 
 /**
  * Represents an interface for a map in the game.

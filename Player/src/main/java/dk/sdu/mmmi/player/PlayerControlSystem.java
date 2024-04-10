@@ -1,10 +1,14 @@
 package dk.sdu.mmmi.player;
 
-import dk.sdu.mmmi.common.data.*;
-import dk.sdu.mmmi.common.services.IActor;
-import dk.sdu.mmmi.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.IWeapon;
-import dk.sdu.mmmi.common.services.IWeaponProcessing;
+import dk.sdu.mmmi.common.data.Properties.GameData;
+import dk.sdu.mmmi.common.data.Entity.Direction;
+import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.data.World.GridPosition;
+import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.services.Entity.IActor;
+import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
+import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
 import static java.lang.Math.abs;
@@ -29,7 +33,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     public void process(World world, GameData gameData) {
         this.world = world;
         this.gameData = gameData;
-
 
         for (Entity player : world.getEntities(Player.class)) {
             this.player = (Player) player;
@@ -72,7 +75,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
     // @Override
     public void placeWeapon() {
         if (player.getWeapons().size() < maxWeapons) {
-            for (IWeaponProcessing weapon : getIWeaponProcessing()) {
+            for (IWeaponController weapon : getIWeaponProcessing()) {
                 player.getWeapons().add((IWeapon) weapon.createWeapon(this.player, this.gameData));
                 world.addEntity((Entity) player.getWeapons().get(player.getWeapons().size() - 1));
             }
@@ -100,23 +103,27 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             case LEFT:
                 newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime());
                 player.setX((newX < 0) ? 0 : newX);
+                player.setTexturePath(player.getCurrentWalkLeftAnimatorPath());
                 break;
             case RIGHT:
                 newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setX((newX > world.getMap().getWidth()-1) ? (float) world.getMap().getWidth() - 1 : newX);
+                player.setTexturePath(player.getCurrentWalkRightAnimatorPath());
                 break;
             case UP:
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setY((newY > world.getMap().getHeight()-1) ? (float) world.getMap().getHeight()-1 : newY);
+                player.setTexturePath(player.getCurrentWalkUpAnimatorPath());
                 break;
             case DOWN:
                 newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
                 player.setY((newY < 0) ? 0 : newY);
+                player.setTexturePath(player.getCurrentWalkDownAnimatorPath());
                 break;
         }
     }
 
-    private Collection<? extends IWeaponProcessing> getIWeaponProcessing() {
-        return ServiceLoader.load(IWeaponProcessing.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    private Collection<? extends IWeaponController> getIWeaponProcessing() {
+        return ServiceLoader.load(IWeaponController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }

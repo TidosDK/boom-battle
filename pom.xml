@@ -24,6 +24,7 @@
         <module>Player</module>
         <module>Enemy</module>
         <module>Weapon</module>
+        <module>TextureAnimator</module>
     </modules>
 
     <properties>
@@ -79,7 +80,7 @@
                     <longModulepath>false</longModulepath>
                     <arguments>
                         <!-- On Mac Devices this line should not be commented out  -->
-<!--                        <argument>-XstartOnFirstThread</argument>-->
+                        <argument>-XstartOnFirstThread</argument>
 
                         <argument>-Dorg.lwjgl.util.Debug=true</argument>
                         <argument>-Djava.library.path=libs</argument>
@@ -91,7 +92,7 @@
                         I still wanted to do it for clarity, but for some reason that results
                         in "java.lang.module.FindException: Module monitor.observer.zero not found";
                         strange... -->
-                        <!--                        <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:8000</argument>                        -->
+<!--                        <argument>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:8000 </argument> -->
                         <argument>--module=Core/dk.sdu.mmmi.main.GameLauncher</argument>
                     </arguments>
                 </configuration>

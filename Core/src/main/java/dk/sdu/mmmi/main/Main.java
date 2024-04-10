@@ -10,9 +10,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import dk.sdu.mmmi.common.data.*;
-import dk.sdu.mmmi.common.data.Map;
-import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.data.Entity.Coordinates;
+import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.data.Properties.GameData;
+import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapGenerator;
@@ -35,8 +37,8 @@ public class Main extends ApplicationAdapter {
         gameData = GameData.getInstance();
         world = World.getInstance();
         camera = new OrthographicCamera();
-        float width = 20f;
-        float height = 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
+        float width = 19f;
+        float height = 19f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
         camera.setToOrtho(false, width, height);
         shapeRenderer = new ShapeRenderer();
 
@@ -52,8 +54,14 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         // Update game
+        // Convert RGB to range 0-1
+        float r = 18f / 255f;
+        float g = 120f / 255f;
+        float b = 48f / 255f;
+
+        ScreenUtils.clear(1, 1, 1, 1);
+
         gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
-        ScreenUtils.clear(1, 1, 1, 1); // white background
         batch.setProjectionMatrix(camera.combined);
         updateKeys();
 
@@ -116,12 +124,12 @@ public class Main extends ApplicationAdapter {
                 for (int y = 0; y < height; y++) {
                     if (map.isTileObstacle(x, y)) {
                         shapeRenderer.setColor(Color.BLACK);
-                        shapeRenderer.rect(x, y, 1, 1);
+                        shapeRenderer.rect(x*1.6f, y*1.6f, 1.6f, 1.6f);
                     }
                 }
             }
         }
-        shapeRenderer.rect(0,0, world.getMap().getWidth(), world.getMap().getHeight());
+        shapeRenderer.rect(0,0, world.getMap().getWidth()*1.6f, world.getMap().getHeight()*1.6f);
         shapeRenderer.end();
     }
 
@@ -150,8 +158,11 @@ public class Main extends ApplicationAdapter {
         Sprite sprite = entitySprites.get(entity);
         Coordinates coords = entity.getCoordinates();
 
+        sprite.getTexture().dispose();
+        sprite.setTexture(new Texture(entity.getTexturePath()));
+
         sprite.setPosition(coords.getX(), coords.getY());
-        sprite.setRotation(entity.getRotation());
+//        sprite.setRotation(entity.getRotation());
     }
 
     /**
