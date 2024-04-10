@@ -1,4 +1,6 @@
-package dk.sdu.mmmi.common.data;
+package dk.sdu.mmmi.common.data.Entity;
+
+import dk.sdu.mmmi.common.data.World.GridPosition;
 
 /**
  * A dataclass representing a grid position on a map.

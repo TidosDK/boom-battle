@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.data;
+package dk.sdu.mmmi.common.data.Data;
 
 /**
  * This class is used to store data that is used in the game.

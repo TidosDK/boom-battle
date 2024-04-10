@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.data;
+package dk.sdu.mmmi.common.data.World;
 
 import dk.sdu.mmmi.common.services.ICollidable;
 

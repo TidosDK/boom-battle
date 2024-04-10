@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import dk.sdu.mmmi.common.data.Coordinates;
-import dk.sdu.mmmi.common.data.Entity;
-import dk.sdu.mmmi.common.data.GameData;
-import dk.sdu.mmmi.common.data.World;
+import dk.sdu.mmmi.common.data.Entity.Coordinates;
+import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.data.Data.GameData;
+import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.Map.IMapGenerator;
@@ -122,6 +122,9 @@ public class Main extends ApplicationAdapter {
     private void updateSprite(Entity entity) {
         Sprite sprite = entitySprites.get(entity);
         Coordinates coords = entity.getCoordinates();
+
+        sprite.getTexture().dispose();
+        sprite.setTexture(new Texture(entity.getTexturePath()));
 
         sprite.setPosition(coords.getX(), coords.getY());
 //        sprite.setRotation(entity.getRotation());

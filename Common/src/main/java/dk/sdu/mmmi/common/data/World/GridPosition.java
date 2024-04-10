@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.data;
+package dk.sdu.mmmi.common.data.World;
 
 public class GridPosition {
     private int x;

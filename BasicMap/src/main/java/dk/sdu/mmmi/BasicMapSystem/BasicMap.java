@@ -1,9 +1,9 @@
 package dk.sdu.mmmi.BasicMapSystem;
 
-import dk.sdu.mmmi.common.data.Coordinates;
-import dk.sdu.mmmi.common.data.Direction;
-import dk.sdu.mmmi.common.data.GridPosition;
-import dk.sdu.mmmi.common.data.Map;
+import dk.sdu.mmmi.common.data.Entity.Coordinates;
+import dk.sdu.mmmi.common.data.Entity.Direction;
+import dk.sdu.mmmi.common.data.World.GridPosition;
+import dk.sdu.mmmi.common.data.World.Map;
 import dk.sdu.mmmi.common.services.ICollidable;
 import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapProcessingService;

@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.data;
+package dk.sdu.mmmi.common.data.Entity;
 
 public enum Direction {
     UP, DOWN, LEFT, RIGHT

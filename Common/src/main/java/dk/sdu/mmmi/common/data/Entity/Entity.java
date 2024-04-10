@@ -1,4 +1,6 @@
-package dk.sdu.mmmi.common.data;
+package dk.sdu.mmmi.common.data.Entity;
+
+import dk.sdu.mmmi.common.data.World.GridPosition;
 
 public class Entity {
     private Coordinates coordinates;

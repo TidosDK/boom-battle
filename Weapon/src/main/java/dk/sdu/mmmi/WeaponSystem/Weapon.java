@@ -1,8 +1,8 @@
 package dk.sdu.mmmi.WeaponSystem;
 
-import dk.sdu.mmmi.common.data.Coordinates;
-import dk.sdu.mmmi.common.data.Entity;
-import dk.sdu.mmmi.common.data.GameData;
+import dk.sdu.mmmi.common.data.Entity.Coordinates;
+import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.data.Data.GameData;
 import dk.sdu.mmmi.common.services.IWeapon;
 
 import java.util.Collection;
