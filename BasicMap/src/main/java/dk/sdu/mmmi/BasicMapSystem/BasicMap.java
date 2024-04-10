@@ -55,18 +55,13 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
             return false;
         }
         try {
-            switch (direction) {
-                case UP:
-                    return (gridY == maxY) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY + 1];
-                case DOWN:
-                    return (gridY == 0) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY - 1];
-                case LEFT:
-                    return (gridX == 0) ? handleEdgeCases(x, y, direction) : !map[gridX - 1][gridY];
-                case RIGHT:
-                    return (gridX == maxX) ? handleEdgeCases(x, y, direction) : !map[gridX + 1][gridY];
-                default:
-                    return false;
-            }
+            return switch (direction) {
+                case UP -> (gridY == maxY) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY + 1];
+                case DOWN -> (gridY == 0) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY - 1];
+                case LEFT -> (gridX == 0) ? handleEdgeCases(x, y, direction) : !map[gridX - 1][gridY];
+                case RIGHT -> (gridX == maxX) ? handleEdgeCases(x, y, direction) : !map[gridX + 1][gridY];
+                default -> false;
+            };
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
@@ -74,18 +69,13 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     private boolean handleEdgeCases(float x, float y, Direction direction) {
-        switch (direction) {
-            case UP:
-                return y < getHeight()-1;
-            case DOWN:
-                return y > 0;
-            case LEFT:
-                return x < getWidth()-1;
-            case RIGHT:
-                return x > 0;
-            default:
-                return false;
-        }
+        return switch (direction) {
+            case UP -> y < getHeight() - 1;
+            case DOWN -> y > 0;
+            case LEFT -> x < getWidth() - 1;
+            case RIGHT -> x > 0;
+            default -> false;
+        };
 
     }
 
