@@ -7,6 +7,7 @@ public class GameData {
 
     private static GameData instance = null;
     private final GameKeys keys = GameKeys.getInstance();
+    private static final float SCALER = 1.6f;
     private float deltaTime = 0;
 
     private GameData() {
@@ -29,5 +30,9 @@ public class GameData {
 
     public void setDeltaTime(float deltaTime) {
         this.deltaTime = deltaTime;
+    }
+
+    public float getScaler() {
+        return SCALER;
     }
 }

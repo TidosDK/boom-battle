@@ -89,6 +89,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
 
     // @Override
     public void move(Direction direction) {
+        float scaler = gameData.getScaler();
         float newY;
         float newX;
         player.setDirection(direction);
@@ -101,22 +102,22 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
 
         switch (direction) {
             case LEFT:
-                newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime());
+                newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
                 player.setX((newX < 0) ? 0 : newX);
                 player.setTexturePath(player.getCurrentWalkLeftAnimatorPath());
                 break;
             case RIGHT:
-                newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime());
-                player.setX((newX > world.getMap().getWidth()-1) ? (float) world.getMap().getWidth() - 1 : newX);
+                newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                player.setX((newX > ((world.getMap().getWidth()-1)*scaler)) ?  ((world.getMap().getWidth()-1) * scaler): newX);
                 player.setTexturePath(player.getCurrentWalkRightAnimatorPath());
                 break;
             case UP:
-                newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
-                player.setY((newY > world.getMap().getHeight()-1) ? (float) world.getMap().getHeight()-1 : newY);
+                newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                player.setY(newY);
                 player.setTexturePath(player.getCurrentWalkUpAnimatorPath());
                 break;
             case DOWN:
-                newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
+                newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
                 player.setY((newY < 0) ? 0 : newY);
                 player.setTexturePath(player.getCurrentWalkDownAnimatorPath());
                 break;

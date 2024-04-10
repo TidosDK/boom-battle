@@ -2,6 +2,7 @@ package dk.sdu.mmmi.BasicMapSystem;
 
 import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Direction;
+import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.GridPosition;
 import dk.sdu.mmmi.common.data.World.Map;
 import dk.sdu.mmmi.common.services.Entity.ICollidable;
@@ -49,11 +50,12 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
         boolean[][] map = this.getMap();
         int maxX = map.length-1;
         int maxY = map[0].length -1;
-        int gridX = Math.round(x);
-        int gridY = Math.round(y);
+        int gridX = Math.round(x / GameData.getInstance().getScaler());
+        int gridY = Math.round(y / GameData.getInstance().getScaler());
         if (x < 0 || y < 0) {
             return false;
         }
+        System.out.println("gridX: " + gridX + " gridY: " + gridY + " maxX: " + maxX + " maxY: " + maxY);
         try {
             return switch (direction) {
                 case UP -> (gridY == maxY) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY + 1];
@@ -69,11 +71,14 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     private boolean handleEdgeCases(float x, float y, Direction direction) {
+        System.out.println("Handling edge case");
+        float x_unscaled = x / GameData.getInstance().getScaler();
+        float y_unscaled= y / GameData.getInstance().getScaler();
         return switch (direction) {
-            case UP -> y < getHeight() - 1;
-            case DOWN -> y > 0;
-            case LEFT -> x < getWidth() - 1;
-            case RIGHT -> x > 0;
+            case UP -> y_unscaled < getHeight() - 1;
+            case DOWN -> y_unscaled > 0;
+            case LEFT -> x_unscaled < getWidth() - 1;
+            case RIGHT -> x_unscaled > 0;
             default -> false;
         };
 
