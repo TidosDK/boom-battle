@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import dk.sdu.mmmi.common.data.*;
-import dk.sdu.mmmi.common.data.Map;
 import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.Properties.GameData;
@@ -39,8 +37,8 @@ public class Main extends ApplicationAdapter {
         gameData = GameData.getInstance();
         world = World.getInstance();
         camera = new OrthographicCamera();
-        float width = 20f;
-        float height = 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
+        float width = 19f;
+        float height = 19f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
         camera.setToOrtho(false, width, height);
         shapeRenderer = new ShapeRenderer();
 
@@ -126,12 +124,12 @@ public class Main extends ApplicationAdapter {
                 for (int y = 0; y < height; y++) {
                     if (map.isTileObstacle(x, y)) {
                         shapeRenderer.setColor(Color.BLACK);
-                        shapeRenderer.rect(x, y, 1, 1);
+                        shapeRenderer.rect(x*1.6f, y*1.6f, 1.6f, 1.6f);
                     }
                 }
             }
         }
-        shapeRenderer.rect(0,0, world.getMap().getWidth(), world.getMap().getHeight());
+        shapeRenderer.rect(0,0, world.getMap().getWidth()*1.6f, world.getMap().getHeight()*1.6f);
         shapeRenderer.end();
     }
 

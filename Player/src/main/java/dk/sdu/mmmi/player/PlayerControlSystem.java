@@ -108,10 +108,12 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             case RIGHT:
                 newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setX((newX > world.getMap().getWidth()-1) ? (float) world.getMap().getWidth() - 1 : newX);
+                player.setTexturePath(player.getCurrentWalkRightAnimatorPath());
                 break;
             case UP:
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
                 player.setY((newY > world.getMap().getHeight()-1) ? (float) world.getMap().getHeight()-1 : newY);
+                player.setTexturePath(player.getCurrentWalkUpAnimatorPath());
                 break;
             case DOWN:
                 newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
