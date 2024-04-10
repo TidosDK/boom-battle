@@ -5,6 +5,7 @@ import dk.sdu.mmmi.common.data.Entity.Direction;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.World.GridPosition;
 import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.enums.animations;
 import dk.sdu.mmmi.common.services.Entity.IActor;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
@@ -104,22 +105,22 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             case LEFT:
                 newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
                 player.setX((newX < 0) ? 0 : newX);
-                player.setTexturePath(player.getCurrentWalkLeftAnimatorPath());
+                player.setTexturePath(player.getAnimator(animations.LEFT));
                 break;
             case RIGHT:
                 newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
                 player.setX((newX > ((world.getMap().getWidth()-1)*scaler)) ?  ((world.getMap().getWidth()-1) * scaler): newX);
-                player.setTexturePath(player.getCurrentWalkRightAnimatorPath());
+                player.setTexturePath(player.getAnimator(animations.RIGHT));
                 break;
             case UP:
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
                 player.setY(newY);
-                player.setTexturePath(player.getCurrentWalkUpAnimatorPath());
+                player.setTexturePath(player.getAnimator(animations.UP));
                 break;
             case DOWN:
                 newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
                 player.setY((newY < 0) ? 0 : newY);
-                player.setTexturePath(player.getCurrentWalkDownAnimatorPath());
+                player.setTexturePath(player.getAnimator(animations.DOWN));
                 break;
         }
     }

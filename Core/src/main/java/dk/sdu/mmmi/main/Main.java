@@ -59,7 +59,7 @@ public class Main extends ApplicationAdapter {
         float g = 120f / 255f;
         float b = 48f / 255f;
 
-        ScreenUtils.clear(1, 1, 1, 1);
+        ScreenUtils.clear(r, g, b, 1);
 
         gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
         batch.setProjectionMatrix(camera.combined);
@@ -124,12 +124,12 @@ public class Main extends ApplicationAdapter {
                 for (int y = 0; y < height; y++) {
                     if (map.isTileObstacle(x, y)) {
                         shapeRenderer.setColor(Color.BLACK);
-                        shapeRenderer.rect(x*1.6f, y*1.6f, 1.6f, 1.6f);
+                        shapeRenderer.rect(x * 1.6f, y * 1.6f, 1.6f, 1.6f);
                     }
                 }
             }
         }
-        shapeRenderer.rect(0,0, world.getMap().getWidth()*1.6f, world.getMap().getHeight()*1.6f);
+        shapeRenderer.rect(0, 0, world.getMap().getWidth() * 1.6f, world.getMap().getHeight() * 1.6f);
         shapeRenderer.end();
     }
 
