@@ -4,7 +4,7 @@ import dk.sdu.mmmi.common.data.Data.GameData;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.IWeapon;
+import dk.sdu.mmmi.common.services.Weapon.IWeapon;
 
 public class EnemyControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private IWeapon[] weapons;
