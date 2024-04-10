@@ -29,11 +29,10 @@ public interface IMap {
 
     /**
      * Checks if a move in a given direction from a given tile is allowed or not.
-     *
      * @param x the x-coordinate of the tile
      * @param y the y-coordinate of the tile
      * @param direction the direction of the move
      * @return true if the move is allowed, false otherwise
      */
-    boolean isMoveAllowed(int x, int y, Direction direction);
+    boolean isMoveAllowed(float x, float y, Direction direction);
 }

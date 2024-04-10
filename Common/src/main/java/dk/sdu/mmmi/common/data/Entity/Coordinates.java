@@ -24,7 +24,10 @@ public class Coordinates {
     }
 
     public GridPosition getGridPosition() {
-        return new GridPosition((int) x, (int) y);
+        // If floats are above .5, round up
+        int x = (int) Math.round(this.x);
+        int y = (int) Math.round(this.y);
+        return new GridPosition(x, y);
     }
 
     public void setX(float x) {

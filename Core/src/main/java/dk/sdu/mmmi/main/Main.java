@@ -3,17 +3,22 @@ package dk.sdu.mmmi.main;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import dk.sdu.mmmi.common.data.*;
+import dk.sdu.mmmi.common.data.Map;
 import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
+import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapGenerator;
 
 import java.util.*;
@@ -26,6 +31,7 @@ public class Main extends ApplicationAdapter {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private HashMap<Entity, Sprite> entitySprites = new HashMap<>();
+    private ShapeRenderer shapeRenderer;
 
     @Override
     public void create() {
@@ -36,6 +42,7 @@ public class Main extends ApplicationAdapter {
         float width = 20f;
         float height = 20f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
         camera.setToOrtho(false, width, height);
+        shapeRenderer = new ShapeRenderer();
 
         batch = new SpriteBatch();
         entitySprites = new HashMap<>();
@@ -96,12 +103,36 @@ public class Main extends ApplicationAdapter {
             updateSprite(entity);
         }
 
+        // Draw map
+        drawMap();
+
         // Render entities
         batch.begin();
         for (Sprite sprite : entitySprites.values()) {
             sprite.draw(batch);
         }
         batch.end();
+    }
+
+    private void drawMap() {
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0, 0, 0, 1);
+        IMap map = world.getMap() instanceof IMap ? (IMap) world.getMap() : null;
+        if (map != null) {
+            int width = world.getMap().getWidth();
+            int height = world.getMap().getHeight();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (map.isTileObstacle(x, y)) {
+                        shapeRenderer.setColor(Color.BLACK);
+                        shapeRenderer.rect(x, y, 1, 1);
+                    }
+                }
+            }
+        }
+        shapeRenderer.rect(0,0, world.getMap().getWidth(), world.getMap().getHeight());
+        shapeRenderer.end();
     }
 
     /**

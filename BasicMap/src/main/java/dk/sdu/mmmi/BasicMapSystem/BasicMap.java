@@ -18,7 +18,7 @@ import java.util.ServiceLoader;
  */
 public class BasicMap extends Map implements IMap, IMapProcessingService {
     public BasicMap() {
-        super(10, 10);
+        super(11, 11);
     }
 
     @Override
@@ -45,43 +45,38 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     @Override
-    public boolean isMoveAllowed(int x, int y, Direction direction) {
+    public boolean isMoveAllowed(float x, float y, Direction direction) {
         boolean[][] map = this.getMap();
+        int maxX = map.length-1;
+        int maxY = map[0].length -1;
+        int gridX = Math.round(x);
+        int gridY = Math.round(y);
         if (x < 0 || y < 0) {
             return false;
         }
         try {
-            switch (direction) {
-                case UP:
-                    if (map[x][y + 1]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                case DOWN:
-                    if (map[x][y - 1]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                case LEFT:
-                    if (map[x - 1][y]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                case RIGHT:
-                    if (map[x + 1][y]) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                default:
-                    return false;
-            }
+            return switch (direction) {
+                case UP -> (gridY == maxY) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY + 1];
+                case DOWN -> (gridY == 0) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY - 1];
+                case LEFT -> (gridX == 0) ? handleEdgeCases(x, y, direction) : !map[gridX - 1][gridY];
+                case RIGHT -> (gridX == maxX) ? handleEdgeCases(x, y, direction) : !map[gridX + 1][gridY];
+                default -> false;
+            };
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
+
+    }
+
+    private boolean handleEdgeCases(float x, float y, Direction direction) {
+        return switch (direction) {
+            case UP -> y < getHeight() - 1;
+            case DOWN -> y > 0;
+            case LEFT -> x < getWidth() - 1;
+            case RIGHT -> x > 0;
+            default -> false;
+        };
+
     }
 
     @Override

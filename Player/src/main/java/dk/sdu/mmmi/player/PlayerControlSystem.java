@@ -94,17 +94,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         player.setDirection(direction);
         if (World.getInstance().getMap() instanceof IMap) {
             IMap map = (IMap) World.getInstance().getMap();
-            GridPosition coords = player.getGridPosition();
-            if (!map.isMoveAllowed(abs(coords.getX()), abs(coords.getY()), direction)) {
-                return;
-            }
-        }
-
-        // Check if the game contains a map.
-        if (map != null) {
-            System.out.println("Map is not null");
-            // Check if the player can move in the given direction
-            if (!map.isMoveAllowed((int) player.getX(), (int) player.getY(), direction)) {
+            if (!map.isMoveAllowed(abs(player.getX()), abs(player.getY()), direction)) {
                 return;
             }
         }
@@ -117,13 +107,11 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
                 break;
             case RIGHT:
                 newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime());
-                player.setX((newX < 0) ? 0 : newX);
-                player.setTexturePath(player.getCurrentWalkRightAnimatorPath());
+                player.setX((newX > world.getMap().getWidth()-1) ? (float) world.getMap().getWidth() - 1 : newX);
                 break;
             case UP:
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime());
-                player.setY((newY < 0) ? 0 : newY);
-                player.setTexturePath(player.getCurrentWalkUpAnimatorPath());
+                player.setY((newY > world.getMap().getHeight()-1) ? (float) world.getMap().getHeight()-1 : newY);
                 break;
             case DOWN:
                 newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime());
