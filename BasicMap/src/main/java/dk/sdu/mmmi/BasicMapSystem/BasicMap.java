@@ -54,10 +54,6 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
         if (x < 0 || y < 0) {
             return false;
         }
-        System.out.println("Checking move allowed");
-        System.out.println("X: " + x + " Y: " + y);
-        System.out.println("GridX: " + gridX + " GridY: " + gridY);
-        System.out.println("MaxX: " + maxX + " MaxY: " + maxY);
         try {
             switch (direction) {
                 case UP:
@@ -78,7 +74,6 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     private boolean handleEdgeCases(float x, float y, Direction direction) {
-        System.out.println("Handling edge case");
         switch (direction) {
             case UP:
                 return y < getHeight()-1;
