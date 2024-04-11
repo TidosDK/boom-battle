@@ -9,12 +9,12 @@ import java.util.*;
 
 public class Player extends Entity {
     private List<IWeapon> weapons;
-    private Map<animations, ITextureAnimator> animator;
+    private Map<animations, ITextureAnimator> activeTexturePaths;
 
     public Player(String texturePath, float width, float height) {
         super(texturePath, width, height);
         this.weapons = new ArrayList<>(); // TODO: Better data structure.
-        this.animator = new HashMap<>(); // TODO: Better data structure.
+        this.activeTexturePaths = new HashMap<>(); // TODO: Better data structure.
     }
 
     public List<IWeapon> getWeapons() {
@@ -25,14 +25,14 @@ public class Player extends Entity {
         this.weapons.remove(weapon);
     }
 
-    public String getAnimator(animations key) {
-        if (animator.get(key) == null) {
+    public String getActiveTexturePaths(animations key) {
+        if (activeTexturePaths.get(key) == null) {
             return getTexturePath();
         }
-        return animator.get(key).getCurrentImagePath();
+        return activeTexturePaths.get(key).getCurrentImagePath();
     }
 
     public void addAnimator(animations key, ITextureAnimator animator) {
-        this.animator.put(key, animator);
+        this.activeTexturePaths.put(key, animator);
     }
 }
