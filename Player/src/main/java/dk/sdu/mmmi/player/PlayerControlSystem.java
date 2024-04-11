@@ -66,7 +66,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             move(Direction.UP);
         }
 
-        // Should check for isPressed instead of isDown
         if (gameData.getKeys().isPressed(gameData.getKeys().getSPACE())) {
             this.placeWeapon();
         }
@@ -104,22 +103,22 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             case LEFT:
                 newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
                 player.setX((newX < 0) ? 0 : newX);
-                player.setTexturePath(player.getActiveTexturePaths(animations.LEFT));
+                player.setTexturePath(player.getActiveTexturePath(animations.LEFT));
                 break;
             case RIGHT:
                 newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
                 player.setX((newX > ((world.getMap().getWidth()-1)*scaler)) ?  ((world.getMap().getWidth()-1) * scaler): newX);
-                player.setTexturePath(player.getActiveTexturePaths(animations.RIGHT));
+                player.setTexturePath(player.getActiveTexturePath(animations.RIGHT));
                 break;
             case UP:
                 newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
                 player.setY(newY);
-                player.setTexturePath(player.getActiveTexturePaths(animations.UP));
+                player.setTexturePath(player.getActiveTexturePath(animations.UP));
                 break;
             case DOWN:
                 newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
                 player.setY((newY < 0) ? 0 : newY);
-                player.setTexturePath(player.getActiveTexturePaths(animations.DOWN));
+                player.setTexturePath(player.getActiveTexturePath(animations.DOWN));
                 break;
         }
     }

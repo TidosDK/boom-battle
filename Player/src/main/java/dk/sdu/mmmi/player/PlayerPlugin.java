@@ -37,7 +37,6 @@ public class PlayerPlugin implements IGamePluginService {
         return player;
     }
 
-
     @Override
     public void start(World world, GameData gameData) {
         this.gameData = gameData;
