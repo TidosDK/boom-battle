@@ -59,7 +59,7 @@ public class Main extends ApplicationAdapter {
         float g = 120f / 255f;
         float b = 48f / 255f;
 
-        ScreenUtils.clear(r, g, b, 1);
+        ScreenUtils.clear(1, 1, 1, 1);
 
         gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
         batch.setProjectionMatrix(camera.combined);
