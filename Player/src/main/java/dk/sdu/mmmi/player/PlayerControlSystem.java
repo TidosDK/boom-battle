@@ -9,6 +9,7 @@ import dk.sdu.mmmi.common.services.Entity.IActor;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
+import dk.sdu.mmmi.common.services.Entity.IDamageable;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
 import static java.lang.Math.abs;
@@ -20,12 +21,13 @@ import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
 
-public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
+public class PlayerControlSystem implements IActor, IEntityProcessingService, IDamageable {
     private World world;
     private GameData gameData;
     private Player player;
     private int maxWeapons = 3;
     private IMap map = null;
+    private int hitpoints = 1;
 
     private final float MOVING_SPEED = 10f;
 
@@ -81,9 +83,18 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
         }
     }
 
-    // @Override
-    public void takeDamage() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public int getHitpoints() {
+        return this.hitpoints;
+    }
+
+    @Override
+    public void takeDamage(int amount) {
+        this.hitpoints -= amount;
+
+        if(this.hitpoints <= 0) {
+            world.removeEntity(player);
+        }
     }
 
     // @Override
