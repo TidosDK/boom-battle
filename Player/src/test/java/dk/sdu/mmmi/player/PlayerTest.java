@@ -64,8 +64,7 @@ public class PlayerTest {
         underlyingPlayer.getWeapons().add(weapon);
 
         // Asserts that the mock player has one weapon.
-        assertTrue(mockPlayer.getWeapons().contains(weapon), "The list should contain one weapon as the underlying player has added one weapon.");
-        assertEquals(1, mockPlayer.getWeapons().size(), "The list should contain one weapon as the underlying player has added one weapon.");
+        assertTrue(mockPlayer.getWeapons().contains(weapon) && mockPlayer.getWeapons().size() == 1, "The list should only contain one weapon as the underlying player has added one weapon.");
 
         // Removes the weapon from the underlying player.
         underlyingPlayer.removeWeapon(weapon);
@@ -81,12 +80,6 @@ public class PlayerTest {
         when(gameData.getKeys().isDown(gameData.getKeys().getRIGHT())).thenReturn(false);
         when(gameData.getKeys().isDown(gameData.getKeys().getDOWN())).thenReturn(false);
         when(gameData.getKeys().isDown(gameData.getKeys().getLEFT())).thenReturn(false);
-
-        // Asserts that no keys are being pressed.
-        assertFalse(gameData.getKeys().isDown(gameData.getKeys().getUP()));
-        assertFalse(gameData.getKeys().isDown(gameData.getKeys().getRIGHT()));
-        assertFalse(gameData.getKeys().isDown(gameData.getKeys().getDOWN()));
-        assertFalse(gameData.getKeys().isDown(gameData.getKeys().getLEFT()));
 
         // Adds the player to the world.
         List<Entity> players = new ArrayList<>();
