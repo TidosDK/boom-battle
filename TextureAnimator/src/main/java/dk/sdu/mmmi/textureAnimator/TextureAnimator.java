@@ -43,7 +43,7 @@ public class TextureAnimator implements ITextureAnimator {
         }
 
         if (imagePaths != null && endIndex > imagePaths.size() - 1) {
-            throw new IllegalArgumentException("endIndex must be less or equal than the number of images in the directory");
+            throw new IllegalArgumentException("endIndex must be less or equal to the number of images in the directory");
         }
     }
 
