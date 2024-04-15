@@ -9,7 +9,6 @@ import dk.sdu.mmmi.common.services.Entity.IActor;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
-import dk.sdu.mmmi.common.services.Entity.IDamageable;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
 import static java.lang.Math.abs;
@@ -21,13 +20,12 @@ import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
 
-public class PlayerControlSystem implements IActor, IEntityProcessingService, IDamageable {
+public class PlayerControlSystem implements IActor, IEntityProcessingService {
     private World world;
     private GameData gameData;
     private Player player;
     private int maxWeapons = 3;
     private IMap map = null;
-    private int hitpoints = 1;
 
     private final float MOVING_SPEED = 10f;
 
@@ -80,20 +78,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService, ID
                 player.getWeapons().add((IWeapon) weapon.createWeapon(this.player, this.gameData));
                 world.addEntity((Entity) player.getWeapons().get(player.getWeapons().size() - 1));
             }
-        }
-    }
-
-    @Override
-    public int getHitpoints() {
-        return this.hitpoints;
-    }
-
-    @Override
-    public void takeDamage(int amount) {
-        this.hitpoints -= amount;
-
-        if(this.hitpoints <= 0) {
-            world.removeEntity(player);
         }
     }
 
