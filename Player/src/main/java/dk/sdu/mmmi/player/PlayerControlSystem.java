@@ -47,6 +47,10 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 this.player.removeWeapon(weapon);
             }
 
+            if(this.player.getLifepoints() <= 0) {
+                world.removeEntity(player);
+            }
+
             checkMovement();
         }
 

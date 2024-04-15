@@ -2,14 +2,16 @@ package dk.sdu.mmmi.player;
 
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.enums.animations;
+import dk.sdu.mmmi.common.services.Entity.IDamageable;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 
 import java.util.*;
 
-public class Player extends Entity {
+public class Player extends Entity implements IDamageable {
     private List<IWeapon> weapons;
     private Map<animations, ITextureAnimator> animators;
+    private int lifePoints = 1;
 
     public Player(String texturePath, float width, float height) {
         super(texturePath, width, height);
@@ -34,5 +36,20 @@ public class Player extends Entity {
 
     public void addAnimator(animations key, ITextureAnimator animator) {
         this.animators.put(key, animator);
+    }
+
+    @Override
+    public void removeLifepoints(int amount) {
+        lifePoints -= amount;
+    }
+
+    @Override
+    public int getLifepoints() {
+        return lifePoints;
+    }
+
+    @Override
+    public void setLifepoints(int lifepoints) {
+        this.lifePoints = lifepoints;
     }
 }
