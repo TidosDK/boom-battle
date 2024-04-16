@@ -20,7 +20,7 @@ import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
 
-public class PlayerControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
+public class PlayerControlSystem implements IActor, IEntityProcessingService {
     private World world;
     private GameData gameData;
     private Player player;
@@ -45,6 +45,10 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
             }
             for (IWeapon weapon : weaponsToBeRemoved) {
                 this.player.removeWeapon(weapon);
+            }
+
+            if(this.player.getLifepoints() <= 0) {
+                world.removeEntity(player);
             }
 
             checkMovement();
@@ -79,11 +83,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService { /
                 world.addEntity((Entity) player.getWeapons().get(player.getWeapons().size() - 1));
             }
         }
-    }
-
-    // @Override
-    public void takeDamage() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     // @Override
