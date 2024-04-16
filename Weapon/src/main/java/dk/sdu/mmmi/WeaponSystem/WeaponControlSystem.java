@@ -40,7 +40,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
 
     @Override
     public Entity createWeapon(Entity weaponPlacer, GameData gameData) {
-        Weapon weapon = new Weapon(gameData, "Weapon/src/main/resources/planted/bomb-planted-2.png", 2f, 2f);
+        Weapon weapon = new Weapon(gameData, "Weapon/src/main/resources/planted/bomb-planted-2.png", gameData.getScaler(), gameData.getScaler());
         weapon.setX(weaponPlacer.getX());
         weapon.setY(weaponPlacer.getY());
         weapon.setDamagePoints(2);

@@ -80,7 +80,7 @@
                     <longModulepath>false</longModulepath>
                     <arguments>
                         <!-- On Mac Devices this line should not be commented out  -->
-                        <argument>-XstartOnFirstThread</argument>
+<!--                        <argument>-XstartOnFirstThread</argument>-->
 
                         <argument>-Dorg.lwjgl.util.Debug=true</argument>
                         <argument>-Djava.library.path=libs</argument>
@@ -125,6 +125,11 @@
                                 </fileset>
                             </filesets>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.0.0</version>
                     </plugin>
                 </plugins>
             </build>

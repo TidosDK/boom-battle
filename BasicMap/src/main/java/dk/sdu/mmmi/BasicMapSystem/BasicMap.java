@@ -48,14 +48,15 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     @Override
     public boolean isMoveAllowed(float x, float y, Direction direction) {
         boolean[][] map = this.getMap();
-        int maxX = map.length-1;
-        int maxY = map[0].length -1;
+        int maxX = map.length - 1;
+        int maxY = map[0].length - 1;
         int gridX = Math.round(x / GameData.getInstance().getScaler());
         int gridY = Math.round(y / GameData.getInstance().getScaler());
+
         if (x < 0 || y < 0) {
             return false;
         }
-        System.out.println("gridX: " + gridX + " gridY: " + gridY + " maxX: " + maxX + " maxY: " + maxY);
+
         try {
             return switch (direction) {
                 case UP -> (gridY == maxY) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY + 1];
@@ -71,9 +72,8 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     private boolean handleEdgeCases(float x, float y, Direction direction) {
-        System.out.println("Handling edge case");
         float x_unscaled = x / GameData.getInstance().getScaler();
-        float y_unscaled= y / GameData.getInstance().getScaler();
+        float y_unscaled = y / GameData.getInstance().getScaler();
         return switch (direction) {
             case UP -> y_unscaled < getHeight() - 1;
             case DOWN -> y_unscaled > 0;

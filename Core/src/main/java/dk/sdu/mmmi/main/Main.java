@@ -124,12 +124,12 @@ public class Main extends ApplicationAdapter {
                 for (int y = 0; y < height; y++) {
                     if (map.isTileObstacle(x, y)) {
                         shapeRenderer.setColor(Color.BLACK);
-                        shapeRenderer.rect(x*1.6f, y*1.6f, 1.6f, 1.6f);
+                        shapeRenderer.rect(x * gameData.getScaler(), y * gameData.getScaler(), gameData.getScaler(), gameData.getScaler());
                     }
                 }
             }
         }
-        shapeRenderer.rect(0,0, world.getMap().getWidth()*1.6f, world.getMap().getHeight()*1.6f);
+        shapeRenderer.rect(0, 0, world.getMap().getWidth() * gameData.getScaler(), world.getMap().getHeight() * gameData.getScaler());
         shapeRenderer.end();
     }
 

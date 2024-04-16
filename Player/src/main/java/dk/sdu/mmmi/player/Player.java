@@ -1,40 +1,20 @@
 package dk.sdu.mmmi.player;
 
-import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.enums.animations;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ServiceLoader;
-
-import static java.util.stream.Collectors.toList;
+import java.util.*;
 
 public class Player extends Entity {
     private List<IWeapon> weapons;
-    private ITextureAnimator walkLeftAnimator;
-    private ITextureAnimator walkRightAnimator;
-    private ITextureAnimator walkUpAnimator;
-    private ITextureAnimator walkDownAnimator;
+    private Map<animations, ITextureAnimator> animators;
 
-    public Player(GameData gameData, String texturePath, float width, float height) {
+    public Player(String texturePath, float width, float height) {
         super(texturePath, width, height);
-        weapons = new ArrayList<>(); // TODO: Better data structure
-
-        if (!getITextureAnimatorController().isEmpty()) {
-            ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
-
-            if (animatorController != null) {
-                walkLeftAnimator = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/left", 0, 6, 20f);
-                walkRightAnimator = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/right", 0, 6, 20f);
-                walkUpAnimator = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/up", 0, 6, 20f);
-                walkDownAnimator = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/down", 0, 6, 20f);
-            }
-        }
-
+        this.weapons = new ArrayList<>(); // TODO: Better data structure.
+        this.animators = new HashMap<>(); // TODO: Better data structure.
     }
 
     public List<IWeapon> getWeapons() {
@@ -45,40 +25,14 @@ public class Player extends Entity {
         this.weapons.remove(weapon);
     }
 
-    public String getCurrentWalkDownAnimatorPath() {
-        if (walkDownAnimator == null) {
+    public String getActiveTexturePath(animations key) {
+        if (animators.get(key) == null) {
             return getTexturePath();
-        } else {
-            return walkDownAnimator.getCurrentImagePath();
         }
+        return animators.get(key).getCurrentImagePath();
     }
 
-    public String getCurrentWalkUpAnimatorPath() {
-        if (walkUpAnimator == null) {
-            return getTexturePath();
-        } else {
-            return walkUpAnimator.getCurrentImagePath();
-        }
+    public void addAnimator(animations key, ITextureAnimator animator) {
+        this.animators.put(key, animator);
     }
-
-    public String getCurrentWalkLeftAnimatorPath() {
-        if (walkLeftAnimator == null) {
-            return getTexturePath();
-        } else {
-            return walkLeftAnimator.getCurrentImagePath();
-        }
-    }
-
-    public String getCurrentWalkRightAnimatorPath() {
-        if (walkRightAnimator == null) {
-            return getTexturePath();
-        } else {
-            return walkRightAnimator.getCurrentImagePath();
-        }
-    }
-
-    private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {
-        return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
-    }
-
 }
