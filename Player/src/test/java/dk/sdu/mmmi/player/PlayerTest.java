@@ -144,7 +144,6 @@ public class PlayerTest {
             for (Entity entity : mockEntityList) {
                 if(entity.getClass().equals(Player.class)) {
                     entities.add(entity);
-                    System.out.println("Added entity");
                 }
             }
             return entities;
