@@ -49,6 +49,7 @@ public class TextureAnimator implements ITextureAnimator {
 
     /**
      * Get all image paths in a directory
+     *
      * @param directory Directory of the images
      * @return List of image paths
      */
