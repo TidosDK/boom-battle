@@ -131,9 +131,43 @@ public class PlayerTest {
         when(gameData.getKeys().isDown(gameData.getKeys().getLEFT())).thenReturn(false);
     }
 
-    // Below is to be implemented at a future point in time.
-//    @Test()
-//    void testTakeDamage() {
-//        
-//    }
+    @Test()
+    void testTakeDamage() {
+        // Arrange
+        underlyingPlayer.setLifepoints(2);
+        ArrayList<Entity> mockEntityList = new ArrayList<>();
+
+        // Mock the world to return the player above list of entities
+        doAnswer(invocation -> {
+            ArrayList<Entity> entities = new ArrayList<>();
+            for (Entity entity : mockEntityList) {
+                if (entity.getClass().equals(Player.class)) {
+                    entities.add(entity);
+                }
+            }
+            return entities;
+        }).when(world).getEntities(Player.class);
+
+        // Mock world.removeEntity, using the mock list from above
+        doAnswer(invocation -> {
+            mockEntityList.remove(invocation.getArgument(0));
+            return null;
+        }).when(world).removeEntity(any(Entity.class));
+
+        // Act
+        mockEntityList.add(underlyingPlayer); // Add the player to the mock list.
+
+        PlayerControlSystem playerControlSystem = new PlayerControlSystem();
+        playerControlSystem.process(world, gameData); // Should do nothing.
+
+        underlyingPlayer.removeLifepoints(1); // Should take the player to 1 Life points.
+        assertEquals(1, underlyingPlayer.getLifepoints());
+
+        underlyingPlayer.removeLifepoints(1); // Should take the player to 0 Life points, killing them.
+        assertEquals(0, underlyingPlayer.getLifepoints());
+        playerControlSystem.process(world, gameData); // Should remove the player from the world.
+
+        // Asserts the player has been removed from the world.
+        assertTrue(mockEntityList.isEmpty());
+    }
 }
