@@ -20,7 +20,9 @@ public class DestructibleObstacle extends Entity implements IDestructibleObstacl
     }
 
     @Override
-    public void startDestruction() {
+    public void destroyObstacle() {
+        // TODO: Implement destruction of obstacle here (e.g. the animation of the obstacle being destroyed)
+
         world.removeEntity(this);
     }
 

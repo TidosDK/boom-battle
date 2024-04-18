@@ -4,5 +4,5 @@ public interface IDestructibleObstacle {
     /**
      * Starts the destruction of the obstacle
      */
-    void startDestruction();
+    void destroyObstacle();
 }

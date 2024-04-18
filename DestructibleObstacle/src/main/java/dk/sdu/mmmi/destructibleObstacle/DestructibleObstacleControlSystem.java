@@ -20,7 +20,7 @@ public class DestructibleObstacleControlSystem implements IDestructibleObstacleC
         // Add animator to destructible obstacle instance
         if (destructibleObstacle instanceof IAnimatable) {
             for (ITextureAnimatorController textureAnimatorController : getITextureAnimatorController()) {
-                ((IAnimatable) destructibleObstacle).addAnimator(Animations.DESTROY.getValue(), textureAnimatorController.createTextureAnimator(gamedata, "DestructibleObstacle/src/main/resources/destructible_obstacle_textures/destroy", 0, 5, 20f));
+                ((IAnimatable) destructibleObstacle).addAnimator(DestructibleObjectAnimations.DESTROY.getValue(), textureAnimatorController.createTextureAnimator(gamedata, "DestructibleObstacle/src/main/resources/destructible_obstacle_textures/destroy", 0, 5, 20f));
             }
         }
 

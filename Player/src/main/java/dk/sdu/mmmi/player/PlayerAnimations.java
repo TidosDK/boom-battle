@@ -1,6 +1,9 @@
 package dk.sdu.mmmi.player;
 
-public enum Animations {
+/**
+ * Enum for the different animations of the player
+ */
+public enum PlayerAnimations {
     LEFT(1),
     RIGHT(2),
     UP(3),
@@ -8,7 +11,7 @@ public enum Animations {
 
     private final int value;
 
-    Animations(int value) {
+    PlayerAnimations(int value) {
         this.value = value;
     }
 

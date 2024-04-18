@@ -25,10 +25,10 @@ public class PlayerPlugin implements IGamePluginService {
             ITextureAnimator downAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/down", 0, 7, 20f);
             ITextureAnimator leftAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/left", 0, 7, 20f);
 
-            player.addAnimator(Animations.UP.getValue(), upAnimation);
-            player.addAnimator(Animations.RIGHT.getValue(), rightAnimation);
-            player.addAnimator(Animations.DOWN.getValue(), downAnimation);
-            player.addAnimator(Animations.LEFT.getValue(), leftAnimation);
+            player.addAnimator(PlayerAnimations.UP.getValue(), upAnimation);
+            player.addAnimator(PlayerAnimations.RIGHT.getValue(), rightAnimation);
+            player.addAnimator(PlayerAnimations.DOWN.getValue(), downAnimation);
+            player.addAnimator(PlayerAnimations.LEFT.getValue(), leftAnimation);
         }
 
         return player;
