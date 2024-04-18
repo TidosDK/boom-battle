@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.player;
 
+import dk.sdu.mmmi.common.data.Entity.TextureLayer;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
@@ -18,6 +19,7 @@ public class PlayerPlugin implements IGamePluginService {
 
     public Player createPlayer() {
         Player player = new Player("Player/src/main/resources/player_textures/up/up-7.png", gameData.getScaler(), (3.3f / 2.2f) * gameData.getScaler());
+        player.setTextureLayer(TextureLayer.CHARACTER.getValue());
 
         for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
             ITextureAnimator upAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/up", 0, 7, 20f);

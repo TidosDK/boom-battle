@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.WeaponSystem;
 
 import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.data.Entity.TextureLayer;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
@@ -29,6 +30,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
         weapon.setDamagePoints(2);
         weapon.setTimeSincePlacement(gameData.getDeltaTime());
         weapon.setTimeTillExplosionInSeconds(2f);
+        weapon.setTextureLayer(TextureLayer.POWER_UP.getValue());
         return weapon;
     }
 }

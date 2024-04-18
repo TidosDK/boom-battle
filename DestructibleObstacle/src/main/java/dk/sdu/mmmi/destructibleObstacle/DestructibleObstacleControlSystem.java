@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.destructibleObstacle;
 
+import dk.sdu.mmmi.common.data.Entity.TextureLayer;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.Obstacle.Destructible.IDestructibleObstacle;
@@ -16,6 +17,11 @@ public class DestructibleObstacleControlSystem implements IDestructibleObstacleC
     @Override
     public IDestructibleObstacle createDestructibleObstacle(GameData gamedata, World world) {
         IDestructibleObstacle destructibleObstacle = new DestructibleObstacle(world, gamedata.getScaler(), gamedata.getScaler(), "DestructibleObstacle/src/main/resources/destructible_obstacle_textures/block.png");
+
+        // Set texture layer of destructible obstacle instance
+        if (destructibleObstacle instanceof DestructibleObstacle) {
+            ((DestructibleObstacle) destructibleObstacle).setTextureLayer(TextureLayer.CONSTRUCTIONS.getValue());
+        }
 
         // Add animator to destructible obstacle instance
         if (destructibleObstacle instanceof IAnimatable) {
