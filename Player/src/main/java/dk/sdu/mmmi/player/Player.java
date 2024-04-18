@@ -1,16 +1,16 @@
 package dk.sdu.mmmi.player;
 
 import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.enums.animations;
 import dk.sdu.mmmi.common.services.Entity.IDamageable;
+import dk.sdu.mmmi.common.services.TextureAnimator.IAnimatable;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 
 import java.util.*;
 
-public class Player extends Entity implements IDamageable {
+public class Player extends Entity implements IDamageable, IAnimatable {
     private List<IWeapon> weapons;
-    private Map<animations, ITextureAnimator> animators;
+    private HashMap<Integer, ITextureAnimator> animators;
     private int lifePoints = 1;
 
     public Player(String texturePath, float width, float height) {
@@ -27,16 +27,6 @@ public class Player extends Entity implements IDamageable {
         this.weapons.remove(weapon);
     }
 
-    public String getActiveTexturePath(animations key) {
-        if (animators.get(key) == null) {
-            return getTexturePath();
-        }
-        return animators.get(key).getCurrentImagePath();
-    }
-
-    public void addAnimator(animations key, ITextureAnimator animator) {
-        this.animators.put(key, animator);
-    }
 
     @Override
     public void removeLifepoints(int amount) {
@@ -51,5 +41,28 @@ public class Player extends Entity implements IDamageable {
     @Override
     public void setLifepoints(int lifepoints) {
         this.lifePoints = lifepoints;
+    }
+
+    @Override
+    public String getActiveTexturePath(Integer key) {
+        if (animators.get(key) == null) {
+            return getTexturePath();
+        }
+        return animators.get(key).getCurrentImagePath();
+    }
+
+    @Override
+    public void addAnimator(Integer key, ITextureAnimator animator) {
+        this.animators.put(key, animator);
+    }
+
+    @Override
+    public HashMap<Integer, ITextureAnimator> getAnimators() {
+        return animators;
+    }
+
+    @Override
+    public void setAnimators(HashMap<Integer, ITextureAnimator> animators) {
+        this.animators = animators;
     }
 }
