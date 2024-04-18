@@ -2,7 +2,6 @@ package dk.sdu.mmmi.player;
 
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.enums.animations;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
@@ -28,10 +27,10 @@ public class PlayerPlugin implements IGamePluginService {
             ITextureAnimator downAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/down", 0, 7, 20f);
             ITextureAnimator leftAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/left", 0, 7, 20f);
 
-            player.addAnimator(animations.UP, upAnimation);
-            player.addAnimator(animations.RIGHT, rightAnimation);
-            player.addAnimator(animations.DOWN, downAnimation);
-            player.addAnimator(animations.LEFT, leftAnimation);
+            player.addAnimator(Animations.UP.getValue(), upAnimation);
+            player.addAnimator(Animations.RIGHT.getValue(), rightAnimation);
+            player.addAnimator(Animations.DOWN.getValue(), downAnimation);
+            player.addAnimator(Animations.LEFT.getValue(), leftAnimation);
         }
 
         return player;
