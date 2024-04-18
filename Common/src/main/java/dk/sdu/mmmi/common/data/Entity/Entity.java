@@ -4,6 +4,7 @@ import dk.sdu.mmmi.common.data.World.GridPosition;
 
 public class Entity {
     private Coordinates coordinates;
+    private int textureLayer;
     private String texturePath;
     private float width;
     private float height;
@@ -12,6 +13,7 @@ public class Entity {
     public Entity(String texturePath, float width, float height) {
         this.coordinates = new Coordinates(0, 0);
         this.texturePath = texturePath;
+        this.textureLayer = TextureLayer.DEFAULT.getValue();
         this.width = width;
         this.height = height;
         this.direction = Direction.UP;
@@ -70,6 +72,14 @@ public class Entity {
 
     public void setTexturePath(String texturePath) {
         this.texturePath = texturePath;
+    }
+
+    public int getTextureLayer() {
+        return textureLayer;
+    }
+
+    public void setTextureLayer(int textureLayer) {
+        this.textureLayer = textureLayer;
     }
 
     public float getWidth() {
