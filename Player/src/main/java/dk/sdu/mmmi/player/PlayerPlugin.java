@@ -3,7 +3,6 @@ package dk.sdu.mmmi.player;
 import dk.sdu.mmmi.common.data.Entity.TextureLayer;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.enums.animations;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
@@ -22,18 +21,16 @@ public class PlayerPlugin implements IGamePluginService {
         Player player = new Player("Player/src/main/resources/player_textures/up/up-7.png", gameData.getScaler(), (3.3f / 2.2f) * gameData.getScaler());
         player.setTextureLayer(TextureLayer.CHARACTER.getValue());
 
-        if (!getITextureAnimatorController().isEmpty()) {
-            ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
-
+        for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
             ITextureAnimator upAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/up", 0, 7, 20f);
             ITextureAnimator rightAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/right", 0, 7, 20f);
             ITextureAnimator downAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/down", 0, 7, 20f);
             ITextureAnimator leftAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/left", 0, 7, 20f);
 
-            player.addAnimator(animations.UP, upAnimation);
-            player.addAnimator(animations.RIGHT, rightAnimation);
-            player.addAnimator(animations.DOWN, downAnimation);
-            player.addAnimator(animations.LEFT, leftAnimation);
+            player.addAnimator(PlayerAnimations.UP.getValue(), upAnimation);
+            player.addAnimator(PlayerAnimations.RIGHT.getValue(), rightAnimation);
+            player.addAnimator(PlayerAnimations.DOWN.getValue(), downAnimation);
+            player.addAnimator(PlayerAnimations.LEFT.getValue(), leftAnimation);
         }
 
         return player;

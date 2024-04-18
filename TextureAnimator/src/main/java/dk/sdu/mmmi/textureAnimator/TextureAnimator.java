@@ -43,7 +43,7 @@ public class TextureAnimator implements ITextureAnimator {
         }
 
         if (imagePaths != null && endIndex > imagePaths.size() - 1) {
-            throw new IllegalArgumentException("endIndex must be less or equal than the number of images in the directory");
+            throw new IllegalArgumentException("endIndex must be less or equal to the number of images in the directory");
         }
     }
 
@@ -66,7 +66,7 @@ public class TextureAnimator implements ITextureAnimator {
         if (paths != null) {
             paths.forEach(path -> {
                 if (Files.isRegularFile(path)) { // Is a regular file (not a directory)
-                    if (path.toString().endsWith(".png") || path.toString().endsWith(".jpeg")) {
+                    if (path.toString().endsWith(".png") || path.toString().endsWith(".jpeg") || path.toString().endsWith(".jpg")) {
                         images.add(path.toString());
                     }
                 }
