@@ -8,7 +8,6 @@ import dk.sdu.mmmi.common.services.TextureAnimator.IAnimatable;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class DestructibleObstacle extends Entity implements IDestructibleObstacle, ICollidable, IAnimatable {
     private World world;
