@@ -1,7 +1,6 @@
 package dk.sdu.mmmi.common.services.TextureAnimator;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public interface IAnimatable {
     /**
@@ -9,24 +8,24 @@ public interface IAnimatable {
      * @param key
      * @return the active texture path as a String
      */
-    String getActiveTexturePath(UUID key);
+    String getActiveTexturePath(Integer key);
 
     /**
      * Add a new animator to the animators HashMap
      * @param key
-     * @param animator
+     * @param animator an ITextureAnimator object
      */
-    public void addAnimator(UUID key, ITextureAnimator animator);
+    void addAnimator(Integer key, ITextureAnimator animator);
 
     /**
      * Get the animators HashMap
      * @return the animators HashMap
      */
-    HashMap<UUID, ITextureAnimator> getAnimators();
+    HashMap<Integer, ITextureAnimator> getAnimators();
 
     /**
      * Set the animators HashMap
      * @param animators
      */
-    void setAnimators(HashMap<UUID, ITextureAnimator> animators);
+    void setAnimators(HashMap<Integer, ITextureAnimator> animators);
 }
