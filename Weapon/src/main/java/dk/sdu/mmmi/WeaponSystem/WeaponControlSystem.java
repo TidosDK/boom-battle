@@ -4,6 +4,7 @@ import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.services.Entity.IDamageable;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
 
@@ -25,14 +26,15 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
         }
     }
 
+
     private static void dealDamage(Collection<Coordinates> blastArea, World world, Weapon weapon) {
         for (Coordinates coordinates : blastArea) {
             for (Entity entity : world.getEntities()) {
-                if (entity.getCoordinates().equals(coordinates)) {
+                if (entity.getGridPosition().equals(coordinates.getGridPosition())) {
                     if (entity instanceof IDamageable) {
                         IDamageable damageable = (IDamageable) entity;
-                        damageable.takeDamage(weapon.getDamagePoints());
-                    }
+                        damageable.removeLifepoints(weapon.getDamagePoints());
+                        System.out.println("Lifepoints for player: "+damageable.getLifepoints());                    }
                 }
             }
         }
@@ -44,6 +46,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
         weapon.setX(weaponPlacer.getX());
         weapon.setY(weaponPlacer.getY());
         weapon.setDamagePoints(2);
+        weapon.setBlastLength(15);
         weapon.setTimeSincePlacement(gameData.getDeltaTime());
         weapon.setTimeTillExplosionInSeconds(2f);
         return weapon;
