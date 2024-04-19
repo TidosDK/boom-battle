@@ -8,6 +8,13 @@ public class GridPosition {
         this.x = x;
         this.y = y;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GridPosition that = (GridPosition) o;
+        return x == that.x && y == that.y;
+    }
 
     public int getX() {
         return x;
