@@ -8,6 +8,8 @@ import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
@@ -18,14 +20,22 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity player;
 
     public Player createPlayer() {
-        Player player = new Player("Player/src/main/resources/player_textures/up/up-7.png", gameData.getScaler(), (3.3f / 2.2f) * gameData.getScaler());
+        Path defaultTexture = Paths.get("Player/src/main/resources/player_textures/up/up-7.png");
+        Player player = new Player(defaultTexture, gameData.getScaler(), (3.3f / 2.2f) * gameData.getScaler());
         player.setTextureLayer(TextureLayer.CHARACTER.getValue());
 
+
+
         for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
-            ITextureAnimator upAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/up", 0, 7, 20f);
-            ITextureAnimator rightAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/right", 0, 7, 20f);
-            ITextureAnimator downAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/down", 0, 7, 20f);
-            ITextureAnimator leftAnimation = animatorController.createTextureAnimator(gameData, "Player/src/main/resources/player_textures/left", 0, 7, 20f);
+            Path upAnimationPath = Paths.get("Player/src/main/resources/player_textures/up");
+            Path rightAnimationPath = Paths.get("Player/src/main/resources/player_textures/right");
+            Path downAnimationPath = Paths.get("Player/src/main/resources/player_textures/down");
+            Path leftAnimationPath = Paths.get("Player/src/main/resources/player_textures/left");
+
+            ITextureAnimator upAnimation = animatorController.createTextureAnimator(gameData, upAnimationPath, 0, 7, 20f);
+            ITextureAnimator rightAnimation = animatorController.createTextureAnimator(gameData, rightAnimationPath, 0, 7, 20f);
+            ITextureAnimator downAnimation = animatorController.createTextureAnimator(gameData, downAnimationPath, 0, 7, 20f);
+            ITextureAnimator leftAnimation = animatorController.createTextureAnimator(gameData, leftAnimationPath, 0, 7, 20f);
 
             player.addAnimator(PlayerAnimations.UP.getValue(), upAnimation);
             player.addAnimator(PlayerAnimations.RIGHT.getValue(), rightAnimation);
