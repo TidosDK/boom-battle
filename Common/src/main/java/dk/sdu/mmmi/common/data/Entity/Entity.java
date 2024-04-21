@@ -2,15 +2,17 @@ package dk.sdu.mmmi.common.data.Entity;
 
 import dk.sdu.mmmi.common.data.World.GridPosition;
 
+import java.nio.file.Path;
+
 public class Entity {
     private Coordinates coordinates;
     private int textureLayer;
-    private String texturePath;
+    private Path texturePath;
     private float width;
     private float height;
     private Direction direction;
 
-    public Entity(String texturePath, float width, float height) {
+    public Entity(Path texturePath, float width, float height) {
         this.coordinates = new Coordinates(0, 0);
         this.texturePath = texturePath;
         this.textureLayer = TextureLayer.DEFAULT.getValue();
@@ -66,11 +68,11 @@ public class Entity {
         this.coordinates = coordinates;
     }
 
-    public String getTexturePath() {
+    public Path getTexturePath() {
         return texturePath;
     }
 
-    public void setTexturePath(String texturePath) {
+    public void setTexturePath(Path texturePath) {
         this.texturePath = texturePath;
     }
 

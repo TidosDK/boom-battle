@@ -6,6 +6,7 @@ import dk.sdu.mmmi.common.services.TextureAnimator.IAnimatable;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 
+import java.nio.file.Path;
 import java.util.*;
 
 public class Player extends Entity implements IDamageable, IAnimatable {
@@ -13,7 +14,7 @@ public class Player extends Entity implements IDamageable, IAnimatable {
     private HashMap<Integer, ITextureAnimator> animators;
     private int lifePoints = 1;
 
-    public Player(String texturePath, float width, float height) {
+    public Player(Path texturePath, float width, float height) {
         super(texturePath, width, height);
         this.weapons = new ArrayList<>(); // TODO: Better data structure.
         this.animators = new HashMap<>(); // TODO: Better data structure.
@@ -44,11 +45,11 @@ public class Player extends Entity implements IDamageable, IAnimatable {
     }
 
     @Override
-    public String getActiveTexturePath(Integer key) {
+    public Path getActiveTexturePath(Integer key) {
         if (animators.get(key) == null) {
             return getTexturePath();
         }
-        return animators.get(key).getCurrentImagePath();
+        return animators.get(key).getCurrentTexturePath();
     }
 
     @Override

@@ -7,6 +7,8 @@ import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
@@ -19,14 +21,15 @@ public class Weapon extends Entity implements IWeapon {
     private int blastLength;
     private ITextureAnimator explosionAnimator;
 
-    public Weapon(GameData gameData, String texturePath, float width, float height) {
+    public Weapon(GameData gameData, Path texturePath, float width, float height) {
         super(texturePath, width, height);
 
         if (!getITextureAnimatorController().isEmpty()) {
             ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
 
             if (animatorController != null) {
-                explosionAnimator = animatorController.createTextureAnimator(gameData, "Weapon/src/main/resources/planted", 0, 5, 20f);
+                Path defaultTexture = Paths.get("Weapon/src/main/resources/planted");
+                explosionAnimator = animatorController.createTextureAnimator(gameData, defaultTexture, 0, 5, 20f);
             }
         }
     }
@@ -40,11 +43,11 @@ public class Weapon extends Entity implements IWeapon {
         return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
-    public String getCurrentExplosionAnimatorPath() {
+    public Path getCurrentExplosionAnimatorPath() {
         if (explosionAnimator == null) {
             return getTexturePath();
         } else {
-            return explosionAnimator.getCurrentImagePath();
+            return explosionAnimator.getCurrentTexturePath();
         }
     }
 

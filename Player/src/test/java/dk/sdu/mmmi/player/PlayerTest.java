@@ -10,6 +10,8 @@ import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +28,13 @@ public class PlayerTest {
     GameData gameData;
     GameKeys gameKeys;
     World world;
+    Path texture;
 
     @BeforeEach
     void setup() {
         // Creates a new player and mocks the player, game data, game keys, and world.
-        underlyingPlayer = new Player("Player/src/main/resources/personLeft1.png", 2f, 2f);
+        texture = Paths.get("Player/src/main/resources/personLeft1.png");
+        underlyingPlayer = new Player(texture, 2f, 2f);
         mockPlayer = mock(Player.class);
         gameData = mock(GameData.class);
         gameKeys = mock(GameKeys.class);
