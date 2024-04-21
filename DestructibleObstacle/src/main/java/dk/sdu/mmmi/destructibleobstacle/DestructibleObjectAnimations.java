@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.destructibleObstacle;
+package dk.sdu.mmmi.destructibleobstacle;
 
 /**
  * Enum for the different animations of the destructible object
