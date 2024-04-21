@@ -7,6 +7,7 @@ import dk.sdu.mmmi.common.data.Properties.GameKeys;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.data.World.Map;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
+import dk.sdu.mmmi.common.services.IGamePluginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -57,6 +60,36 @@ public class PlayerTest {
         when(world.getMap().getHeight()).thenReturn(10);
     }
 
+    // Verifies functional requirement F-01
+    @Test()
+    void testPlayerExists() {
+        // Mocks the world to add entities and retrieve the list of entities
+        doAnswer(invocation -> {
+            Entity entity = invocation.getArgument(0);
+            world.getEntities().add(entity);
+            return null;
+        }).when(world).addEntity(any(Entity.class));
+        when(world.getEntities()).thenReturn(new ArrayList<>());
+
+        // This uses the ServiceLoader getter-method for IGamePluginService which is found in the Core module
+        for (IGamePluginService plugin : ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList())) {
+            plugin.start(world, gameData);
+        }
+
+        // Checks if the player exists in the world
+        boolean playerExists = false;
+        for (Entity entity : world.getEntities()) {
+            if (entity.getClass().equals(Player.class)) {
+                playerExists = true;
+                break;
+            }
+        }
+
+        // Asserts that the player exists in the world
+        assertTrue(playerExists);
+    }
+
+    // Verifies functional requirement F-01c
     @Test()
     void testWeapons() {
         // Asserts the mock player hasn't placed any weapons.
