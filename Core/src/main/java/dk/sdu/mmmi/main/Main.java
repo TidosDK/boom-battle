@@ -153,7 +153,7 @@ public class Main extends ApplicationAdapter {
      * @return the sprite
      */
     private Sprite createSprite(Entity entity) {
-        Texture texture = new Texture(entity.getTexturePath());
+        Texture texture = new Texture(entity.getTexturePath().toString());
         Sprite sprite = new Sprite(texture);
 
         sprite.setSize(entity.getWidth(), entity.getHeight());
@@ -172,7 +172,7 @@ public class Main extends ApplicationAdapter {
         Coordinates coords = entity.getCoordinates();
 
         sprite.getTexture().dispose();
-        sprite.setTexture(new Texture(entity.getTexturePath()));
+        sprite.setTexture(new Texture(entity.getTexturePath().toString()));
 
         sprite.setPosition(coords.getX(), coords.getY());
 //        sprite.setRotation(entity.getRotation());

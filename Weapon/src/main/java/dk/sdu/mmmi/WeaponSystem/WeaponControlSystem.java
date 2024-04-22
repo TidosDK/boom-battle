@@ -7,6 +7,9 @@ import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class WeaponControlSystem implements IEntityProcessingService, IWeaponController {
 
     @Override
@@ -24,7 +27,8 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
 
     @Override
     public Entity createWeapon(Entity weaponPlacer, GameData gameData) {
-        Weapon weapon = new Weapon(gameData, "Weapon/src/main/resources/planted/bomb-planted-2.png", gameData.getScaler(), gameData.getScaler());
+        Path defaultTexture = Paths.get("Weapon/src/main/resources/planted/bomb-planted-2.png");
+        Weapon weapon = new Weapon(gameData, defaultTexture, gameData.getScaler(), gameData.getScaler());
         weapon.setX(weaponPlacer.getX());
         weapon.setY(weaponPlacer.getY());
         weapon.setDamagePoints(2);

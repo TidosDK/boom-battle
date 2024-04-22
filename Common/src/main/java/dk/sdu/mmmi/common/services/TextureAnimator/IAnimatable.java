@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.common.services.TextureAnimator;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 
 public interface IAnimatable {
@@ -8,7 +9,7 @@ public interface IAnimatable {
      * @param key
      * @return the active texture path as a String
      */
-    String getActiveTexturePath(Integer key);
+    Path getActiveTexturePath(Integer key);
 
     /**
      * Add a new animator to the animators HashMap
