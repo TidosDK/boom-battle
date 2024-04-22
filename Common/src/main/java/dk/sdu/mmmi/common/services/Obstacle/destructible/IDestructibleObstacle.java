@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.services.Obstacle.Destructible;
+package dk.sdu.mmmi.common.services.Obstacle.destructible;
 
 public interface IDestructibleObstacle {
     /**
