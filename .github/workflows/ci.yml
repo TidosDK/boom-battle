@@ -16,6 +16,19 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  settingsSetup:
+    runs-on:
+      - ubuntu-latest
+    container:
+      image: docker.io/maven:3-eclipse-temurin-21-jammy
+
+    steps:
+      - uses: whelk-io/maven-settings-xml-action@v22
+      - name: maven-settings-xml-action
+        with:
+          repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }, { "id": "github", "url": "https://maven.pkg.github.com/ratgen/ShadedLibGDX", "snapshots": { "enabled": "false" } }]'
+          servers: '[{ "id": "github", "username": "TidosDK", "password": "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" }]'
+
   # This workflow contains a single job called "build"
   linting:
     # The type of runner that the job will run on
