@@ -124,6 +124,7 @@ public class Weapon extends Entity implements IWeapon {
     public Collection<Coordinates> calculateBlastArea(World world) {
         IMap map = (IMap) world.getMap();
         GridPosition position = this.getCoordinates().getGridPosition();
+        System.out.println("Start position var inside calculateBlastArea: "+position.getX()+","+ position.getY());
         Collection<Coordinates> blastArea = new ArrayList<>();
 
         // Add the origin of the explosion

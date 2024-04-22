@@ -26,9 +26,10 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
                         // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
                         // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
                         String texturePath = weapon.getFireExplosionTexturePath(coord, world);
-                        System.out.println(coord.getX());
-                        System.out.println(coord.getY());
+                        System.out.println("Current coord in blastArea loop: "+coord.getX()+","+coord.getY());
+
                         Explosion explosion = new Explosion(gameData, texturePath, coord.getX(), coord.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
+                        System.out.println("Explosion placed at: "+explosion.getCoordinates().getX()+","+explosion.getCoordinates().getY());
                         // Add creation time to the HashMap
                         explosionCreationTimes.put(explosion, gameData.getDeltaTime());
                         world.addEntity(explosion);
@@ -52,7 +53,6 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
             } else {
                 expl.setElapsedTime(expl.getElapsedTime() + gameData.getDeltaTime()); // Initial elapsed time (accumulate delta time)
             }
-
         }
     }
 
@@ -76,8 +76,8 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
         Weapon weapon = new Weapon(gameData, "Weapon/src/main/resources/planted/bomb-planted-2.png", gameData.getScaler(), gameData.getScaler());
         weapon.setAnimTime(20f);
         weapon.createFireExplosionAnimators(gameData);
-        weapon.setX(weaponPlacer.getX());
-        weapon.setY(weaponPlacer.getY());
+        weapon.setX(weaponPlacer.getGridPosition().getX());
+        weapon.setY(weaponPlacer.getGridPosition().getY());
         weapon.setDamagePoints(2);
         weapon.setBlastLength(3);
         weapon.setTimeSincePlacement(gameData.getDeltaTime());
