@@ -23,8 +23,8 @@ jobs:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
 
     steps:
-      - uses: whelk-io/maven-settings-xml-action@v22
       - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v22
         with:
           repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }, { "id": "github", "url": "https://maven.pkg.github.com/ratgen/ShadedLibGDX", "snapshots": { "enabled": "false" } }]'
           servers: '[{ "id": "github", "username": "TidosDK", "password": "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" }]'
