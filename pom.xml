@@ -25,6 +25,7 @@
         <module>Weapon</module>
         <module>TextureAnimator</module>
         <module>DestructibleObstacle</module>
+        <module>NonDestructibleObstacle</module>
     </modules>
 
     <properties>
