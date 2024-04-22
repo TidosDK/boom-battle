@@ -7,6 +7,7 @@ import dk.sdu.mmmi.common.data.Properties.GameKeys;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.data.World.Map;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
+import dk.sdu.mmmi.common.services.IGamePluginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -57,26 +60,36 @@ public class PlayerTest {
         when(world.getMap().getHeight()).thenReturn(10);
     }
 
+    // Verifies functional requirement F-01
     @Test()
-    void testWeapons() {
-        // Asserts the mock player hasn't placed any weapons.
-        assertTrue(mockPlayer.getWeapons().isEmpty(), "The list should be empty as the player hasn't placed any weapons yet.");
+    void testPlayerExists() {
+        // Mocks the world to add entities and retrieve the list of entities
+        doAnswer(invocation -> {
+            Entity entity = invocation.getArgument(0);
+            world.getEntities().add(entity);
+            return null;
+        }).when(world).addEntity(any(Entity.class));
+        when(world.getEntities()).thenReturn(new ArrayList<>());
 
-        // Adds a weapon to the underlying player.
-        when(mockPlayer.getWeapons()).thenReturn(underlyingPlayer.getWeapons());
-        IWeapon weapon = mock(IWeapon.class);
-        underlyingPlayer.getWeapons().add(weapon);
+        // This uses the ServiceLoader getter-method for IGamePluginService which is found in the Core module
+        for (IGamePluginService plugin : ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList())) {
+            plugin.start(world, gameData);
+        }
 
-        // Asserts that the mock player has one weapon.
-        assertTrue(mockPlayer.getWeapons().contains(weapon) && mockPlayer.getWeapons().size() == 1, "The list should only contain one weapon as the underlying player has added one weapon.");
+        // Checks if the player exists in the world
+        boolean playerExists = false;
+        for (Entity entity : world.getEntities()) {
+            if (entity.getClass().equals(Player.class)) {
+                playerExists = true;
+                break;
+            }
+        }
 
-        // Removes the weapon from the underlying player.
-        underlyingPlayer.removeWeapon(weapon);
-
-        // Asserts that the mock player has no weapons.
-        assertEquals(0, mockPlayer.getWeapons().size(), "The list should be empty as the underlying player has removed the weapon.");
+        // Asserts that the player exists in the world
+        assertTrue(playerExists);
     }
 
+    // Verifies functional requirement F-01a
     @Test()
     void testMovement() {
         // Configures all keys to not be pressed.
@@ -135,6 +148,28 @@ public class PlayerTest {
         when(gameData.getKeys().isDown(gameData.getKeys().getLEFT())).thenReturn(false);
     }
 
+    // Verifies functional requirement F-01c
+    @Test()
+    void testWeapons() {
+        // Asserts the mock player hasn't placed any weapons.
+        assertTrue(mockPlayer.getWeapons().isEmpty(), "The list should be empty as the player hasn't placed any weapons yet.");
+
+        // Adds a weapon to the underlying player.
+        when(mockPlayer.getWeapons()).thenReturn(underlyingPlayer.getWeapons());
+        IWeapon weapon = mock(IWeapon.class);
+        underlyingPlayer.getWeapons().add(weapon);
+
+        // Asserts that the mock player has one weapon.
+        assertTrue(mockPlayer.getWeapons().contains(weapon) && mockPlayer.getWeapons().size() == 1, "The list should only contain one weapon as the underlying player has added one weapon.");
+
+        // Removes the weapon from the underlying player.
+        underlyingPlayer.removeWeapon(weapon);
+
+        // Asserts that the mock player has no weapons.
+        assertEquals(0, mockPlayer.getWeapons().size(), "The list should be empty as the underlying player has removed the weapon.");
+    }
+
+    // Verifies functional requirement F-01f
     @Test()
     void testTakeDamage() {
         // Arrange

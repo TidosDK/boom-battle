@@ -13,4 +13,7 @@ module Player {
     requires Common;
     provides IGamePluginService with dk.sdu.mmmi.player.PlayerPlugin;
     provides IEntityProcessingService with dk.sdu.mmmi.player.PlayerControlSystem;
+
+    // For unittest only:
+    uses IGamePluginService;
 }
