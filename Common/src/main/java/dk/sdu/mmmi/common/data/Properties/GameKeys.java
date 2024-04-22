@@ -8,12 +8,12 @@ public class GameKeys {
     private static boolean[] pressed_keys;
     private static GameKeys instance = null;
 
-    private final int NUM_KEYS = 5;
-    private final int UP = 0;
-    private final int LEFT = 1;
-    private final int RIGHT = 2;
-    private final int DOWN = 3;
-    private final int SPACE = 4;
+    private final int numKeys = 5;
+    private final int up = 0;
+    private final int left = 1;
+    private final int right = 2;
+    private final int down = 3;
+    private final int space = 4;
 
     private GameKeys() {
         keys = new boolean[NUM_KEYS];
@@ -41,23 +41,23 @@ public class GameKeys {
         return isKeyJustPressed;
     }
 
-    public int getUP() {
-        return UP;
+    public int getUp() {
+        return this.up;
     }
 
-    public int getLEFT() {
-        return LEFT;
+    public int getLeft() {
+        return this.left;
     }
 
-    public int getRIGHT() {
-        return RIGHT;
+    public int getRight() {
+        return this.right;
     }
 
-    public int getDOWN() {
-        return DOWN;
+    public int getDown() {
+        return this.down;
     }
 
-    public int getSPACE() {
-        return SPACE;
+    public int getSpace() {
+        return this.space;
     }
 }

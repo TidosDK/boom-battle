@@ -34,10 +34,10 @@ public enum TextureLayer {
      */
     CHARACTER(10);
 
-    private final int VALUE;
+    private final int value;
 
     TextureLayer(int value) {
-        this.VALUE = value;
+        this.value = value;
     }
 
     /**
@@ -46,6 +46,6 @@ public enum TextureLayer {
      * @return the value of the layer
      */
     public int getValue() {
-        return VALUE;
+        return this.value;
     }
 }

@@ -26,7 +26,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
     private int maxWeapons = 3;
     private IMap map = null;
 
-    private final float MOVING_SPEED = 10f;
+    private final float movingSpeed = 10f;
 
     @Override
     public void process(World world, GameData gameData) {
