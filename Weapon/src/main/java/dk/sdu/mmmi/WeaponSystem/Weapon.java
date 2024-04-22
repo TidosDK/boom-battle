@@ -21,10 +21,20 @@ public class Weapon extends Entity implements IWeapon {
     private float timeTillExplosionInSeconds;
     private int damagePoints;
     private int blastLength;
+
+    private float animTime;
     private ITextureAnimator explosionAnimator;
 
     private ITextureAnimator explosionFireAnimator;
 
+    private String explosionBasePath = "Weapon/src/main/resources/explosion/";
+
+    private ITextureAnimator explosionRightAnimator;
+    private ITextureAnimator explosionLeftAnimator;
+    private ITextureAnimator explosionUpAnimator;
+    private ITextureAnimator explosionDownAnimator;
+    private ITextureAnimator explosionMidHorizontalAnimator;
+    private ITextureAnimator explosionMidVerticalAnimator;
 
 
     public Weapon(GameData gameData, String texturePath, float width, float height) {
@@ -56,17 +66,59 @@ public class Weapon extends Entity implements IWeapon {
             return explosionAnimator.getCurrentImagePath();
         }
     }
-    public String getCurrentFireExplosionAnimatorPath(Coordinates coords) {
-        Coordinates originCoords = this.getCoordinates();
-        if (explosionFireAnimator == null) {
-            return getTexturePath();
-        } else {
-            if (coords.equals(originCoords)) {
-                return explosionFireAnimator.getCurrentImagePath(); // Center of explosion
-            } else {
-                return explosionFireAnimator.getCurrentImagePath(); // Extend this to support different images for different directions
+
+
+    public void createFireExplosionAnimators(GameData gameData) {
+
+        if (!getITextureAnimatorController().isEmpty()) {
+            ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
+
+            if (animatorController != null) {
+                // Create animation controller instance for each direction as according to directories
+                explosionRightAnimator = animatorController.createTextureAnimator(gameData, explosionBasePath + "right", 0, 4, getAnimTime() /* other parameters */);
+                explosionLeftAnimator = animatorController.createTextureAnimator(gameData, explosionBasePath + "left", 0, 4, getAnimTime() /* other parameters */);
+                explosionUpAnimator = animatorController.createTextureAnimator(gameData, explosionBasePath + "up", 0, 4, getAnimTime()/* other parameters */);
+                explosionDownAnimator = animatorController.createTextureAnimator(gameData, explosionBasePath + "down", 0, 4, getAnimTime()/* other parameters */);
+                explosionMidHorizontalAnimator = animatorController.createTextureAnimator(gameData, explosionBasePath + "mid-horizontal", 0, 4, getAnimTime()/* other parameters */);
+                explosionMidVerticalAnimator = animatorController.createTextureAnimator(gameData, explosionBasePath + "mid-vertical", 0, 4, getAnimTime()/* other parameters */);
             }
         }
+    }
+
+    public String getFireExplosionTexturePath(Coordinates coord, World world) {
+        Coordinates originCoords = this.getCoordinates();
+        GridPosition position = originCoords.getGridPosition();
+
+        int dx = coord.getGridPosition().getX() - position.getX();
+        int dy = coord.getGridPosition().getY() - position.getY();
+
+        // Determine if the explosion is at the end or the middle of the blast radius
+        boolean isEndOfBlastX = Math.abs(dx) == blastLength;
+        boolean isEndOfBlastY = Math.abs(dy) == blastLength;
+
+        // Center of the explosion
+        if (dx == 0 && dy == 0) {
+            return explosionBasePath + "center/center-explosion-1.png"; // example for the first frame
+        }
+
+        // Horizontal explosion
+        if (dy == 0) {
+            if (dx > 0) { // Right
+                return isEndOfBlastX ? explosionRightAnimator.getCurrentImagePath() : explosionMidHorizontalAnimator.getCurrentImagePath();
+            } else if (dx < 0) { // Left
+                return isEndOfBlastX ? explosionLeftAnimator.getCurrentImagePath() : explosionMidHorizontalAnimator.getCurrentImagePath();
+            }
+        }
+
+        // Vertical explosion
+        if (dx == 0) {
+            if (dy > 0) { // Up
+                return isEndOfBlastY ? explosionUpAnimator.getCurrentImagePath() : explosionMidVerticalAnimator.getCurrentImagePath();
+            } else if (dy < 0) { // Down
+                return isEndOfBlastY ? explosionDownAnimator.getCurrentImagePath() : explosionMidVerticalAnimator.getCurrentImagePath();
+            }
+        }
+        return explosionFireAnimator.getCurrentImagePath();
     }
 
     public Collection<Coordinates> calculateBlastArea(World world) {
@@ -96,7 +148,13 @@ public class Weapon extends Entity implements IWeapon {
         return blastArea;
     }
 
+    public void setAnimTime(float animTime) {
+        this.animTime = animTime;
+    }
 
+    public float getAnimTime() {
+        return animTime;
+    }
 
     public float getTimeSincePlacement() {
         return timeSincePlacement;
