@@ -16,18 +16,6 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  settingsSetup:
-    runs-on:
-      - ubuntu-latest
-    container:
-      image: docker.io/maven:3-eclipse-temurin-21-jammy
-
-    steps:
-      - name: maven-settings-xml-action
-        uses: whelk-io/maven-settings-xml-action@v22
-        with:
-          repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }, { "id": "github", "url": "https://maven.pkg.github.com/ratgen/ShadedLibGDX", "snapshots": { "enabled": "false" } }]'
-          servers: '[{ "id": "github", "username": "TidosDK", "password": "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" }]'
 
   # This workflow contains a single job called "build"
   linting:
@@ -36,8 +24,6 @@ jobs:
       - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
-    needs:
-      - settingsSetup
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -66,13 +52,17 @@ jobs:
       - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
-    needs:
-      - settingsSetup
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v22
+        with:
+          repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }, { "id": "github", "url": "https://maven.pkg.github.com/ratgen/ShadedLibGDX", "snapshots": { "enabled": "false" } }]'
+          servers: '[{ "id": "github", "username": "TidosDK", "password": "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" }]'
 
       - name: Cache Maven repository
         uses: actions/cache@v4
@@ -98,12 +88,17 @@ jobs:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
     needs:
       - build
-      - settingsSetup
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v22
+        with:
+          repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }, { "id": "github", "url": "https://maven.pkg.github.com/ratgen/ShadedLibGDX", "snapshots": { "enabled": "false" } }]'
+          servers: '[{ "id": "github", "username": "TidosDK", "password": "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" }]'
 
       - name: Cache local Maven repository
         uses: actions/cache@v4
