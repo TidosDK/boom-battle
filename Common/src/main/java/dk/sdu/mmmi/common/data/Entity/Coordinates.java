@@ -16,18 +16,16 @@ public class Coordinates {
     }
 
     public float getX() {
-        return x;
+        return this.x;
     }
 
     public float getY() {
-        return y;
+        return this.y;
     }
 
     public GridPosition getGridPosition() {
         // If floats are above .5, round up
-        int x = (int) Math.round(this.x);
-        int y = (int) Math.round(this.y);
-        return new GridPosition(x, y);
+        return new GridPosition(Math.round(this.x), Math.round(this.y));
     }
 
     public void setX(float x) {
@@ -38,9 +36,9 @@ public class Coordinates {
         this.y = y;
     }
 
-    private GridPosition calculateGridPosition(float x, float y) throws IllegalArgumentException {
-        // Calculate the discrete position based on x and y
-        return new GridPosition((int) x, (int) y);
-    }
+//    private GridPosition calculateGridPosition(float x_val, float y_val) throws IllegalArgumentException {
+//        // Calculate the discrete position based on x and y
+//        return new GridPosition((int) x_val, (int) y_val);
+//    }
 }
 

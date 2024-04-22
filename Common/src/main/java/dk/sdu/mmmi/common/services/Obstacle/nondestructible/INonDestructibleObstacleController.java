@@ -5,7 +5,7 @@ import dk.sdu.mmmi.common.data.World.World;
 
 public interface INonDestructibleObstacleController {
     /**
-     * Creates an instance of an non destructible obstacle
+     * Creates an instance of a non-destructible obstacle.
      * @param gameData
      * @param world
      * @return INonDestructibleObstacle

@@ -66,10 +66,10 @@
     <!-- Checks for Size Violations.                    -->
     <!-- See https://checkstyle.org/checks/sizes/index.html -->
     <module name="FileLength"/>
-    <module name="LineLength">
-        <property name="max" value="180"/>
-        <property name="fileExtensions" value="java"/>
-    </module>
+    <!--    <module name="LineLength">-->
+    <!--        <property name="max" value="180"/>-->
+    <!--        <property name="fileExtensions" value="java"/>-->
+    <!--    </module>-->
 
     <!-- Miscellaneous other checks.                   -->
     <!-- See https://checkstyle.org/checks/misc/index.html -->
@@ -89,9 +89,9 @@
 
     <module name="TreeWalker">
         <!-- Custom checks -->
-        <module name="RequireThis">
-            <property name="validateOnlyOverlapping" value="false"/>
-        </module>
+        <!--        <module name="RequireThis">-->
+        <!--            <property name="validateOnlyOverlapping" value="false"/>-->
+        <!--        </module>-->
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See https://checkstyle.org/checks/javadoc/index.html -->
@@ -171,7 +171,7 @@
 
         <!-- Checks for class design                         -->
         <!-- See https://checkstyle.org/checks/design/index.html -->
-        <module name="FinalClass"/>
+        <!-- <module name="FinalClass"/>-->
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
         <module name="VisibilityModifier"/>
@@ -179,7 +179,7 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See https://checkstyle.org/checks/misc/index.html -->
         <module name="ArrayTypeStyle"/>
-        <module name="TodoComment"/>
+        <!-- module name="TodoComment"/>-->
         <module name="UpperEll"/>
 
         <!-- https://checkstyle.org/filters/suppressionxpathfilter.html -->

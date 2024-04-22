@@ -1,7 +1,7 @@
 package dk.sdu.mmmi.common.data.Entity;
 
 /**
- * Enum for the different layers of textures
+ * Enum for the different layers of textures.
  */
 public enum TextureLayer {
     /**
@@ -15,7 +15,7 @@ public enum TextureLayer {
     CONSTRUCTIONS(2),
 
     /**
-     * Default: layer for default textures
+     * Default: layer for default textures.
      */
     DEFAULT(4),
 
@@ -30,7 +30,7 @@ public enum TextureLayer {
     EFFECT(8),
 
     /**
-     * Character: layer for character and NPC textures
+     * Character: layer for character and NPC textures.
      */
     CHARACTER(10);
 
@@ -41,7 +41,7 @@ public enum TextureLayer {
     }
 
     /**
-     * Get the value of the layer
+     * Get the value of the layer.
      *
      * @return the value of the layer
      */

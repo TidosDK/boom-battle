@@ -29,12 +29,12 @@ public class TextureAnimator implements ITextureAnimator {
         this.animationSpeed = animationSpeed;
         this.animationCooldown = 0;
 
-        this.imagePaths = getImagePaths(directory);
+        this.imagePaths = this.getImagePaths(directory);
         validateIndexes();
     }
 
     /**
-     * Validates whether the indexes are valid or not
+     * Validates whether the indexes are valid or not.
      */
     public void validateIndexes() {
         if (startIndex < 0) {
@@ -47,7 +47,7 @@ public class TextureAnimator implements ITextureAnimator {
     }
 
     /**
-     * Get all image paths in a directory
+     * Get all image paths in a directory.
      *
      * @param directoryPath Directory of the images
      * @return List of image paths

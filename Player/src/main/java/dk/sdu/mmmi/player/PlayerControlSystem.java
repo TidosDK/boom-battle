@@ -29,16 +29,16 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
     private final float movingSpeed = 10f;
 
     @Override
-    public void process(World world, GameData gameData) {
-        this.world = world;
-        this.gameData = gameData;
+    public void process(World worldParam, GameData gameDataParam) {
+        this.world = worldParam;
+        this.gameData = gameDataParam;
 
-        for (Entity player : world.getEntities(Player.class)) {
-            this.player = (Player) player;
+        for (Entity playerEntity : this.world.getEntities(Player.class)) {
+            this.player = (Player) playerEntity;
 
             List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
             for (IWeapon weapon : this.player.getWeapons()) {
-                if (!world.getEntities().contains(weapon)) {
+                if (!this.world.getEntities().contains(weapon)) {
                     weaponsToBeRemoved.add(weapon);
                 }
             }
@@ -46,30 +46,30 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 this.player.removeWeapon(weapon);
             }
 
-            if(this.player.getLifepoints() <= 0) {
-                world.removeEntity(player);
+            if (this.player.getLifepoints() <= 0) {
+                this.world.removeEntity(playerEntity);
             }
 
             checkMovement();
         }
 
-        if (world.getMap() instanceof IMap) {
-            map = (IMap) world.getMap();
+        if (this.world.getMap() instanceof IMap) {
+            map = (IMap) this.world.getMap();
         }
     }
 
     private void checkMovement() {
-        if (gameData.getKeys().isDown(gameData.getKeys().getLEFT())) {
+        if (gameData.getKeys().isDown(gameData.getKeys().getLeft())) {
             move(Direction.LEFT);
-        } else if (gameData.getKeys().isDown(gameData.getKeys().getRIGHT())) {
+        } else if (gameData.getKeys().isDown(gameData.getKeys().getRight())) {
             move(Direction.RIGHT);
-        } else if (gameData.getKeys().isDown(gameData.getKeys().getDOWN())) {
+        } else if (gameData.getKeys().isDown(gameData.getKeys().getDown())) {
             move(Direction.DOWN);
-        } else if (gameData.getKeys().isDown(gameData.getKeys().getUP())) {
+        } else if (gameData.getKeys().isDown(gameData.getKeys().getUp())) {
             move(Direction.UP);
         }
 
-        if (gameData.getKeys().isPressed(gameData.getKeys().getSPACE())) {
+        if (gameData.getKeys().isPressed(gameData.getKeys().getSpace())) {
             this.placeWeapon();
         }
     }
@@ -91,32 +91,34 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         float newX;
         player.setDirection(direction);
         if (World.getInstance().getMap() instanceof IMap) {
-            IMap map = (IMap) World.getInstance().getMap();
-            if (!map.isMoveAllowed(abs(player.getX()), abs(player.getY()), direction)) {
+            IMap mapInstance = (IMap) World.getInstance().getMap();
+            if (!mapInstance.isMoveAllowed(abs(player.getX()), abs(player.getY()), direction)) {
                 return;
             }
         }
 
         switch (direction) {
             case LEFT:
-                newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
+                newX = player.getX() - (movingSpeed * gameData.getDeltaTime()) * scaler;
                 player.setX((newX < 0) ? 0 : newX);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.LEFT.getValue()));
                 break;
             case RIGHT:
-                newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
-                player.setX((newX > ((world.getMap().getWidth()-1)*scaler)) ?  ((world.getMap().getWidth()-1) * scaler): newX);
+                newX = player.getX() + (movingSpeed * gameData.getDeltaTime()) * scaler;
+                player.setX((newX > ((world.getMap().getWidth() - 1) * scaler)) ? ((world.getMap().getWidth() - 1) * scaler) : newX);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.RIGHT.getValue()));
                 break;
             case UP:
-                newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                newY = player.getY() + (movingSpeed * gameData.getDeltaTime()) * scaler;
                 player.setY(newY);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.UP.getValue()));
                 break;
             case DOWN:
-                newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
+                newY = player.getY() - (movingSpeed * gameData.getDeltaTime()) * gameData.getScaler();
                 player.setY((newY < 0) ? 0 : newY);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.DOWN.getValue()));
+                break;
+            default:
                 break;
         }
     }

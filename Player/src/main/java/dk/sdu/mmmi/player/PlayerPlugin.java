@@ -17,7 +17,6 @@ import static java.util.stream.Collectors.toList;
 
 public class PlayerPlugin implements IGamePluginService {
     private GameData gameData;
-    private Entity player;
 
     public Player createPlayer() {
         Path defaultTexture = Paths.get("Player/src/main/resources/player_textures/up/up-7.png");
@@ -47,16 +46,16 @@ public class PlayerPlugin implements IGamePluginService {
     }
 
     @Override
-    public void start(World world, GameData gameData) {
-        this.gameData = gameData;
-        player = createPlayer();
+    public void start(World world, GameData gameDataParam) {
+        this.gameData = gameDataParam;
+        Entity player = createPlayer();
         player.setY(0);
         player.setX(0);
         world.addEntity(player);
     }
 
     @Override
-    public void stop(World world, GameData gameData) {
+    public void stop(World world, GameData gameDataParam) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

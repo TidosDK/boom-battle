@@ -22,7 +22,7 @@ public class Map {
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
-        map = new boolean[width][height];
+        this.map = new boolean[width][height];
     }
 
     /**
@@ -31,7 +31,7 @@ public class Map {
      * @return the 2D boolean array representing the map
      */
     public boolean[][] getMap() {
-        return map;
+        return this.map;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Map {
      * @return the width of the map
      */
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     /**
@@ -58,6 +58,6 @@ public class Map {
      * @return the height of the map
      */
     public int getHeight() {
-        return height;
+        return this.height;
     }
 }
