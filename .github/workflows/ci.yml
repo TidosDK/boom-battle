@@ -87,7 +87,7 @@ jobs:
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
     needs:
-      - build
+      - build --settings .m2/settings.xml
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -114,4 +114,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Running unit tests
-        run: mvn test
+        run: mvn test --settings .m2/settings.xml
