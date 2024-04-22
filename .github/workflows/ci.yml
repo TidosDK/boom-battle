@@ -36,6 +36,8 @@ jobs:
       - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
+    needs:
+      - settingsSetup
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -64,6 +66,8 @@ jobs:
       - ubuntu-latest
     container:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
+    needs:
+      - settingsSetup
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -94,6 +98,7 @@ jobs:
       image: docker.io/maven:3-eclipse-temurin-21-jammy
     needs:
       - build
+      - settingsSetup
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
