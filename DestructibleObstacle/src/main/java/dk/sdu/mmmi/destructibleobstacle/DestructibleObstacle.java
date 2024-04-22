@@ -8,6 +8,7 @@ import dk.sdu.mmmi.common.services.Entity.ICollidable;
 import dk.sdu.mmmi.common.services.TextureAnimator.IAnimatable;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 
 public class DestructibleObstacle extends Entity implements IDestructibleObstacle, ICollidable, IAnimatable, IDamageable {
@@ -15,7 +16,7 @@ public class DestructibleObstacle extends Entity implements IDestructibleObstacl
     private HashMap<Integer, ITextureAnimator> animators;
     private int lifePoints;
 
-    public DestructibleObstacle(World world, float width, float height, String texturePath) {
+    public DestructibleObstacle(World world, float width, float height, Path texturePath) {
         super(texturePath, width, height);
         this.world = world;
         this.animators = new HashMap<>();
@@ -30,11 +31,11 @@ public class DestructibleObstacle extends Entity implements IDestructibleObstacl
     }
 
     @Override
-    public String getActiveTexturePath(Integer key) {
+    public Path getActiveTexturePath(Integer key) {
         if (animators.get(key) == null) {
             return getTexturePath();
         }
-        return animators.get(key).getCurrentImagePath();
+        return animators.get(key).getCurrentTexturePath();
     }
 
     @Override

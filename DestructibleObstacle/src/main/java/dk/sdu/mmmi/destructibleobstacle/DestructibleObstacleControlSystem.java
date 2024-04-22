@@ -8,6 +8,8 @@ import dk.sdu.mmmi.common.services.Obstacle.destructible.IDestructibleObstacleCo
 import dk.sdu.mmmi.common.services.TextureAnimator.IAnimatable;
 import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
@@ -16,7 +18,8 @@ import static java.util.stream.Collectors.toList;
 public class DestructibleObstacleControlSystem implements IDestructibleObstacleController {
     @Override
     public IDestructibleObstacle createDestructibleObstacle(GameData gamedata, World world) {
-        IDestructibleObstacle destructibleObstacle = new DestructibleObstacle(world, gamedata.getScaler(), gamedata.getScaler(), "DestructibleObstacle/src/main/resources/destructible_obstacle_textures/block.png");
+        Path defaultTexture = Paths.get("DestructibleObstacle/src/main/resources/destructible_obstacle_textures/block.png");
+        IDestructibleObstacle destructibleObstacle = new DestructibleObstacle(world, gamedata.getScaler(), gamedata.getScaler(), defaultTexture);
 
         // Set texture layer of destructible obstacle instance
         if (destructibleObstacle instanceof DestructibleObstacle) {
@@ -26,7 +29,8 @@ public class DestructibleObstacleControlSystem implements IDestructibleObstacleC
         // Add animator to destructible obstacle instance
         if (destructibleObstacle instanceof IAnimatable) {
             for (ITextureAnimatorController textureAnimatorController : getITextureAnimatorController()) {
-                ((IAnimatable) destructibleObstacle).addAnimator(DestructibleObjectAnimations.DESTROY.getValue(), textureAnimatorController.createTextureAnimator(gamedata, "DestructibleObstacle/src/main/resources/destructible_obstacle_textures/destroy", 0, 5, 20f));
+                Path destructionAnimationPath = Paths.get("DestructibleObstacle/src/main/resources/destructible_obstacle_textures/destroy");
+                ((IAnimatable) destructibleObstacle).addAnimator(DestructibleObjectAnimations.DESTROY.getValue(), textureAnimatorController.createTextureAnimator(gamedata, destructionAnimationPath, 0, 5, 20f));
             }
         }
 
