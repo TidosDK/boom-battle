@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.destructibleObstacle;
+package dk.sdu.mmmi.destructibleobstacle;
 
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;

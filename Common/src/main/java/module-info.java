@@ -7,6 +7,6 @@ module Common {
     exports dk.sdu.mmmi.common.services.Entity.Weapon;
     exports dk.sdu.mmmi.common.services.Map;
     exports dk.sdu.mmmi.common.services.TextureAnimator;
-    exports dk.sdu.mmmi.common.services.Obstacle.Destructible;
+    exports dk.sdu.mmmi.common.services.Obstacle.destructible;
     exports dk.sdu.mmmi.common.services.Obstacle.nondestructible;
 }
