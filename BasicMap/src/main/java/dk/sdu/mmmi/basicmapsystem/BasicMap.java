@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.BasicMapSystem;
+package dk.sdu.mmmi.basicmapsystem;
 
 import dk.sdu.mmmi.common.data.entity.Coordinates;
 import dk.sdu.mmmi.common.data.entity.Direction;
