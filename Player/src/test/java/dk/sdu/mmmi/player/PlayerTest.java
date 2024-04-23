@@ -4,8 +4,8 @@ import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.Properties.GameKeys;
-import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.data.World.Map;
+import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
