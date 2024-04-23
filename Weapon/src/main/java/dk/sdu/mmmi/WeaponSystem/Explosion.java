@@ -1,7 +1,6 @@
 package dk.sdu.mmmi.WeaponSystem;
 
 import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.Properties.GameData;
 
 import java.nio.file.Path;
 
@@ -28,9 +27,4 @@ public class Explosion extends Entity {
         return animTime;
     }
 
-
-
-
 }
-
-

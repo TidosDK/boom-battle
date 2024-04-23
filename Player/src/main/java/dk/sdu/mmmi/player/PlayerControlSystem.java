@@ -10,8 +10,6 @@ import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
-import static java.lang.Math.abs;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -101,14 +99,14 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
 
         switch (direction) {
             case LEFT:
-                newX = oldX - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
+                newX = oldX - (movingSpeed * gameData.getDeltaTime()) * scaler;
                 newY = player.getGridY() * scaler;
                 player.setX((newX < 0) ? 0 : newX);
                 player.setY(newY);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.LEFT.getValue()));
                 break;
             case RIGHT:
-                newX = oldX + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                newX = oldX + (movingSpeed * gameData.getDeltaTime()) * scaler;
                 newY = player.getGridY() * scaler;
                 player.setX(Math.min(newX, ((world.getMap().getWidth() - 1) * scaler)));
                 player.setY(newY);
@@ -116,14 +114,14 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 break;
             case UP:
                 newX = player.getGridX() * scaler;
-                newY = oldY + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                newY = oldY + (movingSpeed * gameData.getDeltaTime()) * scaler;
                 player.setX(newX);
                 player.setY(Math.min(newY, ((world.getMap().getHeight() - 1) * scaler)));
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.UP.getValue()));
                 break;
             case DOWN:
                 newX = player.getGridX() * scaler;
-                newY = oldY - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
+                newY = oldY - (movingSpeed * gameData.getDeltaTime()) * gameData.getScaler();
                 player.setX(newX);
                 player.setY((newY < 0) ? 0 : newY);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.DOWN.getValue()));

@@ -16,7 +16,7 @@ public class Coordinates {
         this.y = y;
     }
 
-    public Coordinates (GridPosition gridPosition) {
+    public Coordinates(GridPosition gridPosition) {
         this.x = gridPosition.getX() * GameData.getInstance().getScaler();
         this.y = gridPosition.getY() * GameData.getInstance().getScaler();
     }
@@ -49,18 +49,15 @@ public class Coordinates {
         this.y = y;
     }
 
-    private GridPosition calculateGridPosition(float x, float y) throws IllegalArgumentException {
+    private GridPosition calculateGridPosition(float xParam, float yParam) throws IllegalArgumentException {
         // Calculate the discrete position based on x and y
-        return new GridPosition( x,  y);
+        return new GridPosition(xParam, yParam);
     }
 
     // to String
     @Override
     public String toString() {
-        return "Coordinates{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return "Coordinates{" + "x=" + x + ", y=" + y + "}";
     }
 }
 

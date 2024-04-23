@@ -25,32 +25,32 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
             Weapon weapon = (Weapon) entity;
             if (weapon.calculateTimeTillExplosion(gameData) <= 0) {
                 // Explosion time reached; trigger the explosion visuals and effects.
-                    Collection<Coordinates> blastArea = weapon.calculateBlastArea(world);
-                    for (Coordinates coord : blastArea) {
-                        // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
-                        // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
-                        Path texturePath = weapon.getFireExplosionTexturePath(coord, world);
+                Collection<Coordinates> blastArea = weapon.calculateBlastArea(world);
+                for (Coordinates coord : blastArea) {
+                    // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
+                    // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
+                    Path texturePath = weapon.getFireExplosionTexturePath(coord, world);
 
-                        Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(),
-                                gameData.getScaler(),gameData.getScaler(),1f);
-                        // Add creation time to the HashMap
-                        explosionCreationTimes.put(explosion, gameData.getDeltaTime());
-                        world.addEntity(explosion);
-                    }
-                    // Damage calculation and handling.
-                    this.dealDamage(blastArea, world, weapon);
-                    // Remove the weapon entity after all explosion entities are placed.
-                    world.removeEntity(weapon);
+                    Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(),
+                            gameData.getScaler(), gameData.getScaler(), 1f);
+                    // Add creation time to the HashMap
+                    explosionCreationTimes.put(explosion, gameData.getDeltaTime());
+                    world.addEntity(explosion);
+                }
+                // Damage calculation and handling.
+                this.dealDamage(blastArea, world, weapon);
+                // Remove the weapon entity after all explosion entities are placed.
+                world.removeEntity(weapon);
 
             } else {
                 // Set the texture path to the bomb as it counts down to explosion.
                 weapon.setTexturePath(weapon.getCurrentExplosionAnimatorPath());
             }
         }
-        for(Entity e : world.getEntities(Explosion.class)) {
+        for (Entity e : world.getEntities(Explosion.class)) {
             Explosion expl = (Explosion) e;
             float creationTime = explosionCreationTimes.getOrDefault(expl, 0f);
-            if(expl.getElapsedTime() + gameData.getDeltaTime() >= expl.getAnimTime() + creationTime) {
+            if (expl.getElapsedTime() + gameData.getDeltaTime() >= expl.getAnimTime() + creationTime) {
                 world.removeEntity(expl);
                 explosionCreationTimes.remove(expl); // Remove from HashMap after removal
             } else {
@@ -60,7 +60,6 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
     }
 
 
-
     private static void dealDamage(Collection<Coordinates> blastArea, World world, Weapon weapon) {
         for (Coordinates coordinates : blastArea) {
             for (Entity entity : world.getEntities()) {
@@ -68,7 +67,8 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
                     if (entity instanceof IDamageable) {
                         IDamageable damageable = (IDamageable) entity;
                         damageable.removeLifepoints(weapon.getDamagePoints());
-                        System.out.println("Lifepoints for player: "+damageable.getLifepoints());                    }
+                        System.out.println("Lifepoints for player: " + damageable.getLifepoints());
+                    }
                 }
             }
         }

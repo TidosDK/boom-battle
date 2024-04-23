@@ -9,7 +9,6 @@ import dk.sdu.mmmi.common.services.Entity.ICollidable;
 import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapProcessingService;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
