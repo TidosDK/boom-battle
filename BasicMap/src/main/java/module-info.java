@@ -1,3 +1,5 @@
+import dk.sdu.mmmi.basicmapsystem.BasicMapPlugin;
+import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
 
 module BasicMap {
@@ -6,4 +8,5 @@ module BasicMap {
     provides dk.sdu.mmmi.common.services.map.IMap with dk.sdu.mmmi.basicmapsystem.BasicMap;
     provides dk.sdu.mmmi.common.services.map.IMapProcessingService with dk.sdu.mmmi.basicmapsystem.BasicMap;
     provides dk.sdu.mmmi.common.services.map.IMapGenerator with dk.sdu.mmmi.basicmapsystem.BasicMapGenerator;
+    provides IGamePluginService with BasicMapPlugin;
 }
