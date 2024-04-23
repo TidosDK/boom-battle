@@ -10,6 +10,8 @@ import dk.sdu.mmmi.common.services.Entity.IDamageable;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -27,12 +29,10 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
                     for (Coordinates coord : blastArea) {
                         // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
                         // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
-                        String texturePath = weapon.getFireExplosionTexturePath(coord, world);
-                        System.out.println("Current coord in blastArea loop: "+coord.getX()+","+coord.getY());
+                        Path texturePath = weapon.getFireExplosionTexturePath(coord, world);
 
                         Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(),
                                 gameData.getScaler(),gameData.getScaler(),1f);
-                        System.out.println("Explosion placed at: "+explosion.getCoordinates().getX()+","+explosion.getCoordinates().getY());
                         // Add creation time to the HashMap
                         explosionCreationTimes.put(explosion, gameData.getDeltaTime());
                         world.addEntity(explosion);
@@ -76,7 +76,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
 
     @Override
     public Entity createWeapon(Entity weaponPlacer, GameData gameData) {
-        Weapon weapon = new Weapon(gameData, "Weapon/src/main/resources/planted/bomb-planted-2.png", gameData.getScaler(), gameData.getScaler());
+        Weapon weapon = new Weapon(gameData, Paths.get("Weapon/src/main/resources/planted/bomb-planted-2.png"), gameData.getScaler(), gameData.getScaler());
         weapon.setAnimTime(20f);
         weapon.createFireExplosionAnimators(gameData);
         weapon.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));

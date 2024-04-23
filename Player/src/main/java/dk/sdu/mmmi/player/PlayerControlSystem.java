@@ -67,8 +67,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
             move(Direction.DOWN);
         } else if (gameData.getKeys().isDown(gameData.getKeys().getUP())) {
             move(Direction.UP);
-        } else if (gameData.getKeys().isDown(gameData.getKeys().getGETPOS())) {
-            System.out.println("Player position: " + player.getCoordinates().getGridPosition().getX() + ", " + player.getCoordinates().getGridPosition().getY());
         }
 
         if (gameData.getKeys().isPressed(gameData.getKeys().getSPACE())) {
@@ -107,21 +105,21 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 newY = player.getGridY() * scaler;
                 player.setX((newX < 0) ? 0 : newX);
                 player.setY(newY);
-                player.setTexturePath(player.getActiveTexturePath(animations.LEFT));
+                player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.LEFT.getValue()));
                 break;
             case RIGHT:
                 newX = oldX + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
                 newY = player.getGridY() * scaler;
                 player.setX(Math.min(newX, ((world.getMap().getWidth() - 1) * scaler)));
                 player.setY(newY);
-                player.setTexturePath(player.getActiveTexturePath(animations.RIGHT));
+                player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.RIGHT.getValue()));
                 break;
             case UP:
                 newX = player.getGridX() * scaler;
                 newY = oldY + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
                 player.setX(newX);
                 player.setY(Math.min(newY, ((world.getMap().getHeight() - 1) * scaler)));
-                player.setTexturePath(player.getActiveTexturePath(animations.UP));
+                player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.UP.getValue()));
                 break;
             case DOWN:
                 newX = player.getGridX() * scaler;
