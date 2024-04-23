@@ -59,7 +59,7 @@ public class Weapon extends Entity implements IWeapon {
         return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
-    public String getCurrentExplosionAnimatorPath() {
+    public Path getCurrentExplosionAnimatorPath() {
         if (explosionAnimator == null) {
             return getTexturePath();
         } else  {

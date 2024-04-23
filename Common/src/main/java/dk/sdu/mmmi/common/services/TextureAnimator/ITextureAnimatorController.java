@@ -2,6 +2,8 @@ package dk.sdu.mmmi.common.services.TextureAnimator;
 
 import dk.sdu.mmmi.common.data.Properties.GameData;
 
+import java.nio.file.Path;
+
 public interface ITextureAnimatorController {
 
     /**
@@ -12,5 +14,5 @@ public interface ITextureAnimatorController {
      * @param animationSpeed
      * @return ITextureAnimator
      */
-    ITextureAnimator createTextureAnimator(GameData gameData, String directory, int startIndex, int endIndex, float animationSpeed);
+    ITextureAnimator createTextureAnimator(GameData gameData, Path directory, int startIndex, int endIndex, float animationSpeed);
 }

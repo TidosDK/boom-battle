@@ -6,22 +6,21 @@ import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class TextureAnimator implements ITextureAnimator {
     private GameData gameData;
-    private String directory;
+    private Path directory;
     private int currentDirectoryIndex;
     private int startIndex;
     private int endIndex;
     private float animationSpeed;
     private float animationCooldown;
-    private List<String> imagePaths;
+    private List<Path> imagePaths;
 
-    public TextureAnimator(GameData gameData, String directory, int startIndex, int endIndex, float animationSpeed) {
+    public TextureAnimator(GameData gameData, Path directory, int startIndex, int endIndex, float animationSpeed) {
         this.gameData = gameData;
         this.directory = directory;
         this.currentDirectoryIndex = startIndex;
@@ -43,40 +42,31 @@ public class TextureAnimator implements ITextureAnimator {
         }
 
         if (imagePaths != null && endIndex > imagePaths.size() - 1) {
-            throw new IllegalArgumentException("endIndex must be less or equal than the number of images in the directory");
+            throw new IllegalArgumentException("endIndex must be less or equal to the number of images in the directory");
         }
     }
 
     /**
      * Get all image paths in a directory
-     * @param directory Directory of the images
+     *
+     * @param directoryPath Directory of the images
      * @return List of image paths
      */
-    public List<String> getImagePaths(String directory) {
-        Path directoryPath = Paths.get(directory);
-        Stream<Path> paths = null;
-        try {
-            paths = Files.walk(directoryPath);
+    public List<Path> getImagePaths(Path directoryPath) {
+        List<Path> images = new ArrayList<>();
+        try (Stream<Path> paths = Files.walk(directoryPath)) {
+            paths.filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(".png") || path.toString().endsWith(".jpeg") || path.toString().endsWith(".jpg"))
+                    .forEach(images::add);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        List<String> images = new ArrayList<>();
-        if (paths != null) {
-            paths.forEach(path -> {
-                if (Files.isRegularFile(path)) { // Is a regular file (not a directory)
-                    if (path.toString().endsWith(".png") || path.toString().endsWith(".jpeg")) {
-                        images.add(path.toString());
-                    }
-                }
-            });
-            paths.close();
         }
         return images;
     }
 
+
     @Override
-    public String getCurrentImagePath() {
+    public Path getCurrentTexturePath() {
         if (animationCooldown > 1) {
             animationCooldown = 0;
 

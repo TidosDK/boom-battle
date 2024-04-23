@@ -8,7 +8,6 @@
     <packaging>pom</packaging>
     <name>AsteroidsJPMS</name>
 
-
     <repositories>
         <repository>
             <id>github</id>
@@ -25,6 +24,8 @@
         <module>Enemy</module>
         <module>Weapon</module>
         <module>TextureAnimator</module>
+        <module>DestructibleObstacle</module>
+        <module>NonDestructibleObstacle</module>
     </modules>
 
     <properties>
@@ -32,9 +33,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.9</maven.compiler.source>
         <maven.compiler.target>1.9</maven.compiler.target>
-        <gdx.version3>1.9.13</gdx.version3>
-        <gdx.version2>1.11.0</gdx.version2>
-        <gdx.version>1.12.1</gdx.version>
     </properties>
 
     <dependencyManagement>

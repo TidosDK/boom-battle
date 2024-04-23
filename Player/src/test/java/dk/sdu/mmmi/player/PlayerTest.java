@@ -4,16 +4,22 @@ import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.Properties.GameKeys;
-import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.data.World.Map;
+import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
+import dk.sdu.mmmi.common.services.IGamePluginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -26,11 +32,13 @@ public class PlayerTest {
     GameData gameData;
     GameKeys gameKeys;
     World world;
+    Path texture;
 
     @BeforeEach
     void setup() {
         // Creates a new player and mocks the player, game data, game keys, and world.
-        underlyingPlayer = new Player("Player/src/main/resources/personLeft1.png", 2f, 2f);
+        texture = Paths.get("Player/src/main/resources/personLeft1.png");
+        underlyingPlayer = new Player(texture, 2f, 2f);
         mockPlayer = mock(Player.class);
         gameData = mock(GameData.class);
         gameKeys = mock(GameKeys.class);
@@ -53,26 +61,36 @@ public class PlayerTest {
         when(world.getMap().getHeight()).thenReturn(10);
     }
 
+    // Verifies functional requirement F-01
     @Test()
-    void testWeapons() {
-        // Asserts the mock player hasn't placed any weapons.
-        assertTrue(mockPlayer.getWeapons().isEmpty(), "The list should be empty as the player hasn't placed any weapons yet.");
+    void testPlayerExists() {
+        // Mocks the world to add entities and retrieve the list of entities
+        doAnswer(invocation -> {
+            Entity entity = invocation.getArgument(0);
+            world.getEntities().add(entity);
+            return null;
+        }).when(world).addEntity(any(Entity.class));
+        when(world.getEntities()).thenReturn(new ArrayList<>());
 
-        // Adds a weapon to the underlying player.
-        when(mockPlayer.getWeapons()).thenReturn(underlyingPlayer.getWeapons());
-        IWeapon weapon = mock(IWeapon.class);
-        underlyingPlayer.getWeapons().add(weapon);
+        // This uses the ServiceLoader getter-method for IGamePluginService which is found in the Core module
+        for (IGamePluginService plugin : ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList())) {
+            plugin.start(world, gameData);
+        }
 
-        // Asserts that the mock player has one weapon.
-        assertTrue(mockPlayer.getWeapons().contains(weapon) && mockPlayer.getWeapons().size() == 1, "The list should only contain one weapon as the underlying player has added one weapon.");
+        // Checks if the player exists in the world
+        boolean playerExists = false;
+        for (Entity entity : world.getEntities()) {
+            if (entity.getClass().equals(Player.class)) {
+                playerExists = true;
+                break;
+            }
+        }
 
-        // Removes the weapon from the underlying player.
-        underlyingPlayer.removeWeapon(weapon);
-
-        // Asserts that the mock player has no weapons.
-        assertEquals(0, mockPlayer.getWeapons().size(), "The list should be empty as the underlying player has removed the weapon.");
+        // Asserts that the player exists in the world
+        assertTrue(playerExists);
     }
 
+    // Verifies functional requirement F-01a
     @Test()
     void testMovement() {
         // Configures all keys to not be pressed.
@@ -131,9 +149,65 @@ public class PlayerTest {
         when(gameData.getKeys().isDown(gameData.getKeys().getLEFT())).thenReturn(false);
     }
 
-    // Below is to be implemented at a future point in time.
-//    @Test()
-//    void testTakeDamage() {
-//        
-//    }
+    // Verifies functional requirement F-01c
+    @Test()
+    void testWeapons() {
+        // Asserts the mock player hasn't placed any weapons.
+        assertTrue(mockPlayer.getWeapons().isEmpty(), "The list should be empty as the player hasn't placed any weapons yet.");
+
+        // Adds a weapon to the underlying player.
+        when(mockPlayer.getWeapons()).thenReturn(underlyingPlayer.getWeapons());
+        IWeapon weapon = mock(IWeapon.class);
+        underlyingPlayer.getWeapons().add(weapon);
+
+        // Asserts that the mock player has one weapon.
+        assertTrue(mockPlayer.getWeapons().contains(weapon) && mockPlayer.getWeapons().size() == 1, "The list should only contain one weapon as the underlying player has added one weapon.");
+
+        // Removes the weapon from the underlying player.
+        underlyingPlayer.removeWeapon(weapon);
+
+        // Asserts that the mock player has no weapons.
+        assertEquals(0, mockPlayer.getWeapons().size(), "The list should be empty as the underlying player has removed the weapon.");
+    }
+
+    // Verifies functional requirement F-01f
+    @Test()
+    void testTakeDamage() {
+        // Arrange
+        underlyingPlayer.setLifepoints(2);
+        ArrayList<Entity> mockEntityList = new ArrayList<>();
+
+        // Mock the world to return the player above list of entities
+        doAnswer(invocation -> {
+            ArrayList<Entity> entities = new ArrayList<>();
+            for (Entity entity : mockEntityList) {
+                if (entity.getClass().equals(Player.class)) {
+                    entities.add(entity);
+                }
+            }
+            return entities;
+        }).when(world).getEntities(Player.class);
+
+        // Mock world.removeEntity, using the mock list from above
+        doAnswer(invocation -> {
+            mockEntityList.remove(invocation.getArgument(0));
+            return null;
+        }).when(world).removeEntity(any(Entity.class));
+
+        // Act
+        mockEntityList.add(underlyingPlayer); // Add the player to the mock list.
+
+        PlayerControlSystem playerControlSystem = new PlayerControlSystem();
+        playerControlSystem.process(world, gameData); // Should do nothing.
+
+        underlyingPlayer.removeLifepoints(1); // Should take the player to 1 Life points.
+        assertEquals(1, underlyingPlayer.getLifepoints());
+
+        underlyingPlayer.removeLifepoints(1); // Should take the player to 0 Life points, killing them.
+        assertEquals(0, underlyingPlayer.getLifepoints());
+        playerControlSystem.process(world, gameData); // Should remove the player from the world.
+
+        // Asserts the player has been removed from the world.
+        assertTrue(mockEntityList.isEmpty());
+    }
 }

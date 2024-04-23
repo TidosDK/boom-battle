@@ -4,7 +4,6 @@ import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.Entity.Direction;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.enums.animations;
 import dk.sdu.mmmi.common.services.Entity.IActor;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
@@ -129,7 +128,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 newY = oldY - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
                 player.setX(newX);
                 player.setY((newY < 0) ? 0 : newY);
-                player.setTexturePath(player.getActiveTexturePath(animations.DOWN));
+                player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.DOWN.getValue()));
                 break;
         }
     }

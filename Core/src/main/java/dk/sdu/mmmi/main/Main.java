@@ -20,6 +20,7 @@ import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapGenerator;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -54,11 +55,6 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         // Update game
-        // Convert RGB to range 0-1
-        float r = 18f / 255f;
-        float g = 120f / 255f;
-        float b = 48f / 255f;
-
         ScreenUtils.clear(1, 1, 1, 1);
 
         gameData.setDeltaTime(Gdx.graphics.getDeltaTime());
@@ -89,25 +85,29 @@ public class Main extends ApplicationAdapter {
             entityProcessingService.process(world, gameData);
         }
 
+        // Sort entities based on texture layer before rendering
+        List<Entity> sortedEntities = sortEntitiesByTextureLayer(world.getEntities());
+
         // Create sprites for new entities
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : sortedEntities) {
             if (!entitySprites.containsKey(entity)) {
                 Sprite sprite = createSprite(entity);
                 entitySprites.put(entity, sprite);
             }
         }
 
-        for (Entity entity : world.getEntities()) {
+        // Update all entity sprites
+        for (Entity entity : sortedEntities) {
             updateSprite(entity);
         }
 
         // Draw map
         drawMap();
 
-        // Render entities
+        // Render all entities
         batch.begin();
-        for (Sprite sprite : entitySprites.values()) {
-            sprite.draw(batch);
+        for (Entity entity : sortedEntities) {
+            entitySprites.get(entity).draw(batch);
         }
         batch.end();
     }
@@ -134,13 +134,26 @@ public class Main extends ApplicationAdapter {
     }
 
     /**
+     * Sorts entities based on their texture layer
+     *
+     * @param entities list of entities to sort
+     * @return a new list with the input entities sorted by texture layer
+     */
+    private List<Entity> sortEntitiesByTextureLayer(List<Entity> entities) {
+        List<Entity> sortedEntities = new ArrayList<>(entities);
+        Comparator<Entity> textureLayerComparator = Comparator.comparingInt(Entity::getTextureLayer); // Comparator for sorting entities based on texture layer value
+        Collections.sort(sortedEntities, textureLayerComparator); // Sort entities with the comparator
+        return sortedEntities;
+    }
+
+    /**
      * Creates a sprite from an entity
      *
      * @param entity the entity to create a sprite from
      * @return the sprite
      */
     private Sprite createSprite(Entity entity) {
-        Texture texture = new Texture(entity.getTexturePath());
+        Texture texture = new Texture(entity.getTexturePath().toString());
         Sprite sprite = new Sprite(texture);
 
         sprite.setSize(entity.getWidth(), entity.getHeight());
@@ -159,7 +172,7 @@ public class Main extends ApplicationAdapter {
         Coordinates coords = entity.getCoordinates();
 
         sprite.getTexture().dispose();
-        sprite.setTexture(new Texture(entity.getTexturePath()));
+        sprite.setTexture(new Texture(entity.getTexturePath().toString()));
 
         sprite.setPosition(coords.getX(), coords.getY());
 //        sprite.setRotation(entity.getRotation());
