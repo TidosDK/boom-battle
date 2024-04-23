@@ -1,13 +1,13 @@
 package dk.sdu.mmmi.BasicMapSystem;
 
-import dk.sdu.mmmi.common.data.Entity.Coordinates;
-import dk.sdu.mmmi.common.data.Entity.Direction;
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.GridPosition;
-import dk.sdu.mmmi.common.data.World.Map;
-import dk.sdu.mmmi.common.services.Entity.ICollidable;
-import dk.sdu.mmmi.common.services.Map.IMap;
-import dk.sdu.mmmi.common.services.Map.IMapProcessingService;
+import dk.sdu.mmmi.common.data.entity.Coordinates;
+import dk.sdu.mmmi.common.data.entity.Direction;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.GridPosition;
+import dk.sdu.mmmi.common.data.world.Map;
+import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
+import dk.sdu.mmmi.common.services.map.IMap;
+import dk.sdu.mmmi.common.services.map.IMapProcessingService;
 
 import java.util.Collection;
 import java.util.ServiceLoader;

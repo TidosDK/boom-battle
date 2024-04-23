@@ -1,14 +1,14 @@
 package dk.sdu.mmmi.WeaponSystem;
 
-import dk.sdu.mmmi.common.data.Entity.Coordinates;
-import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.GridPosition;
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
-import dk.sdu.mmmi.common.services.Map.IMap;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.data.entity.Coordinates;
+import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.GridPosition;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.weapon.IWeapon;
+import dk.sdu.mmmi.common.services.map.IMap;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

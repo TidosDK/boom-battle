@@ -1,12 +1,12 @@
 package dk.sdu.mmmi.player;
 
-import dk.sdu.mmmi.common.data.Entity.TextureLayer;
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.data.entity.TextureLayer;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
-import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

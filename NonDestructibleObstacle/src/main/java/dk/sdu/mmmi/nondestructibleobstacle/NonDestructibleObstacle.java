@@ -1,9 +1,9 @@
 package dk.sdu.mmmi.nondestructibleobstacle;
 
-import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.Entity.ICollidable;
-import dk.sdu.mmmi.common.services.Obstacle.nondestructible.INonDestructibleObstacle;
+import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
+import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
 
 import java.nio.file.Path;
 

@@ -1,8 +1,8 @@
 package dk.sdu.mmmi.textureAnimator;
 
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimator;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
 

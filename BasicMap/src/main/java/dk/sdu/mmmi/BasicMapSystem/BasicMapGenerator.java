@@ -1,8 +1,8 @@
 package dk.sdu.mmmi.BasicMapSystem;
 
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.data.World.Map;
-import dk.sdu.mmmi.common.services.Map.IMapGenerator;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.data.world.Map;
+import dk.sdu.mmmi.common.services.map.IMapGenerator;
 
 public class BasicMapGenerator implements IMapGenerator {
 

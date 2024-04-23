@@ -1,6 +1,6 @@
 package dk.sdu.mmmi.WeaponSystem;
 
-import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.data.entity.Entity;
 
 import java.nio.file.Path;
 

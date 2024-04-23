@@ -1,7 +1,7 @@
 package dk.sdu.mmmi.nondestructibleobstacle;
 
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 
 public class NonDestructibleObstaclePlugin implements IGamePluginService {

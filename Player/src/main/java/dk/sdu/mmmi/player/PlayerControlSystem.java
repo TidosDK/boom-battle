@@ -1,14 +1,14 @@
 package dk.sdu.mmmi.player;
 
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.Entity.Direction;
-import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.Entity.IActor;
-import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
-import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
-import dk.sdu.mmmi.common.services.Map.IMap;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.entity.Direction;
+import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.entityproperties.IActor;
+import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.weapon.IWeapon;
+import dk.sdu.mmmi.common.services.weapon.IWeaponController;
+import dk.sdu.mmmi.common.services.map.IMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
