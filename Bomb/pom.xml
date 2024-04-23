@@ -8,7 +8,7 @@
     </parent>
 
     <groupId>dk.sdu.mmmi</groupId>
-    <artifactId>Weapon</artifactId>
+    <artifactId>Bomb</artifactId>
     <packaging>jar</packaging>
 
     <name>Weapon</name>

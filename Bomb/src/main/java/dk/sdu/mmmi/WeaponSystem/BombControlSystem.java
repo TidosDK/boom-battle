@@ -15,30 +15,31 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class WeaponControlSystem implements IEntityProcessingService, IWeaponController {
+public class BombControlSystem implements IEntityProcessingService, IWeaponController {
 
     private HashMap<Entity, Float> explosionCreationTimes = new HashMap<>();
 
     @Override
     public synchronized void process(World world, GameData gameData) {
-        for (Entity entity : world.getEntities(Weapon.class)) {
-            Weapon weapon = (Weapon) entity;
+        for (Entity entity : world.getEntities(Bomb.class)) {
+            Bomb weapon = (Bomb) entity;
             if (weapon.calculateTimeTillExplosion(gameData) <= 0) {
                 // Explosion time reached; trigger the explosion visuals and effects.
                 Collection<Coordinates> blastArea = weapon.calculateBlastArea(world);
+
                 for (Coordinates coord : blastArea) {
-                    // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
                     // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
                     Path texturePath = weapon.getFireExplosionTexturePath(coord, world);
 
-                    Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(),
-                            gameData.getScaler(), gameData.getScaler(), 1f);
+                    Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
                     // Add creation time to the HashMap
                     explosionCreationTimes.put(explosion, gameData.getDeltaTime());
                     world.addEntity(explosion);
                 }
+
                 // Damage calculation and handling.
                 this.dealDamage(blastArea, world, weapon);
+
                 // Remove the weapon entity after all explosion entities are placed.
                 world.removeEntity(weapon);
 
@@ -50,6 +51,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
         for (Entity e : world.getEntities(Explosion.class)) {
             Explosion expl = (Explosion) e;
             float creationTime = explosionCreationTimes.getOrDefault(expl, 0f);
+
             if (expl.getElapsedTime() + gameData.getDeltaTime() >= expl.getAnimTime() + creationTime) {
                 world.removeEntity(expl);
                 explosionCreationTimes.remove(expl); // Remove from HashMap after removal
@@ -60,7 +62,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
     }
 
 
-    private static void dealDamage(Collection<Coordinates> blastArea, World world, Weapon weapon) {
+    private static void dealDamage(Collection<Coordinates> blastArea, World world, Bomb weapon) {
         for (Coordinates coordinates : blastArea) {
             for (Entity entity : world.getEntities()) {
                 if (entity.getGridPosition().equals(coordinates.getGridPosition())) {
@@ -76,7 +78,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
 
     @Override
     public Entity createWeapon(Entity weaponPlacer, GameData gameData) {
-        Weapon weapon = new Weapon(gameData, Paths.get("Weapon/src/main/resources/planted/bomb-planted-2.png"), gameData.getScaler(), gameData.getScaler());
+        Bomb weapon = new Bomb(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/planted/bomb-planted-2.png"), gameData.getScaler(), gameData.getScaler());
         weapon.setAnimTime(20f);
         weapon.createFireExplosionAnimators(gameData);
         weapon.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));

@@ -18,7 +18,7 @@ import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
 
-public class Weapon extends Entity implements IWeapon {
+public class Bomb extends Entity implements IWeapon {
     private float timeSincePlacement;
     private float timeTillExplosionInSeconds;
     private int damagePoints;
@@ -29,7 +29,7 @@ public class Weapon extends Entity implements IWeapon {
 
     private ITextureAnimator explosionFireAnimator;
 
-    private String explosionBasePath = "Weapon/src/main/resources/explosion/";
+    private String explosionBasePath = "Bomb/src/main/resources/bomb_textures/explosion/";
 
     private ITextureAnimator explosionRightAnimator;
     private ITextureAnimator explosionLeftAnimator;
@@ -39,15 +39,15 @@ public class Weapon extends Entity implements IWeapon {
     private ITextureAnimator explosionMidVerticalAnimator;
 
 
-    public Weapon(GameData gameData, Path texturePath, float width, float height) {
+    public Bomb(GameData gameData, Path texturePath, float width, float height) {
         super(texturePath, width, height);
 
         if (!getITextureAnimatorController().isEmpty()) {
             ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
 
             if (animatorController != null) {
-                explosionAnimator = animatorController.createTextureAnimator(gameData, Paths.get("Weapon/src/main/resources/planted"), 0, 5, 20f);
-                explosionFireAnimator = animatorController.createTextureAnimator(gameData, Paths.get("Weapon/src/main/resources/explosion/center"), 0, 4, 20f);
+                explosionAnimator = animatorController.createTextureAnimator(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 20f);
+                explosionFireAnimator = animatorController.createTextureAnimator(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/explosion/center/"), 0, 4, 20f);
             }
         }
     }
