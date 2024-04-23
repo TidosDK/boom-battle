@@ -14,6 +14,7 @@ import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.services.Entity.IActor;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.Map.IMap;
@@ -239,6 +240,33 @@ public class Main extends ApplicationAdapter {
      */
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    }
+
+
+    /**
+     * Checks if there is only one or less actor alive in the world.
+     * Useful for checking if the game is over.
+     *
+     * @return true if there is only one or less Entity in world, or if there is only one or less IActor in world.
+     */
+    private boolean isOneOrLessActorAlive() {
+        ArrayList<Entity> entities = world.getEntities();
+
+        if(entities.size() <= 1) {
+            return true;
+        }
+
+        boolean actorFound = false;
+
+        for(Entity entity : entities) {
+            if(entity instanceof IActor && !actorFound) {
+                actorFound = true;
+            } else if(entity instanceof IActor) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void createWorld() {
