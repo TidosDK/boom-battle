@@ -68,6 +68,8 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
             move(Direction.DOWN);
         } else if (gameData.getKeys().isDown(gameData.getKeys().getUP())) {
             move(Direction.UP);
+        } else if (gameData.getKeys().isDown(gameData.getKeys().getGETPOS())) {
+            System.out.println("Player position: " + player.getCoordinates().getGridPosition().getX() + ", " + player.getCoordinates().getGridPosition().getY());
         }
 
         if (gameData.getKeys().isPressed(gameData.getKeys().getSPACE())) {
@@ -90,32 +92,42 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         float scaler = gameData.getScaler();
         float newY;
         float newX;
+        float oldX = player.getX();
+        float oldY = player.getY();
         player.setDirection(direction);
         if (World.getInstance().getMap() instanceof IMap) {
             IMap map = (IMap) World.getInstance().getMap();
-            if (!map.isMoveAllowed(abs(player.getX()), abs(player.getY()), direction)) {
+            if (!map.isMoveAllowed(player.getGridX(), player.getGridY(), direction)) {
                 return;
             }
         }
 
         switch (direction) {
             case LEFT:
-                newX = player.getX() - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
+                newX = oldX - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
+                newY = player.getGridY() * scaler;
                 player.setX((newX < 0) ? 0 : newX);
+                player.setY(newY);
                 player.setTexturePath(player.getActiveTexturePath(animations.LEFT));
                 break;
             case RIGHT:
-                newX = player.getX() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
-                player.setX((newX > ((world.getMap().getWidth()-1)*scaler)) ?  ((world.getMap().getWidth()-1) * scaler): newX);
+                newX = oldX + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                newY = player.getGridY() * scaler;
+                player.setX(Math.min(newX, ((world.getMap().getWidth() - 1) * scaler)));
+                player.setY(newY);
                 player.setTexturePath(player.getActiveTexturePath(animations.RIGHT));
                 break;
             case UP:
-                newY = player.getY() + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
-                player.setY(newY);
+                newX = player.getGridX() * scaler;
+                newY = oldY + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                player.setX(newX);
+                player.setY(Math.min(newY, ((world.getMap().getHeight() - 1) * scaler)));
                 player.setTexturePath(player.getActiveTexturePath(animations.UP));
                 break;
             case DOWN:
-                newY = player.getY() - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
+                newX = player.getGridX() * scaler;
+                newY = oldY - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
+                player.setX(newX);
                 player.setY((newY < 0) ? 0 : newY);
                 player.setTexturePath(player.getActiveTexturePath(animations.DOWN));
                 break;
