@@ -123,26 +123,27 @@ public class Weapon extends Entity implements IWeapon {
 
     public Collection<Coordinates> calculateBlastArea(World world) {
         IMap map = (IMap) world.getMap();
-        GridPosition position = this.getCoordinates().getGridPosition();
-        System.out.println("Start position var inside calculateBlastArea: "+position.getX()+","+ position.getY());
+        Coordinates position = this.getCoordinates();
+        System.out.println("Start position var inside calculateBlastArea: "+ position.getGridPosition().toString());
         Collection<Coordinates> blastArea = new ArrayList<>();
 
         // Add the origin of the explosion
-        blastArea.add(new Coordinates(position.getX(), position.getY()));
+        blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
 
         // Loop to add coordinates in four directions from the bomb's position
         int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // right, left, up, down
 
         for (int[] direction : directions) {
             for (int j = 1; j <= this.blastLength; j++) {
-                int x = position.getX() + j * direction[0];
-                int y = position.getY() + j * direction[1];
+                int x = position.getGridX() + j * direction[0];
+                int y = position.getGridY() + j * direction[1];
 
                 // If the next tile in the direction is an obstacle, stop adding to that direction
                 if (map.isTileObstacle(x, y)) {
                     break;
                 }
-                blastArea.add(new Coordinates(x, y));
+                Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                blastArea.add(blastPos);
             }
         }
 

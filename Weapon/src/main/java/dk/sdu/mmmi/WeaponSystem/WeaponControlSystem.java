@@ -3,6 +3,7 @@ package dk.sdu.mmmi.WeaponSystem;
 import dk.sdu.mmmi.common.data.Entity.Coordinates;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 import dk.sdu.mmmi.common.data.Properties.GameData;
+import dk.sdu.mmmi.common.data.World.GridPosition;
 import dk.sdu.mmmi.common.data.World.World;
 import dk.sdu.mmmi.common.services.Entity.IDamageable;
 import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
@@ -28,7 +29,8 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
                         String texturePath = weapon.getFireExplosionTexturePath(coord, world);
                         System.out.println("Current coord in blastArea loop: "+coord.getX()+","+coord.getY());
 
-                        Explosion explosion = new Explosion(gameData, texturePath, coord.getX(), coord.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
+                        Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(),
+                                gameData.getScaler(),gameData.getScaler(),1f);
                         System.out.println("Explosion placed at: "+explosion.getCoordinates().getX()+","+explosion.getCoordinates().getY());
                         // Add creation time to the HashMap
                         explosionCreationTimes.put(explosion, gameData.getDeltaTime());
@@ -76,8 +78,7 @@ public class WeaponControlSystem implements IEntityProcessingService, IWeaponCon
         Weapon weapon = new Weapon(gameData, "Weapon/src/main/resources/planted/bomb-planted-2.png", gameData.getScaler(), gameData.getScaler());
         weapon.setAnimTime(20f);
         weapon.createFireExplosionAnimators(gameData);
-        weapon.setX(weaponPlacer.getGridPosition().getX());
-        weapon.setY(weaponPlacer.getGridPosition().getY());
+        weapon.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));
         weapon.setDamagePoints(2);
         weapon.setBlastLength(3);
         weapon.setTimeSincePlacement(gameData.getDeltaTime());
