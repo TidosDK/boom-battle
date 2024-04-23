@@ -24,7 +24,13 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     private int blastLength;
 
     private HashMap<Integer, ITextureAnimator> animators;
-    private Path explosionRightPath, explosionLeftPath, explosionUpPath, explosionDownPath, explosionMidHorizontalPath, explosionMidVerticalPath, explosionCenterPath;
+    private Path explosionRightPath;
+    private Path explosionLeftPath;
+    private Path explosionUpPath;
+    private Path explosionDownPath;
+    private Path explosionMidHorizontalPath;
+    private Path explosionMidVerticalPath;
+    private Path explosionCenterPath;
 
     public Bomb(Path texturePath, float width, float height) {
         super(texturePath, width, height);
