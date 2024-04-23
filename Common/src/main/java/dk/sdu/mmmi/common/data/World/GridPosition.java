@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.common.data.World;
 
+import dk.sdu.mmmi.common.data.Properties.GameData;
+
 public class GridPosition {
     private int x;
     private int y;
@@ -7,6 +9,12 @@ public class GridPosition {
     public GridPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public GridPosition(float x, float y) {
+        float scaler = GameData.getInstance().getScaler();
+        this.x = Math.round(x / scaler);
+        this.y = Math.round(y / scaler);
     }
     @Override
     public boolean equals(Object o) {
@@ -22,6 +30,14 @@ public class GridPosition {
 
     public int getY() {
         return y;
+    }
+
+    @Override
+    public String toString() {
+        return "GridPosition{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 
 }
