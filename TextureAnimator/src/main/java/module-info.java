@@ -1,4 +1,4 @@
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 import dk.sdu.mmmi.textureAnimator.TextureAnimatorControlSystem;
 
 module TextureAnimator {
