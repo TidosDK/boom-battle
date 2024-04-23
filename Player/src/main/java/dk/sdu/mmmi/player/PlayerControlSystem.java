@@ -6,6 +6,7 @@ import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.weapon.IWeapon;
 import dk.sdu.mmmi.common.services.weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.map.IMap;
@@ -44,11 +45,24 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 this.player.removeWeapon(weapon);
             }
 
+            // player handling whether player is dead or alive
             if (this.player.getLifepoints() <= 0) {
-                this.world.removeEntity(playerEntity);
-            }
+                // player is dead
+                ITextureAnimator dieAnimator = this.player.getAnimators().get(PlayerAnimations.DIE.getValue());
+                if (dieAnimator != null) {
+                    player.setTexturePath(dieAnimator.getCurrentTexturePath());
+                    if (dieAnimator.getCurrentTextureIndex() == dieAnimator.getTextureAmount() - 1) {
+                        this.world.removeEntity(playerEntity);
+                    }
+                } else {
+                    this.world.removeEntity(playerEntity);
+                }
 
-            checkMovement();
+            } else {
+                // player is alive
+                player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.STILL.getValue()));
+                checkPlayerActions();
+            }
         }
 
         if (this.world.getMap() instanceof IMap) {
@@ -56,7 +70,10 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
-    private void checkMovement() {
+    /**
+     * Executes player actions based on the keys pressed.
+     */
+    private void checkPlayerActions() {
         if (gameData.getKeys().isDown(gameData.getKeys().getLeft())) {
             move(Direction.LEFT);
         } else if (gameData.getKeys().isDown(gameData.getKeys().getRight())) {
@@ -82,7 +99,11 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
-    // @Override
+    /**
+     * Moves the player in the specified direction.
+     *
+     * @param direction The direction to move the player.
+     */
     public void move(Direction direction) {
         float scaler = gameData.getScaler();
         float newY;

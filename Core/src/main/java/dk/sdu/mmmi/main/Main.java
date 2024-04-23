@@ -174,7 +174,6 @@ public class Main extends ApplicationAdapter {
         sprite.setTexture(new Texture(entity.getTexturePath().toString()));
 
         sprite.setPosition(coords.getX(), coords.getY());
-//        sprite.setRotation(entity.getRotation());
     }
 
     /**
