@@ -8,12 +8,16 @@ import dk.sdu.mmmi.common.data.world.GridPosition;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 import dk.sdu.mmmi.common.services.weapon.IWeaponController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.ServiceLoader;
+
+import static java.util.stream.Collectors.toList;
 
 public class BombControlSystem implements IEntityProcessingService, IWeaponController {
 
@@ -22,30 +26,30 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
     @Override
     public synchronized void process(World world, GameData gameData) {
         for (Entity entity : world.getEntities(Bomb.class)) {
-            Bomb weapon = (Bomb) entity;
-            if (weapon.calculateTimeTillExplosion(gameData) <= 0) {
+            Bomb bomb = (Bomb) entity;
+            if (bomb.calculateTimeTillExplosion(gameData) <= 0) {
                 // Explosion time reached; trigger the explosion visuals and effects.
-                Collection<Coordinates> blastArea = weapon.calculateBlastArea(world);
+                Collection<Coordinates> blastArea = bomb.calculateBlastArea(world);
 
                 for (Coordinates coord : blastArea) {
                     // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
-                    Path texturePath = weapon.getFireExplosionTexturePath(coord, world);
+                    Path texturePath = bomb.getFireExplosionTexturePath(coord);
 
                     Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
+
                     // Add creation time to the HashMap
                     explosionCreationTimes.put(explosion, gameData.getDeltaTime());
                     world.addEntity(explosion);
                 }
 
                 // Damage calculation and handling.
-                this.dealDamage(blastArea, world, weapon);
+                this.dealDamage(blastArea, world, bomb);
 
-                // Remove the weapon entity after all explosion entities are placed.
-                world.removeEntity(weapon);
-
+                // Remove the bomb entity after all explosion entities are placed.
+                world.removeEntity(bomb);
             } else {
                 // Set the texture path to the bomb as it counts down to explosion.
-                weapon.setTexturePath(weapon.getCurrentExplosionAnimatorPath());
+                bomb.setTexturePath(bomb.getActiveTexturePath(BombAnimations.PLACEMENT.getValue()));
             }
         }
         for (Entity e : world.getEntities(Explosion.class)) {
@@ -60,7 +64,6 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
             }
         }
     }
-
 
     private static void dealDamage(Collection<Coordinates> blastArea, World world, Bomb weapon) {
         for (Coordinates coordinates : blastArea) {
@@ -78,15 +81,21 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
 
     @Override
     public Entity createWeapon(Entity weaponPlacer, GameData gameData) {
-        Bomb weapon = new Bomb(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/planted/bomb-planted-2.png"), gameData.getScaler(), gameData.getScaler());
-        weapon.setAnimTime(20f);
-        weapon.createFireExplosionAnimators(gameData);
-        weapon.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));
-        weapon.setDamagePoints(2);
-        weapon.setBlastLength(3);
-        weapon.setTimeSincePlacement(gameData.getDeltaTime());
-        weapon.setTimeTillExplosionInSeconds(2f);
-        weapon.setTextureLayer(TextureLayer.POWER_UP.getValue());
-        return weapon;
+        Path defaultTexture = Paths.get("Bomb/src/main/resources/bomb_textures/planted/bomb-planted-2.png");
+        Bomb bomb = new Bomb(defaultTexture, gameData.getScaler(), gameData.getScaler());
+        for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
+            bomb.addAnimator(BombAnimations.PLACEMENT.getValue(), animatorController.createTextureAnimator(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 16f));
+        }
+        bomb.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));
+        bomb.setDamagePoints(2);
+        bomb.setBlastLength(3);
+        bomb.setTimeSincePlacement(gameData.getDeltaTime());
+        bomb.setTimeTillExplosionInSeconds(2f);
+        bomb.setTextureLayer(TextureLayer.POWER_UP.getValue());
+        return bomb;
+    }
+
+    private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {
+        return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
