@@ -38,7 +38,7 @@ public class DestructibleObstacleControlSystem implements IDestructibleObstacleC
     }
 
     /**
-     * Get all ITextureAnimatorController implementations
+     * Get all ITextureAnimatorController implementations.
      *
      * @return Collection of ITextureAnimatorController
      */

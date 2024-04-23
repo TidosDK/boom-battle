@@ -16,6 +16,7 @@ public class GridPosition {
         this.x = Math.round(x / scaler);
         this.y = Math.round(y / scaler);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -24,20 +25,24 @@ public class GridPosition {
         return x == that.x && y == that.y;
     }
 
+    @Override
+    public int hashCode() {
+        int result = Integer.hashCode(x);
+        result = 31 * result + Integer.hashCode(y);
+        return result;
+    }
+
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     @Override
     public String toString() {
-        return "GridPosition{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return "GridPosition{" + "x=" + x + ", y=" + y + "}";
     }
 
 }

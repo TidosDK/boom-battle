@@ -21,11 +21,11 @@ public class GameData {
     }
 
     public GameKeys getKeys() {
-        return keys;
+        return this.keys;
     }
 
     public float getDeltaTime() {
-        return deltaTime;
+        return this.deltaTime;
     }
 
     public void setDeltaTime(float deltaTime) {

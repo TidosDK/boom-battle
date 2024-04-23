@@ -6,8 +6,6 @@ import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.data.Entity.Entity;
 
 public class WeaponPlugin implements IGamePluginService {
-    private Entity weapon;
-
     @Override
     public void start(World world, GameData gameData) {
     }

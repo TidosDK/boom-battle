@@ -10,8 +10,6 @@ import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
 import dk.sdu.mmmi.common.services.Entity.Weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.Map.IMap;
 
-import static java.lang.Math.abs;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,19 +24,19 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
     private int maxWeapons = 3;
     private IMap map = null;
 
-    private final float MOVING_SPEED = 10f;
+    private final float movingSpeed = 10f;
 
     @Override
-    public void process(World world, GameData gameData) {
-        this.world = world;
-        this.gameData = gameData;
+    public void process(World worldParam, GameData gameDataParam) {
+        this.world = worldParam;
+        this.gameData = gameDataParam;
 
-        for (Entity player : world.getEntities(Player.class)) {
-            this.player = (Player) player;
+        for (Entity playerEntity : this.world.getEntities(Player.class)) {
+            this.player = (Player) playerEntity;
 
             List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
             for (IWeapon weapon : this.player.getWeapons()) {
-                if (!world.getEntities().contains(weapon)) {
+                if (!this.world.getEntities().contains(weapon)) {
                     weaponsToBeRemoved.add(weapon);
                 }
             }
@@ -46,30 +44,30 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 this.player.removeWeapon(weapon);
             }
 
-            if(this.player.getLifepoints() <= 0) {
-                world.removeEntity(player);
+            if (this.player.getLifepoints() <= 0) {
+                this.world.removeEntity(playerEntity);
             }
 
             checkMovement();
         }
 
-        if (world.getMap() instanceof IMap) {
-            map = (IMap) world.getMap();
+        if (this.world.getMap() instanceof IMap) {
+            map = (IMap) this.world.getMap();
         }
     }
 
     private void checkMovement() {
-        if (gameData.getKeys().isDown(gameData.getKeys().getLEFT())) {
+        if (gameData.getKeys().isDown(gameData.getKeys().getLeft())) {
             move(Direction.LEFT);
-        } else if (gameData.getKeys().isDown(gameData.getKeys().getRIGHT())) {
+        } else if (gameData.getKeys().isDown(gameData.getKeys().getRight())) {
             move(Direction.RIGHT);
-        } else if (gameData.getKeys().isDown(gameData.getKeys().getDOWN())) {
+        } else if (gameData.getKeys().isDown(gameData.getKeys().getDown())) {
             move(Direction.DOWN);
-        } else if (gameData.getKeys().isDown(gameData.getKeys().getUP())) {
+        } else if (gameData.getKeys().isDown(gameData.getKeys().getUp())) {
             move(Direction.UP);
         }
 
-        if (gameData.getKeys().isPressed(gameData.getKeys().getSPACE())) {
+        if (gameData.getKeys().isPressed(gameData.getKeys().getSpace())) {
             this.placeWeapon();
         }
     }
@@ -93,22 +91,22 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         float oldY = player.getY();
         player.setDirection(direction);
         if (World.getInstance().getMap() instanceof IMap) {
-            IMap map = (IMap) World.getInstance().getMap();
-            if (!map.isMoveAllowed(player.getGridX(), player.getGridY(), direction)) {
+            IMap mapInstance = (IMap) World.getInstance().getMap();
+            if (!mapInstance.isMoveAllowed(player.getGridX(), player.getGridY(), direction)) {
                 return;
             }
         }
 
         switch (direction) {
             case LEFT:
-                newX = oldX - (MOVING_SPEED * gameData.getDeltaTime())* scaler;
+                newX = oldX - (movingSpeed * gameData.getDeltaTime()) * scaler;
                 newY = player.getGridY() * scaler;
                 player.setX((newX < 0) ? 0 : newX);
                 player.setY(newY);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.LEFT.getValue()));
                 break;
             case RIGHT:
-                newX = oldX + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                newX = oldX + (movingSpeed * gameData.getDeltaTime()) * scaler;
                 newY = player.getGridY() * scaler;
                 player.setX(Math.min(newX, ((world.getMap().getWidth() - 1) * scaler)));
                 player.setY(newY);
@@ -116,17 +114,19 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 break;
             case UP:
                 newX = player.getGridX() * scaler;
-                newY = oldY + (MOVING_SPEED * gameData.getDeltaTime()) * scaler;
+                newY = oldY + (movingSpeed * gameData.getDeltaTime()) * scaler;
                 player.setX(newX);
                 player.setY(Math.min(newY, ((world.getMap().getHeight() - 1) * scaler)));
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.UP.getValue()));
                 break;
             case DOWN:
                 newX = player.getGridX() * scaler;
-                newY = oldY - (MOVING_SPEED * gameData.getDeltaTime()) * gameData.getScaler();
+                newY = oldY - (movingSpeed * gameData.getDeltaTime()) * gameData.getScaler();
                 player.setX(newX);
                 player.setY((newY < 0) ? 0 : newY);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.DOWN.getValue()));
+                break;
+            default:
                 break;
         }
     }

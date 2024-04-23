@@ -22,19 +22,19 @@ public class Entity {
     }
 
     public void setX(float x) {
-        coordinates.setX(x);
+        this.coordinates.setX(x);
     }
 
     public float getX() {
-        return coordinates.getX();
+        return this.coordinates.getX();
     }
 
     public void setY(float y) {
-        coordinates.setY(y);
+        this.coordinates.setY(y);
     }
 
     public float getY() {
-        return coordinates.getY();
+        return this.coordinates.getY();
     }
 
     public int getGridX() {
@@ -46,11 +46,11 @@ public class Entity {
     }
 
     public GridPosition getGridPosition() {
-        return coordinates.getGridPosition();
+        return this.coordinates.getGridPosition();
     }
 
     public float getRotation() {
-        switch (direction) {
+        switch (this.direction) {
             default:
                 return 0;
             case DOWN:
@@ -69,7 +69,7 @@ public class Entity {
      */
 
     public Coordinates getCoordinates() {
-        return coordinates;
+        return this.coordinates;
     }
 
     public void setCoordinates(Coordinates coordinates) {
@@ -77,7 +77,7 @@ public class Entity {
     }
 
     public Path getTexturePath() {
-        return texturePath;
+        return this.texturePath;
     }
 
     public void setTexturePath(Path texturePath) {
@@ -85,7 +85,7 @@ public class Entity {
     }
 
     public int getTextureLayer() {
-        return textureLayer;
+        return this.textureLayer;
     }
 
     public void setTextureLayer(int textureLayer) {
@@ -93,7 +93,7 @@ public class Entity {
     }
 
     public float getWidth() {
-        return width;
+        return this.width;
     }
 
     public void setWidth(float width) {
@@ -101,7 +101,7 @@ public class Entity {
     }
 
     public float getHeight() {
-        return height;
+        return this.height;
     }
 
     public void setHeight(float height) {
@@ -109,7 +109,7 @@ public class Entity {
     }
 
     public Direction getDirection() {
-        return direction;
+        return this.direction;
     }
 
     public void setDirection(Direction direction) {

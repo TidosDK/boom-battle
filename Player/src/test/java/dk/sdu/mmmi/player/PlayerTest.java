@@ -27,12 +27,12 @@ import static org.mockito.Mockito.*;
  */
 public class PlayerTest {
 
-    Player underlyingPlayer;
-    Player mockPlayer;
-    GameData gameData;
-    GameKeys gameKeys;
-    World world;
-    Path texture;
+    private Player underlyingPlayer;
+    private Player mockPlayer;
+    private GameData gameData;
+    private GameKeys gameKeys;
+    private World world;
+    private Path texture;
 
     @BeforeEach
     void setup() {
@@ -50,10 +50,10 @@ public class PlayerTest {
 
         // Sets the game data and the game keys.
         when(gameData.getKeys()).thenReturn(gameKeys);
-        when(gameKeys.getUP()).thenReturn(0);
-        when(gameKeys.getRIGHT()).thenReturn(1);
-        when(gameKeys.getDOWN()).thenReturn(2);
-        when(gameKeys.getLEFT()).thenReturn(3);
+        when(gameKeys.getUp()).thenReturn(0);
+        when(gameKeys.getRight()).thenReturn(1);
+        when(gameKeys.getDown()).thenReturn(2);
+        when(gameKeys.getLeft()).thenReturn(3);
 
         // Assigns a mock Map to the World mock.
         when(world.getMap()).thenReturn(mock(Map.class));
@@ -94,10 +94,10 @@ public class PlayerTest {
     @Test()
     void testMovement() {
         // Configures all keys to not be pressed.
-        when(gameData.getKeys().isDown(gameData.getKeys().getUP())).thenReturn(false);
-        when(gameData.getKeys().isDown(gameData.getKeys().getRIGHT())).thenReturn(false);
-        when(gameData.getKeys().isDown(gameData.getKeys().getDOWN())).thenReturn(false);
-        when(gameData.getKeys().isDown(gameData.getKeys().getLEFT())).thenReturn(false);
+        when(gameData.getKeys().isDown(gameData.getKeys().getUp())).thenReturn(false);
+        when(gameData.getKeys().isDown(gameData.getKeys().getRight())).thenReturn(false);
+        when(gameData.getKeys().isDown(gameData.getKeys().getDown())).thenReturn(false);
+        when(gameData.getKeys().isDown(gameData.getKeys().getLeft())).thenReturn(false);
 
         // Adds the player to the world.
         List<Entity> players = new ArrayList<>();
@@ -108,45 +108,45 @@ public class PlayerTest {
         assertTrue(world.getEntities(Player.class).contains(underlyingPlayer));
 
         // Sets the coordinates of the player.
-        int start_x_coordinate = 5;
-        int start_y_coordinate = 5;
-        underlyingPlayer.setCoordinates(new Coordinates(start_x_coordinate, start_y_coordinate));
+        int startXCoordinate = 5;
+        int startYCoordinate = 5;
+        underlyingPlayer.setCoordinates(new Coordinates(startXCoordinate, startYCoordinate));
         when(mockPlayer.getCoordinates()).thenReturn(underlyingPlayer.getCoordinates());
 
         // Asserts that the player's coordinates are (2, 2).
-        assertEquals(start_x_coordinate, mockPlayer.getCoordinates().getX());
-        assertEquals(start_y_coordinate, mockPlayer.getCoordinates().getY());
+        assertEquals(startXCoordinate, mockPlayer.getCoordinates().getX());
+        assertEquals(startYCoordinate, mockPlayer.getCoordinates().getY());
 
         // Declares the player control system.
         PlayerControlSystem playerControlSystem = new PlayerControlSystem();
 
         // Asserts that the player has moved up.
-        float previous_y_coordinate = mockPlayer.getCoordinates().getY();
-        when(gameData.getKeys().isDown(gameData.getKeys().getUP())).thenReturn(true);
+        float previousYCoordinate = mockPlayer.getCoordinates().getY();
+        when(gameData.getKeys().isDown(gameData.getKeys().getUp())).thenReturn(true);
         playerControlSystem.process(world, gameData);
-        assertTrue(previous_y_coordinate < mockPlayer.getCoordinates().getY());
-        when(gameData.getKeys().isDown(gameData.getKeys().getUP())).thenReturn(false);
+        assertTrue(previousYCoordinate < mockPlayer.getCoordinates().getY());
+        when(gameData.getKeys().isDown(gameData.getKeys().getUp())).thenReturn(false);
 
         // Asserts that the player has moved down.
-        previous_y_coordinate = mockPlayer.getCoordinates().getY();
-        when(gameData.getKeys().isDown(gameData.getKeys().getDOWN())).thenReturn(true);
+        previousYCoordinate = mockPlayer.getCoordinates().getY();
+        when(gameData.getKeys().isDown(gameData.getKeys().getDown())).thenReturn(true);
         playerControlSystem.process(world, gameData);
-        assertTrue(previous_y_coordinate > mockPlayer.getCoordinates().getY());
-        when(gameData.getKeys().isDown(gameData.getKeys().getDOWN())).thenReturn(false);
+        assertTrue(previousYCoordinate > mockPlayer.getCoordinates().getY());
+        when(gameData.getKeys().isDown(gameData.getKeys().getDown())).thenReturn(false);
 
         // Asserts that the player has moved right.
-        float previous_x_coordinate = mockPlayer.getCoordinates().getX();
-        when(gameData.getKeys().isDown(gameData.getKeys().getRIGHT())).thenReturn(true);
+        float previousXCoordinate = mockPlayer.getCoordinates().getX();
+        when(gameData.getKeys().isDown(gameData.getKeys().getRight())).thenReturn(true);
         playerControlSystem.process(world, gameData);
-        assertTrue(previous_x_coordinate < mockPlayer.getCoordinates().getX());
-        when(gameData.getKeys().isDown(gameData.getKeys().getRIGHT())).thenReturn(false);
+        assertTrue(previousXCoordinate < mockPlayer.getCoordinates().getX());
+        when(gameData.getKeys().isDown(gameData.getKeys().getRight())).thenReturn(false);
 
         // Asserts that the player has moved left.
-        previous_x_coordinate = mockPlayer.getCoordinates().getX();
-        when(gameData.getKeys().isDown(gameData.getKeys().getLEFT())).thenReturn(true);
+        previousXCoordinate = mockPlayer.getCoordinates().getX();
+        when(gameData.getKeys().isDown(gameData.getKeys().getLeft())).thenReturn(true);
         playerControlSystem.process(world, gameData);
-        assertTrue(previous_x_coordinate > mockPlayer.getCoordinates().getX());
-        when(gameData.getKeys().isDown(gameData.getKeys().getLEFT())).thenReturn(false);
+        assertTrue(previousXCoordinate > mockPlayer.getCoordinates().getX());
+        when(gameData.getKeys().isDown(gameData.getKeys().getLeft())).thenReturn(false);
     }
 
     // Verifies functional requirement F-01c

@@ -1,7 +1,7 @@
 package dk.sdu.mmmi.player;
 
 /**
- * Enum for the different animations of the player
+ * Enum for the different animations of the player.
  */
 public enum PlayerAnimations {
     LEFT(1),

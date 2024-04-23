@@ -26,7 +26,7 @@ public class World {
     }
 
     public Map getMap() {
-        return map;
+        return this.map;
     }
 
     public void setMap(Map map) {
@@ -34,13 +34,13 @@ public class World {
     }
 
     public ArrayList<Entity> getEntities() {
-        return entities;
+        return this.entities;
     }
 
     public <child extends Entity> List<Entity> getEntities(Class<child>... entityChildClasses) {
         List<Entity> children = new ArrayList<>();
 
-        for (Entity entity : getEntities()) {
+        for (Entity entity : this.getEntities()) {
             for (Class<child> childClass : entityChildClasses) {
                 if (childClass.equals(entity.getClass())) {
                     children.add(entity);
@@ -51,10 +51,10 @@ public class World {
     }
 
     public void addEntity(Entity entity) {
-        entities.add(entity);
+        this.entities.add(entity);
     }
 
     public void removeEntity(Entity entity) {
-        entities.remove(entity);
+        this.entities.remove(entity);
     }
 }

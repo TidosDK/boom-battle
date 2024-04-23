@@ -9,7 +9,6 @@ import dk.sdu.mmmi.common.services.Entity.ICollidable;
 import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapProcessingService;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
@@ -66,13 +65,13 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     private boolean handleEdgeCases(float x, float y, Direction direction) {
-        float x_unscaled = x / GameData.getInstance().getScaler();
-        float y_unscaled = y / GameData.getInstance().getScaler();
+        float xUnscaled = x / GameData.getInstance().getScaler();
+        float yUnscaled = y / GameData.getInstance().getScaler();
         return switch (direction) {
-            case UP -> y_unscaled < getHeight() - 1;
-            case DOWN -> y_unscaled > 0;
-            case LEFT -> x_unscaled < getWidth() - 1;
-            case RIGHT -> x_unscaled > 0;
+            case UP -> yUnscaled < getHeight() - 1;
+            case DOWN -> yUnscaled > 0;
+            case LEFT -> xUnscaled < getWidth() - 1;
+            case RIGHT -> xUnscaled > 0;
             default -> false;
         };
 

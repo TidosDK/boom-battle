@@ -20,7 +20,6 @@ import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapGenerator;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -134,7 +133,7 @@ public class Main extends ApplicationAdapter {
     }
 
     /**
-     * Sorts entities based on their texture layer
+     * Sorts entities based on their texture layer.
      *
      * @param entities list of entities to sort
      * @return a new list with the input entities sorted by texture layer
@@ -147,7 +146,7 @@ public class Main extends ApplicationAdapter {
     }
 
     /**
-     * Creates a sprite from an entity
+     * Creates a sprite from an entity.
      *
      * @param entity the entity to create a sprite from
      * @return the sprite
@@ -163,7 +162,7 @@ public class Main extends ApplicationAdapter {
     }
 
     /**
-     * Updates the sprites position and rotation of an entity
+     * Updates the sprites position and rotation of an entity.
      *
      * @param entity the entity to update the sprite of
      */
@@ -179,40 +178,40 @@ public class Main extends ApplicationAdapter {
     }
 
     /**
-     * Checks if keys are pressed and updates the keys in gameData
+     * Checks if keys are pressed and updates the keys in gameData.
      */
     private void updateKeys() {
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            gameData.getKeys().setKey(gameData.getKeys().getLEFT(), true);
+            gameData.getKeys().setKey(gameData.getKeys().getLeft(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            gameData.getKeys().setKey(gameData.getKeys().getRIGHT(), true);
+            gameData.getKeys().setKey(gameData.getKeys().getRight(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            gameData.getKeys().setKey(gameData.getKeys().getUP(), true);
+            gameData.getKeys().setKey(gameData.getKeys().getUp(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            gameData.getKeys().setKey(gameData.getKeys().getDOWN(), true);
+            gameData.getKeys().setKey(gameData.getKeys().getDown(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            gameData.getKeys().setKey(gameData.getKeys().getSPACE(), true);
+            gameData.getKeys().setKey(gameData.getKeys().getSpace(), true);
         }
 
 
         if (!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            gameData.getKeys().setKey(gameData.getKeys().getLEFT(), false);
+            gameData.getKeys().setKey(gameData.getKeys().getLeft(), false);
         }
         if (!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            gameData.getKeys().setKey(gameData.getKeys().getRIGHT(), false);
+            gameData.getKeys().setKey(gameData.getKeys().getRight(), false);
         }
         if (!Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            gameData.getKeys().setKey(gameData.getKeys().getUP(), false);
+            gameData.getKeys().setKey(gameData.getKeys().getUp(), false);
         }
         if (!Gdx.input.isKeyPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            gameData.getKeys().setKey(gameData.getKeys().getDOWN(), false);
+            gameData.getKeys().setKey(gameData.getKeys().getDown(), false);
         }
         if (!Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            gameData.getKeys().setKey(gameData.getKeys().getSPACE(), false);
+            gameData.getKeys().setKey(gameData.getKeys().getSpace(), false);
         }
     }
 
@@ -225,7 +224,7 @@ public class Main extends ApplicationAdapter {
     }
 
     /**
-     * Get all plugins
+     * Get all plugins.
      *
      * @return a collection of all instances of IGamePluginService
      */
@@ -234,7 +233,7 @@ public class Main extends ApplicationAdapter {
     }
 
     /**
-     * Get all entity processing services
+     * Get all entity processing services.
      *
      * @return a collection of all instances of IEntityProcessingService
      */
@@ -248,7 +247,5 @@ public class Main extends ApplicationAdapter {
             IMapGenerator mapGen = provider.get();
             mapGen.generateMap(world);
         });
-
-
     }
 }

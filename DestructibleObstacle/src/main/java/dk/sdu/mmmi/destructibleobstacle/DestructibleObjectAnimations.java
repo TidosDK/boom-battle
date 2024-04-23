@@ -1,7 +1,7 @@
 package dk.sdu.mmmi.destructibleobstacle;
 
 /**
- * Enum for the different animations of the destructible object
+ * Enum for the different animations of the destructible object.
  */
 public enum DestructibleObjectAnimations {
     DESTROY(0);
