@@ -9,6 +9,7 @@ import dk.sdu.mmmi.common.services.Entity.ICollidable;
 import dk.sdu.mmmi.common.services.Map.IMap;
 import dk.sdu.mmmi.common.services.Map.IMapProcessingService;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
@@ -46,23 +47,16 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     }
 
     @Override
-    public boolean isMoveAllowed(float x, float y, Direction direction) {
+    public boolean isMoveAllowed(int gridX, int gridY, Direction direction) {
         boolean[][] map = this.getMap();
         int maxX = map.length - 1;
         int maxY = map[0].length - 1;
-        int gridX = Math.round(x / GameData.getInstance().getScaler());
-        int gridY = Math.round(y / GameData.getInstance().getScaler());
-
-        if (x < 0 || y < 0) {
-            return false;
-        }
-
         try {
             return switch (direction) {
-                case UP -> (gridY == maxY) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY + 1];
-                case DOWN -> (gridY == 0) ? handleEdgeCases(x, y, direction) : !map[gridX][gridY - 1];
-                case LEFT -> (gridX == 0) ? handleEdgeCases(x, y, direction) : !map[gridX - 1][gridY];
-                case RIGHT -> (gridX == maxX) ? handleEdgeCases(x, y, direction) : !map[gridX + 1][gridY];
+                case UP -> (gridY == maxY) ? handleEdgeCases(gridX, gridY, direction) : !map[gridX][gridY + 1];
+                case DOWN -> (gridY == 0) ? handleEdgeCases(gridX, gridY, direction) : !map[gridX][gridY - 1];
+                case LEFT -> (gridX == 0) ? handleEdgeCases(gridX, gridY, direction) : !map[gridX - 1][gridY];
+                case RIGHT -> (gridX == maxX) ? handleEdgeCases(gridX, gridY, direction) : !map[gridX + 1][gridY];
                 default -> false;
             };
         } catch (IndexOutOfBoundsException e) {

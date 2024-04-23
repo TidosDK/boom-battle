@@ -37,6 +37,14 @@ public class Entity {
         return this.coordinates.getY();
     }
 
+    public int getGridX() {
+        return coordinates.getGridPosition().getX();
+    }
+
+    public int getGridY() {
+        return coordinates.getGridPosition().getY();
+    }
+
     public GridPosition getGridPosition() {
         return this.coordinates.getGridPosition();
     }

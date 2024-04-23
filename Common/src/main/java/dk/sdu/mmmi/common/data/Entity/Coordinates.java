@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.common.data.Entity;
 
+import dk.sdu.mmmi.common.data.Properties.GameData;
 import dk.sdu.mmmi.common.data.World.GridPosition;
 
 /**
@@ -15,6 +16,11 @@ public class Coordinates {
         this.y = y;
     }
 
+    public Coordinates (GridPosition gridPosition) {
+        this.x = gridPosition.getX() * GameData.getInstance().getScaler();
+        this.y = gridPosition.getY() * GameData.getInstance().getScaler();
+    }
+
     public float getX() {
         return this.x;
     }
@@ -23,9 +29,16 @@ public class Coordinates {
         return this.y;
     }
 
+    public int getGridX() {
+        return getGridPosition().getX();
+    }
+
+    public int getGridY() {
+        return getGridPosition().getY();
+    }
+
     public GridPosition getGridPosition() {
-        // If floats are above .5, round up
-        return new GridPosition(Math.round(this.x), Math.round(this.y));
+        return new GridPosition(x, y);
     }
 
     public void setX(float x) {
@@ -36,9 +49,18 @@ public class Coordinates {
         this.y = y;
     }
 
-//    private GridPosition calculateGridPosition(float x_val, float y_val) throws IllegalArgumentException {
-//        // Calculate the discrete position based on x and y
-//        return new GridPosition((int) x_val, (int) y_val);
-//    }
+    private GridPosition calculateGridPosition(float x, float y) throws IllegalArgumentException {
+        // Calculate the discrete position based on x and y
+        return new GridPosition( x,  y);
+    }
+
+    // to String
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
 
