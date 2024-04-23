@@ -7,6 +7,6 @@ import dk.sdu.mmmi.destructibleobstacle.DestructibleObstaclePlugin;
 module DestructibleObstacle {
     requires Common;
     uses ITextureAnimator;
-    provides IDestructibleObstacleController with DestructibleObstacleControlSystem;
     provides IGamePluginService with DestructibleObstaclePlugin;
+    provides IDestructibleObstacleController with DestructibleObstacleControlSystem;
 }

@@ -5,6 +5,6 @@ import dk.sdu.mmmi.textureAnimator.TextureAnimatorPlugin;
 
 module TextureAnimator {
     requires Common;
-    provides ITextureAnimatorController with TextureAnimatorControlSystem;
     provides IGamePluginService with TextureAnimatorPlugin;
+    provides ITextureAnimatorController with TextureAnimatorControlSystem;
 }

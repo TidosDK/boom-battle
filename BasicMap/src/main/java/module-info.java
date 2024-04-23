@@ -1,12 +1,17 @@
+import dk.sdu.mmmi.basicmapsystem.BasicMap;
+import dk.sdu.mmmi.basicmapsystem.BasicMapGenerator;
 import dk.sdu.mmmi.basicmapsystem.BasicMapPlugin;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
+import dk.sdu.mmmi.common.services.map.IMap;
+import dk.sdu.mmmi.common.services.map.IMapGenerator;
+import dk.sdu.mmmi.common.services.map.IMapProcessingService;
 
 module BasicMap {
     uses ICollidable;
     requires Common;
-    provides dk.sdu.mmmi.common.services.map.IMap with dk.sdu.mmmi.basicmapsystem.BasicMap;
-    provides dk.sdu.mmmi.common.services.map.IMapProcessingService with dk.sdu.mmmi.basicmapsystem.BasicMap;
-    provides dk.sdu.mmmi.common.services.map.IMapGenerator with dk.sdu.mmmi.basicmapsystem.BasicMapGenerator;
     provides IGamePluginService with BasicMapPlugin;
+    provides IMap with BasicMap;
+    provides IMapProcessingService with BasicMap;
+    provides IMapGenerator with BasicMapGenerator;
 }

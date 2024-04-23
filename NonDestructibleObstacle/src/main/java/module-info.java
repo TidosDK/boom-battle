@@ -5,6 +5,6 @@ import dk.sdu.mmmi.nondestructibleobstacle.NonDestructibleObstaclePlugin;
 
 module NonDestructibleObstacle {
     requires Common;
-    provides INonDestructibleObstacleController with NonDestructibleObstacleControlSystem;
     provides IGamePluginService with NonDestructibleObstaclePlugin;
+    provides INonDestructibleObstacleController with NonDestructibleObstacleControlSystem;
 }
