@@ -34,5 +34,5 @@ public interface IMap {
      * @param direction the direction of the move
      * @return true if the move is allowed, false otherwise
      */
-    boolean isMoveAllowed(float x, float y, Direction direction);
+    boolean isMoveAllowed(int x, int y, Direction direction);
 }
