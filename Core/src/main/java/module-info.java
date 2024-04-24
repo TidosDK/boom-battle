@@ -7,5 +7,6 @@ module Core {
     requires com.badlogic.gdx;
     uses IGamePluginService;
     uses IEntityProcessingService;
-    uses IMapGenerator;
+    uses dk.sdu.mmmi.common.services.map.IMapGenerator;
+    exports dk.sdu.mmmi.main.CustomStages;
 }
