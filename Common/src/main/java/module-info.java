@@ -1,4 +1,5 @@
 module Common {
+    requires com.badlogic.gdx;
     exports dk.sdu.mmmi.common.data.entity;
     exports dk.sdu.mmmi.common.data.gameproperties;
     exports dk.sdu.mmmi.common.data.world;

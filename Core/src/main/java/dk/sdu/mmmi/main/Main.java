@@ -3,9 +3,7 @@ package dk.sdu.mmmi.main;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -163,9 +161,13 @@ public class Main extends ApplicationAdapter {
 
     private void createWorld() {
         this.world = World.getInstance();
-        ServiceLoader.load(IMapGenerator.class).stream().findFirst().ifPresent(provider -> {
-            IMapGenerator mapGen = provider.get();
+        ServiceLoader.Provider mapGenProvider = ServiceLoader.load(IMapGenerator.class).stream().findFirst().
+                orElse(null);
+        if (mapGenProvider != null) {
+            IMapGenerator mapGen = (IMapGenerator) mapGenProvider.get();
             mapGen.generateMap(world);
-        });
+        } else {
+            world.generateDefaultMap();
+        }
     }
 }

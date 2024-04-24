@@ -57,4 +57,8 @@ public class World {
     public void removeEntity(Entity entity) {
         this.entities.remove(entity);
     }
+
+    public void generateDefaultMap() {
+        DefaultMapGenerator.generateMap(this);
+    }
 }

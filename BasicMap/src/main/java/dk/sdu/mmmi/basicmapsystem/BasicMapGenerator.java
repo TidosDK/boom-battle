@@ -41,6 +41,7 @@ public class BasicMapGenerator implements IMapGenerator {
                 }
             }
         }
+        //mapRenderer.createDestructibleObstacle(1, 0);
 
         return map;
     }
