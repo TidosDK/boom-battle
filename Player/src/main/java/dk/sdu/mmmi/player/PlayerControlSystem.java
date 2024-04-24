@@ -32,8 +32,8 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         this.world = worldParam;
         this.gameData = gameDataParam;
 
-        for (Entity player : this.world.getEntities(Player.class)) {
-            this.player = (Player) player;
+        for (Entity playerEntity : this.world.getEntities(Player.class)) {
+            this.player = (Player) playerEntity;
 
             List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
             for (IWeapon weapon : this.player.getWeapons()) {
