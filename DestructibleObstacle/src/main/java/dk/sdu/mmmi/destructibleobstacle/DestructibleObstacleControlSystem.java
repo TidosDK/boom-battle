@@ -1,12 +1,12 @@
 package dk.sdu.mmmi.destructibleobstacle;
 
-import dk.sdu.mmmi.common.data.Entity.TextureLayer;
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.Obstacle.destructible.IDestructibleObstacle;
-import dk.sdu.mmmi.common.services.Obstacle.destructible.IDestructibleObstacleController;
-import dk.sdu.mmmi.common.services.TextureAnimator.IAnimatable;
-import dk.sdu.mmmi.common.services.TextureAnimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.data.entity.TextureLayer;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
+import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacleController;
+import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

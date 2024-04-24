@@ -10,15 +10,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import dk.sdu.mmmi.common.data.Entity.Coordinates;
-import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.Entity.IActor;
-import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
+import dk.sdu.mmmi.common.data.entity.Coordinates;
+import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
-import dk.sdu.mmmi.common.services.Map.IMap;
-import dk.sdu.mmmi.common.services.Map.IMapGenerator;
+import dk.sdu.mmmi.common.services.map.IMap;
+import dk.sdu.mmmi.common.services.map.IMapGenerator;
 
 import java.util.*;
 

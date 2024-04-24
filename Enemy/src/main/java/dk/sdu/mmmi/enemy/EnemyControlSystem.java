@@ -1,10 +1,10 @@
 package dk.sdu.mmmi.enemy;
 
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.Entity.IActor;
-import dk.sdu.mmmi.common.services.Entity.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.entityproperties.IActor;
+import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.weapon.IWeapon;
 
 public class EnemyControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private IWeapon[] weapons;

@@ -1,12 +1,12 @@
 package dk.sdu.mmmi.player;
 
-import dk.sdu.mmmi.common.data.Entity.Coordinates;
-import dk.sdu.mmmi.common.data.Entity.Entity;
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.Properties.GameKeys;
-import dk.sdu.mmmi.common.data.World.Map;
-import dk.sdu.mmmi.common.data.World.World;
-import dk.sdu.mmmi.common.services.Entity.Weapon.IWeapon;
+import dk.sdu.mmmi.common.data.entity.Coordinates;
+import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.gameproperties.GameKeys;
+import dk.sdu.mmmi.common.data.world.Map;
+import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.weapon.IWeapon;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

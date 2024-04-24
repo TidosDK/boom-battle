@@ -1,9 +1,9 @@
 package dk.sdu.mmmi.enemy;
 
-import dk.sdu.mmmi.common.data.Properties.GameData;
-import dk.sdu.mmmi.common.data.World.World;
+import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
-import dk.sdu.mmmi.common.data.Entity.Entity;
+import dk.sdu.mmmi.common.data.entity.Entity;
 
 public class EnemyPlugin implements IGamePluginService {
     private Entity player;
