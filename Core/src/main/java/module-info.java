@@ -1,5 +1,6 @@
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.map.IMapGenerator;
 
 module Core {
     requires Common;

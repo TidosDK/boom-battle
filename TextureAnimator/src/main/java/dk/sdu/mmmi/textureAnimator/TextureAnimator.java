@@ -78,4 +78,22 @@ public class TextureAnimator implements ITextureAnimator {
 
         return imagePaths.get(currentDirectoryIndex);
     }
+
+    @Override
+    public int getNumberOfTextures() {
+        return endIndex - startIndex + 1;
+    }
+
+    @Override
+    public int getCurrentTextureIndex() {
+        return currentDirectoryIndex - startIndex;
+    }
+
+    @Override
+    public void setCurrentTextureIndex(int index) {
+        if (index < 0 || index > endIndex - startIndex) {
+            throw new IllegalArgumentException("Index must be within the range of the animation");
+        }
+        currentDirectoryIndex = startIndex + index;
+    }
 }

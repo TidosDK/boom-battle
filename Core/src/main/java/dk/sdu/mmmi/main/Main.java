@@ -50,6 +50,7 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         entitySprites = new HashMap<>();
         createWorld();
+
         // Initial start of plugins
         for (IGamePluginService plugin : getPluginServices()) {
             plugin.start(world, gameData);
@@ -93,8 +94,6 @@ public class Main extends ApplicationAdapter {
         gameStage.setEntities(world.getEntities());
 
         stages.forEach(stage -> stage.drawStage(batch));
-
-
     }
 
     /**

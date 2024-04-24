@@ -13,11 +13,12 @@ public class EnemyPlugin implements IGamePluginService {
 
     @Override
     public void start(World world, GameData gameData) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        System.out.println("Module started: Enemy");
     }
 
     @Override
     public void stop(World world, GameData gameData) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        for (Entity enemy : world.getEntities(Enemy.class)) {
+            world.removeEntity(enemy);
+        }    }
 }
