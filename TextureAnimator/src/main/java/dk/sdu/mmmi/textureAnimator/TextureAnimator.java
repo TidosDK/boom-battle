@@ -80,7 +80,7 @@ public class TextureAnimator implements ITextureAnimator {
     }
 
     @Override
-    public int getTextureAmount() {
+    public int getNumberOfTextures() {
         return endIndex - startIndex + 1;
     }
 

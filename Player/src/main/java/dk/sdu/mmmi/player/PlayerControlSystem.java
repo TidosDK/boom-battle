@@ -23,7 +23,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
     private GameData gameData;
     private Player player;
     private int maxWeapons = 3;
-    private IMap map = null;
+    private IMap map;
 
     private final float movingSpeed = 10f;
 
@@ -32,8 +32,8 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         this.world = worldParam;
         this.gameData = gameDataParam;
 
-        for (Entity playerEntity : this.world.getEntities(Player.class)) {
-            this.player = (Player) playerEntity;
+        for (Entity player : this.world.getEntities(Player.class)) {
+            this.player = (Player) player;
 
             List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
             for (IWeapon weapon : this.player.getWeapons()) {
@@ -45,24 +45,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 this.player.removeWeapon(weapon);
             }
 
-            // player handling whether player is dead or alive
-            if (this.player.getLifepoints() <= 0) {
-                // player is dead
-                ITextureAnimator dieAnimator = this.player.getAnimators().get(PlayerAnimations.DIE.getValue());
-                if (dieAnimator != null) {
-                    player.setTexturePath(dieAnimator.getCurrentTexturePath());
-                    if (dieAnimator.getCurrentTextureIndex() == dieAnimator.getTextureAmount() - 1) {
-                        this.world.removeEntity(playerEntity);
-                    }
-                } else {
-                    this.world.removeEntity(playerEntity);
-                }
-
-            } else {
-                // player is alive
-                player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.STILL.getValue()));
-                checkPlayerActions();
-            }
+            checkPlayerStatus();
         }
 
         if (this.world.getMap() instanceof IMap) {
@@ -71,9 +54,29 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
     }
 
     /**
+     * Checks the player status and handles the player accordingly whether the player is dead or alive.
+     */
+    private void checkPlayerStatus() {
+        if (this.player.getLifepoints() <= 0) { // player is dead
+            ITextureAnimator dieAnimator = this.player.getAnimators().get(PlayerAnimations.DIE.getValue());
+            if (dieAnimator != null) { // Guard for ITextureAnimator being module
+                player.setTexturePath(dieAnimator.getCurrentTexturePath());
+                if (dieAnimator.getCurrentTextureIndex() == dieAnimator.getNumberOfTextures() - 1) {
+                    this.world.removeEntity(this.player);
+                }
+            } else {
+                this.world.removeEntity(this.player);
+            }
+        } else { // player is alive
+            player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.STILL.getValue()));
+            checkKeyBasedActions();
+        }
+    }
+
+    /**
      * Executes player actions based on the keys pressed.
      */
-    private void checkPlayerActions() {
+    private void checkKeyBasedActions() {
         if (gameData.getKeys().isDown(gameData.getKeys().getLeft())) {
             move(Direction.LEFT);
         } else if (gameData.getKeys().isDown(gameData.getKeys().getRight())) {
@@ -89,7 +92,9 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
-    // @Override
+    /**
+     * Places a bomb in the world.
+     */
     public void placeWeapon() {
         if (player.getWeapons().size() < maxWeapons) {
             for (IWeaponController weapon : getIWeaponProcessing()) {

@@ -12,7 +12,7 @@ public interface ITextureAnimator {
     /**
      * @return returns the absolute amount of textures in the animation
      */
-    int getTextureAmount();
+    int getNumberOfTextures();
 
     /**
      * @return returns the index of the current texture in the animation. Index starts at 0.
@@ -24,5 +24,5 @@ public interface ITextureAnimator {
      *
      * @param index index to set the current texture index to
      */
-    void setCurrentTextureIndex(int index);
+    void setCurrentTextureIndex(int index) throws IllegalArgumentException;
 }
