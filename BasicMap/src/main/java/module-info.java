@@ -6,11 +6,13 @@ import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
 import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.services.map.IMapGenerator;
 import dk.sdu.mmmi.common.services.map.IMapProcessingService;
+import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacleController;
+import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacleController;
 
 module BasicMap {
     uses ICollidable;
-    uses dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacleController;
-    uses dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacleController;
+    uses INonDestructibleObstacleController;
+    uses IDestructibleObstacleController;
     requires Common;
     provides IGamePluginService with BasicMapPlugin;
     provides IMap with BasicMap;
