@@ -17,15 +17,15 @@
     </repositories>
 
     <modules>
-        <module>Core</module>
-        <module>Common</module>
         <module>BasicMap</module>
-        <module>Player</module>
-        <module>Enemy</module>
         <module>Bomb</module>
-        <module>TextureAnimator</module>
+        <module>Common</module>
+        <module>Core</module>
         <module>DestructibleObstacle</module>
+        <module>Enemy</module>
         <module>NonDestructibleObstacle</module>
+        <module>Player</module>
+        <module>TextureAnimator</module>
     </modules>
 
     <properties>
