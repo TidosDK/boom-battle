@@ -160,9 +160,13 @@ public class Main extends ApplicationAdapter {
 
     private void createWorld() {
         this.world = World.getInstance();
-        ServiceLoader.load(IMapGenerator.class).stream().findFirst().ifPresent(provider -> {
-            IMapGenerator mapGen = provider.get();
+        ServiceLoader.Provider mapGenProvider = ServiceLoader.load(IMapGenerator.class).stream().findFirst().
+                orElse(null);
+        if (mapGenProvider != null) {
+            IMapGenerator mapGen = (IMapGenerator) mapGenProvider.get();
             mapGen.generateMap(world);
-        });
+        } else {
+            world.generateDefaultMap();
+        }
     }
 }
