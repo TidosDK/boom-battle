@@ -54,6 +54,8 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void start(World world, GameData gameDataParam) {
+        System.out.println("Module started: Player");
+
         this.gameData = gameDataParam;
         Entity player = createPlayer();
         player.setY(0);
@@ -63,7 +65,9 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void stop(World world, GameData gameDataParam) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (Entity player : world.getEntities(Player.class)) {
+            world.removeEntity(player);
+        }
     }
 
     private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {

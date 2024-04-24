@@ -5,51 +5,44 @@ import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.GridPosition;
 import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
+import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.weapon.IWeapon;
 import dk.sdu.mmmi.common.services.map.IMap;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ServiceLoader;
+import java.util.HashMap;
 
-import static java.util.stream.Collectors.toList;
 
-public class Bomb extends Entity implements IWeapon {
+public class Bomb extends Entity implements IWeapon, IAnimatable {
     private float timeSincePlacement;
     private float timeTillExplosionInSeconds;
     private int damagePoints;
     private int blastLength;
 
-    private float animTime;
-    private ITextureAnimator explosionAnimator;
+    private HashMap<Integer, ITextureAnimator> animators;
+    private Path explosionRightPath;
+    private Path explosionLeftPath;
+    private Path explosionUpPath;
+    private Path explosionDownPath;
+    private Path explosionMidHorizontalPath;
+    private Path explosionMidVerticalPath;
+    private Path explosionCenterPath;
 
-    private ITextureAnimator explosionFireAnimator;
-
-    private String explosionBasePath = "Bomb/src/main/resources/bomb_textures/explosion/";
-
-    private ITextureAnimator explosionRightAnimator;
-    private ITextureAnimator explosionLeftAnimator;
-    private ITextureAnimator explosionUpAnimator;
-    private ITextureAnimator explosionDownAnimator;
-    private ITextureAnimator explosionMidHorizontalAnimator;
-    private ITextureAnimator explosionMidVerticalAnimator;
-
-
-    public Bomb(GameData gameData, Path texturePath, float width, float height) {
+    public Bomb(Path texturePath, float width, float height) {
         super(texturePath, width, height);
+        animators = new HashMap<>();
 
-        if (!getITextureAnimatorController().isEmpty()) {
-            ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
-
-            if (animatorController != null) {
-                explosionAnimator = animatorController.createTextureAnimator(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 20f);
-                explosionFireAnimator = animatorController.createTextureAnimator(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/explosion/center/"), 0, 4, 20f);
-            }
-        }
+        explosionRightPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png");
+        explosionLeftPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/left/left-explosion-2.png");
+        explosionUpPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/up/up-explosion-2.png");
+        explosionDownPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/down/down-explosion-2.png");
+        explosionMidHorizontalPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-horizontal/mid-hori-explosion-2.png");
+        explosionMidVerticalPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-vertical/mid-vert-explosion-2.png");
+        explosionCenterPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/center/center-explosion-2.png");
     }
 
     public float calculateTimeTillExplosion(GameData gameData) {
@@ -57,37 +50,8 @@ public class Bomb extends Entity implements IWeapon {
         return timeTillExplosionInSeconds - timeSincePlacement;
     }
 
-    private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {
-        return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
-    }
 
-    public Path getCurrentExplosionAnimatorPath() {
-        if (explosionAnimator == null) {
-            return getTexturePath();
-        } else {
-            return explosionAnimator.getCurrentTexturePath();
-        }
-    }
-
-
-    public void createFireExplosionAnimators(GameData gameData) {
-
-        if (!getITextureAnimatorController().isEmpty()) {
-            ITextureAnimatorController animatorController = getITextureAnimatorController().stream().findFirst().get();
-
-            if (animatorController != null) {
-                // Create animation controller instance for each direction as according to directories
-                explosionRightAnimator = animatorController.createTextureAnimator(gameData, Paths.get(explosionBasePath + "right"), 0, 4, getAnimTime() /* other parameters */);
-                explosionLeftAnimator = animatorController.createTextureAnimator(gameData, Paths.get(explosionBasePath + "left"), 0, 4, getAnimTime() /* other parameters */);
-                explosionUpAnimator = animatorController.createTextureAnimator(gameData, Paths.get(explosionBasePath + "up"), 0, 4, getAnimTime()/* other parameters */);
-                explosionDownAnimator = animatorController.createTextureAnimator(gameData, Paths.get(explosionBasePath + "down"), 0, 4, getAnimTime()/* other parameters */);
-                explosionMidHorizontalAnimator = animatorController.createTextureAnimator(gameData, Paths.get(explosionBasePath + "mid-horizontal"), 0, 4, getAnimTime()/* other parameters */);
-                explosionMidVerticalAnimator = animatorController.createTextureAnimator(gameData, Paths.get(explosionBasePath + "mid-vertical"), 0, 4, getAnimTime()/* other parameters */);
-            }
-        }
-    }
-
-    public Path getFireExplosionTexturePath(Coordinates coord, World world) {
+    public Path getFireExplosionTexturePath(Coordinates coord) {
         Coordinates originCoords = this.getCoordinates();
         GridPosition position = originCoords.getGridPosition();
 
@@ -100,27 +64,28 @@ public class Bomb extends Entity implements IWeapon {
 
         // Center of the explosion
         if (dx == 0 && dy == 0) {
-            return Paths.get(explosionBasePath + "center/center-explosion-1.png"); // example for the first frame
+            return explosionCenterPath;
         }
 
         // Horizontal explosion
         if (dy == 0) {
             if (dx > 0) { // Right
-                return isEndOfBlastX ? explosionRightAnimator.getCurrentTexturePath() : explosionMidHorizontalAnimator.getCurrentTexturePath();
+                return isEndOfBlastX ? explosionRightPath : explosionMidHorizontalPath;
             } else if (dx < 0) { // Left
-                return isEndOfBlastX ? explosionLeftAnimator.getCurrentTexturePath() : explosionMidHorizontalAnimator.getCurrentTexturePath();
+                return isEndOfBlastX ? explosionLeftPath : explosionMidHorizontalPath;
             }
         }
 
         // Vertical explosion
         if (dx == 0) {
             if (dy > 0) { // Up
-                return isEndOfBlastY ? explosionUpAnimator.getCurrentTexturePath() : explosionMidVerticalAnimator.getCurrentTexturePath();
+                return isEndOfBlastY ? explosionUpPath : explosionMidVerticalPath;
             } else if (dy < 0) { // Down
-                return isEndOfBlastY ? explosionDownAnimator.getCurrentTexturePath() : explosionMidVerticalAnimator.getCurrentTexturePath();
+                return isEndOfBlastY ? explosionDownPath : explosionMidVerticalPath;
             }
         }
-        return explosionFireAnimator.getCurrentTexturePath();
+
+        return explosionCenterPath;
     }
 
     public Collection<Coordinates> calculateBlastArea(World world) {
@@ -151,12 +116,27 @@ public class Bomb extends Entity implements IWeapon {
         return blastArea;
     }
 
-    public void setAnimTime(float animTime) {
-        this.animTime = animTime;
+    @Override
+    public Path getActiveTexturePath(Integer key) {
+        if (animators.get(key) == null) {
+            return getTexturePath();
+        }
+        return animators.get(key).getCurrentTexturePath();
     }
 
-    public float getAnimTime() {
-        return animTime;
+    @Override
+    public void addAnimator(Integer key, ITextureAnimator animator) {
+        animators.put(key, animator);
+    }
+
+    @Override
+    public HashMap<Integer, ITextureAnimator> getAnimators() {
+        return animators;
+    }
+
+    @Override
+    public void setAnimators(HashMap<Integer, ITextureAnimator> animators) {
+        this.animators = animators;
     }
 
     public float getTimeSincePlacement() {
@@ -192,5 +172,4 @@ public class Bomb extends Entity implements IWeapon {
     public void setDamagePoints(int damagePoints) {
         this.damagePoints = damagePoints;
     }
-
 }
