@@ -87,32 +87,42 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
 
         return explosionCenterPath;
     }
-
     public Collection<Coordinates> calculateBlastArea(World world) {
-        IMap map = (IMap) world.getMap();
-        Coordinates position = this.getCoordinates();
+
         Collection<Coordinates> blastArea = new ArrayList<>();
-
-        // Add the origin of the explosion
-        blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
-
-        // Loop to add coordinates in four directions from the bomb's position
+        Coordinates position = this.getCoordinates();
         int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // right, left, up, down
 
-        for (int[] direction : directions) {
-            for (int j = 1; j <= this.blastLength; j++) {
-                int x = position.getGridX() + j * direction[0];
-                int y = position.getGridY() + j * direction[1];
-
-                // If the next tile in the direction is an obstacle, stop adding to that direction
-                if (map.isTileObstacle(x, y)) {
-                    break;
+        if (world.getMap() instanceof IMap) {
+            IMap map = (IMap) world.getMap();
+            // Add the origin of the explosion
+            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
+            // Loop to add coordinates in four directions from the bomb's position
+            for (int[] direction : directions) {
+                for (int j = 1; j <= this.blastLength; j++) {
+                    int x = position.getGridX() + j * direction[0];
+                    int y = position.getGridY() + j * direction[1];
+                    // If the next tile in the direction is an obstacle, stop adding to that direction
+                    if (map.isTileObstacle(x, y)) {
+                        break;
+                    }
+                    Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                    blastArea.add(blastPos);
                 }
-                Coordinates blastPos = new Coordinates(new GridPosition(x, y));
-                blastArea.add(blastPos);
+            }
+        } else {
+            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
+
+            for (int[] direction : directions) {
+                for (int j = 1; j <= this.blastLength; j++) {
+                    int x = position.getGridX() + j * direction[0];
+                    int y = position.getGridY() + j * direction[1];
+                    // If the next tile in the direction is an obstacle, stop adding to that direction
+                    Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                    blastArea.add(blastPos);
+                }
             }
         }
-
         return blastArea;
     }
 
