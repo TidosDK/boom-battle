@@ -35,6 +35,9 @@ public class PlayScreen implements Screen {
     private Collection<ICustomStage> stages;
     private CustomStage gameStage;
 
+    // Related to end game
+    private float endGamePauseTimer = Float.POSITIVE_INFINITY;
+
     /**
      * Constructor for PlayScreen - used roughly the same as the create() method, from the Main class.
      *
@@ -114,6 +117,20 @@ public class PlayScreen implements Screen {
         gameStage.setEntities(world.getEntities());
 
         stages.forEach(stage -> stage.drawStage(batch));
+
+        // TEMPORARY: Check if game is over. If so, wait 3 seconds before changing to EndScreen.
+        if (isOneOrLessActorAlive()) {
+            if (this.endGamePauseTimer != Float.POSITIVE_INFINITY) {
+                this.endGamePauseTimer -= v;
+            } else {
+                this.endGamePauseTimer = 3f;
+            }
+
+            if (this.endGamePauseTimer <= 0f) {
+                game.setScreen(new EndScreen(game));
+                this.dispose();
+            }
+        }
     }
 
     /**
