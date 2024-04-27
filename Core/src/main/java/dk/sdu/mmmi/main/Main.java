@@ -3,16 +3,21 @@ package dk.sdu.mmmi.main;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.main.screens.PlayScreen;
 
 
 public class Main extends Game {
     private GameData gameData;
+    private SpriteBatch batch;
 
     @Override
     public void create() {
         this.gameData = GameData.getInstance();
+
+        this.batch = new SpriteBatch();
+
         setScreen(new PlayScreen(this));
     }
 
@@ -66,5 +71,17 @@ public class Main extends Game {
     public void dispose() {
         screen.dispose(); // Note: The screen's dispose methods are not otherwise called automatically.
         super.dispose(); // Don't know if this is necessary
+    }
+
+
+    /**
+     * Getters and setters
+     */
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(SpriteBatch batch) {
+        this.batch = batch;
     }
 }
