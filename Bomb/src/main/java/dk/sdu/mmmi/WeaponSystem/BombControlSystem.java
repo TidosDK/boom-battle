@@ -36,7 +36,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
                     Path texturePath = bomb.getFireExplosionTexturePath(coord);
 
                     Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
-
+                    explosion.setBomb(bomb);
                     // Add creation time to the HashMap
                     explosionCreationTimes.put(explosion, gameData.getDeltaTime());
                     world.addEntity(explosion);
@@ -58,9 +58,13 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
 
             if (expl.getElapsedTime() + gameData.getDeltaTime() >= expl.getAnimTime() + creationTime) {
                 world.removeEntity(expl);
-                explosionCreationTimes.remove(expl); // Remove from HashMap after removal
+                explosionCreationTimes.remove(expl);
             } else {
-                expl.setElapsedTime(expl.getElapsedTime() + gameData.getDeltaTime()); // Initial elapsed time (accumulate delta time)
+                expl.setElapsedTime(expl.getElapsedTime() + gameData.getDeltaTime());
+                // Damage Calculation:
+                Bomb sourceBomb = expl.getBomb(); // Assumes you've added a 'getBomb' method to Explosion
+                Collection<Coordinates> blastArea = sourceBomb.calculateBlastArea(world);
+                dealDamage(blastArea, world, sourceBomb);
             }
         }
     }
@@ -72,7 +76,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
                     if (entity instanceof IDamageable) {
                         IDamageable damageable = (IDamageable) entity;
                         damageable.removeLifepoints(weapon.getDamagePoints());
-                        System.out.println("Lifepoints for player: " + damageable.getLifepoints());
+                        // debugging HP print System.out.println("Lifepoints for player: " + damageable.getLifepoints());
                     }
                 }
             }
