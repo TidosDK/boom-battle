@@ -177,6 +177,10 @@ public class PlayScreen implements Screen {
         for (Sprite sprite : entitySprites.values()) {
             sprite.getTexture().dispose();
         }
+
+        for (IGamePluginService plugin : getPluginServices()) {
+            plugin.stop(world, gameData);
+        }
     }
 
     /**
