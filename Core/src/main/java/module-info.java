@@ -7,4 +7,5 @@ module Core {
     uses IGamePluginService;
     uses IEntityProcessingService;
     uses dk.sdu.mmmi.common.services.map.IMapGenerator;
+    exports dk.sdu.mmmi.main.CustomStages;
 }

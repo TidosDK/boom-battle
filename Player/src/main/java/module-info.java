@@ -4,6 +4,8 @@ import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 import dk.sdu.mmmi.common.services.weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.weapon.IWeapon;
+import dk.sdu.mmmi.player.PlayerControlSystem;
+import dk.sdu.mmmi.player.PlayerPlugin;
 
 module Player {
     uses IMap;
@@ -11,8 +13,8 @@ module Player {
     uses IWeaponController;
     uses ITextureAnimatorController;
     requires Common;
-    provides IGamePluginService with dk.sdu.mmmi.player.PlayerPlugin;
-    provides IEntityProcessingService with dk.sdu.mmmi.player.PlayerControlSystem;
+    provides IGamePluginService with PlayerPlugin;
+    provides IEntityProcessingService with PlayerControlSystem;
 
     // For unittest only:
     uses IGamePluginService;

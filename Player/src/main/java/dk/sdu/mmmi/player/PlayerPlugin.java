@@ -30,16 +30,23 @@ public class PlayerPlugin implements IGamePluginService {
             Path rightAnimationPath = Paths.get("Player/src/main/resources/player_textures/right");
             Path downAnimationPath = Paths.get("Player/src/main/resources/player_textures/down");
             Path leftAnimationPath = Paths.get("Player/src/main/resources/player_textures/left");
+            Path stillAnimationPath = Paths.get("Player/src/main/resources/player_textures/wait");
+            Path dieAnimationPath = Paths.get("Player/src/main/resources/player_textures/dead");
+
 
             ITextureAnimator upAnimation = animatorController.createTextureAnimator(gameData, upAnimationPath, 0, 7, 20f);
             ITextureAnimator rightAnimation = animatorController.createTextureAnimator(gameData, rightAnimationPath, 0, 7, 20f);
             ITextureAnimator downAnimation = animatorController.createTextureAnimator(gameData, downAnimationPath, 0, 7, 20f);
             ITextureAnimator leftAnimation = animatorController.createTextureAnimator(gameData, leftAnimationPath, 0, 7, 20f);
+            ITextureAnimator stillAnimation = animatorController.createTextureAnimator(gameData, stillAnimationPath, 0, 4, 20f);
+            ITextureAnimator dieAnimation = animatorController.createTextureAnimator(gameData, dieAnimationPath, 0, 4, 5f);
 
             player.addAnimator(PlayerAnimations.UP.getValue(), upAnimation);
             player.addAnimator(PlayerAnimations.RIGHT.getValue(), rightAnimation);
             player.addAnimator(PlayerAnimations.DOWN.getValue(), downAnimation);
             player.addAnimator(PlayerAnimations.LEFT.getValue(), leftAnimation);
+            player.addAnimator(PlayerAnimations.STILL.getValue(), stillAnimation);
+            player.addAnimator(PlayerAnimations.DIE.getValue(), dieAnimation);
         }
 
         return player;
@@ -47,6 +54,8 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void start(World world, GameData gameDataParam) {
+        System.out.println("Module started: Player");
+
         this.gameData = gameDataParam;
         Entity player = createPlayer();
         player.setY(0);
@@ -56,7 +65,9 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void stop(World world, GameData gameDataParam) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (Entity player : world.getEntities(Player.class)) {
+            world.removeEntity(player);
+        }
     }
 
     private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {
