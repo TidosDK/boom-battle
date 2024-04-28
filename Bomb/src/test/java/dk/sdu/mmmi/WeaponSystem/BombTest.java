@@ -2,25 +2,19 @@ package dk.sdu.mmmi.WeaponSystem;
 
 import dk.sdu.mmmi.common.data.entity.Coordinates;
 import dk.sdu.mmmi.common.data.entity.Entity;
-import dk.sdu.mmmi.common.data.entity.TextureLayer;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
-import dk.sdu.mmmi.common.data.world.GridPosition;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
-import dk.sdu.mmmi.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
-import dk.sdu.mmmi.common.services.weapon.IWeapon;
-import dk.sdu.mmmi.common.services.weapon.IWeaponController;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
-import java.nio.file.Path;
+
 import java.nio.file.Paths;
 import java.util.*;
 
-import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -30,7 +24,6 @@ public class BombTest {
     private GameData mockGameData;
     private BombControlSystem bombControlSystem;
 
-    // Test doubles. Consider using constructor/field injection for cleaner setup
     private IDamageable mockDamageable;
     private Bomb mockBomb;
     private Explosion mockExplosion;
@@ -57,9 +50,23 @@ public class BombTest {
     }
 
 
+    private Collection<Coordinates> createMockBlastArea() {
+        // Create a mock blast area
+        Collection<Coordinates> blastArea = new ArrayList<>();
+        // Populate the blast area with mock coordinates
+        // Assume the bomb has a blast radius of 1 for simplicity
+        blastArea.add(new Coordinates(0, 0)); // The bomb's location
+        blastArea.add(new Coordinates(0, 1)); // North
+        blastArea.add(new Coordinates(1, 0)); // East
+        blastArea.add(new Coordinates(0, -1)); // South
+        blastArea.add(new Coordinates(-1, 0)); // West
+        return blastArea;
+    }
+
+
     // Test that the bomb explodes when the time is up
     @Test
-    public void testBombExplosion() {
+    public void testBombExplosionTimer() {
         // Arrange
         when(mockBomb.calculateTimeTillExplosion(mockGameData)).thenReturn(0f); // Fuse time is up
 
@@ -69,6 +76,55 @@ public class BombTest {
         // Assert
         verify(mockBomb).setState(Bomb.State.EXPLODING);
     }
+
+    @Test
+    public void testBombExplosionCreation() {
+        // Arrange
+        Collection<Coordinates> blastArea = createMockBlastArea();
+        when(mockBomb.calculateTimeTillExplosion(mockGameData)).thenReturn(0f); // Fuse time is up
+        when(mockBomb.calculateBlastArea(mockWorld)).thenReturn(blastArea); // Return a mock blast area
+        when(mockBomb.getFireExplosionTexturePath(any(Coordinates.class)))
+                .thenReturn(Paths.get("explosion.png")); // Return a path for explosion texture
+        when(mockGameData.getScaler()).thenReturn(1f); // Return a scaler for the explosion
+
+        // Act
+        bombControlSystem.process(mockWorld, mockGameData);
+
+        // Assert
+        verify(mockBomb).setState(Bomb.State.EXPLODING);
+
+        // Capture and verify the Explosions added to the world
+        ArgumentCaptor<Explosion> explosionCaptor = ArgumentCaptor.forClass(Explosion.class);
+        verify(mockWorld, times(blastArea.size())).addEntity(explosionCaptor.capture());
+
+        List<Explosion> capturedExplosions = explosionCaptor.getAllValues();
+        for (Explosion explosion : capturedExplosions) {
+            System.out.println("Explosion Coordinates: " + explosion.getCoordinates());
+            System.out.println("Explosion Texture Path: " + explosion.getTexturePath());
+            System.out.println("Explosion Bomb: " + explosion.getBomb());
+        }
+
+
+        // Assert each coordinate in the blast area has a corresponding Explosion
+        for (Coordinates coord : blastArea) {
+            boolean matchFound = capturedExplosions.stream().anyMatch(explosion -> {
+                boolean coordinatesMatch = explosion.getCoordinates().getGridPosition().equals(coord.getGridPosition());
+                boolean texturePathMatch = explosion.getTexturePath().equals(Paths.get("explosion.png"));
+                boolean bombMatch = explosion.getBomb() == mockBomb;
+
+                // Output the result of each match check for debugging
+                System.out.println("Matching " + coord + ": Coordinates match? " + coordinatesMatch
+                        + ", Texture path match? " + texturePathMatch + ", Bomb match? " + bombMatch);
+
+                return coordinatesMatch && texturePathMatch && bombMatch;
+            });
+
+            assertTrue("No explosion found for coordinate: " + coord, matchFound);
+        }
+
+    }
+
+
 
 
 
