@@ -3,6 +3,7 @@ package dk.sdu.mmmi.WeaponSystem;
 import dk.sdu.mmmi.common.data.entity.Coordinates;
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.GridPosition;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 
@@ -15,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -121,12 +123,40 @@ public class BombTest {
 
             assertTrue("No explosion found for coordinate: " + coord, matchFound);
         }
-
     }
 
+    @Test
+    public void testDealDamageReducesDamagableHealth() {
+        // Arrange
+        int expectedDamage = 25; // Arbitrary value
+        int initialHealth = 100;
+        GridPosition entityPosition = new GridPosition(0, 1); // Entity's grid position
 
+        // Mock an Entity that is also IDamageable
+        Entity mockEntity = mock(Entity.class, withSettings().extraInterfaces(IDamageable.class));
+        IDamageable damageableEntity = (IDamageable) mockEntity;
 
+        // Setup the entity's grid position
+        when(mockEntity.getGridPosition()).thenReturn(entityPosition);
+        when(damageableEntity.getLifepoints()).thenReturn(initialHealth);
 
+        // Setup for removeLifepoints call
+        doNothing().when(damageableEntity).removeLifepoints(expectedDamage);
+
+        // Mock the world to return the mockEntity when queried for entities
+        when(mockWorld.getEntities()).thenReturn(new ArrayList<>(Collections.singletonList(mockEntity)));
+
+        // Setup the bomb's behavior
+        Collection<Coordinates> mockBlastArea = createMockBlastArea();
+        when(mockBomb.calculateBlastArea(mockWorld)).thenReturn(mockBlastArea);
+        when(mockBomb.getDamagePoints()).thenReturn(expectedDamage);
+
+        // Act
+        bombControlSystem.process(mockWorld, mockGameData);
+
+        // Assert
+        verify(damageableEntity).removeLifepoints(expectedDamage);
+    }
 
 
 
