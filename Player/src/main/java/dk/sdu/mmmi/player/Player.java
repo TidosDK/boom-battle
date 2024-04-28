@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.player;
 
 import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
@@ -9,7 +10,7 @@ import dk.sdu.mmmi.common.services.weapon.IWeapon;
 import java.nio.file.Path;
 import java.util.*;
 
-public class Player extends Entity implements IDamageable, IAnimatable {
+public class Player extends Entity implements IDamageable, IAnimatable, IActor {
     private List<IWeapon> weapons;
     private HashMap<Integer, ITextureAnimator> animators;
     private int lifePoints = 1;

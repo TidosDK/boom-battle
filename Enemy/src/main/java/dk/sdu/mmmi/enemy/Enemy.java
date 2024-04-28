@@ -2,6 +2,7 @@ package dk.sdu.mmmi.enemy;
 
 
 import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Enemy extends Entity implements IDamageable, IAnimatable {
+public class Enemy extends Entity implements IDamageable, IAnimatable , IActor {
     private List<IWeapon> weapons;
     private HashMap<Integer, ITextureAnimator> animators;
     private int lifePoints = 1;

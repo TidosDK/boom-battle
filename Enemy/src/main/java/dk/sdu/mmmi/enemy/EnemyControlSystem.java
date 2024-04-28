@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import static java.lang.Math.abs;
 import static java.util.stream.Collectors.toList;
 
 public class EnemyControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
@@ -29,7 +28,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
     private IMap map;
     private ArrayList<Node> path = new ArrayList<>();
 
-    private final float movingSpeed = 10f;
+    private final float movingSpeed = 1f;
 
     @Override
     public void process(World worldParam, GameData gameDataParam) {
@@ -40,7 +39,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
 
         for (Entity playerEntity : this.world.getEntities(Enemy.class)) {
             this.enemy = (Enemy) playerEntity;
-            startNode = new Node((int) this.enemy.getX(), (int) this.enemy.getY());
+            startNode = new Node(this.enemy.getGridPosition().getX(), this.enemy.getGridPosition().getY());
 
             List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
             for (IWeapon weapon : this.enemy.getWeapons()) {
@@ -48,20 +47,20 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
                     weaponsToBeRemoved.add(weapon);
                 }
             }
+
             for (IWeapon weapon : weaponsToBeRemoved) {
                 this.enemy.removeWeapon(weapon);
             }
 
             for (Entity player : this.world.getEntities()) {
-                if (player instanceof IActor) {
+                if (player instanceof IActor && player != this.enemy) {
                     goalNode = new Node(player.getGridPosition().getX(), player.getGridPosition().getY());
                 }
             }
+
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
                 path = pathFinding.pathFind(startNode, goalNode, world.getMap());
             }
-
-
             checkEnemyStatus();
         }
 
@@ -75,18 +74,31 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
     }
 
     private void moveUsingPath(ArrayList<Node> path) {
-
+        Boolean canMove = true;
+        Direction direction = null;
         if (path != null && !path.isEmpty()) {
-
             for (Node node : path) {
-                if (enemy.getGridPosition().getX() < node.getX()) {
-                    move(Direction.RIGHT);
-                } else if (enemy.getGridPosition().getX() > node.getX()) {
-                    move(Direction.LEFT);
-                } else if (enemy.getGridPosition().getY() < node.getY()) {
-                    move(Direction.UP);
-                } else if (enemy.getGridPosition().getY() > node.getY()) {
-                    move(Direction.DOWN);
+                if (canMove) {
+                    int x = node.getX() - enemy.getGridPosition().getX();
+                    int y = node.getY() - enemy.getGridPosition().getY();
+                    if (x > 0) {
+                        direction = Direction.RIGHT;
+                    } else if (x < 0) {
+                        direction = Direction.LEFT;
+                    } else if (y > 0) {
+                        direction = Direction.UP;
+                    } else if (y < 0) {
+                        direction = Direction.DOWN;
+                    }
+                    if (World.getInstance().getMap() instanceof IMap) {
+                        IMap mapInstance = (IMap) World.getInstance().getMap();
+                        if (!mapInstance.isMoveAllowed(enemy.getGridX(), enemy.getGridY(), direction)) {
+                            continue;
+                        } else {
+                            move(direction);
+                        }
+                    }
+                    canMove = false;
                 }
 
             }
@@ -109,7 +121,9 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
             }
         } else { // enemy is alive
             enemy.setTexturePath(enemy.getActiveTexturePath(EnemyAnimations.STILL.getValue()));
+
             moveUsingPath(path);
+
         }
     }
 
