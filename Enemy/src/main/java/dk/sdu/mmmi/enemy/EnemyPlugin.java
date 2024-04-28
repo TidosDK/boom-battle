@@ -32,7 +32,7 @@ public class EnemyPlugin implements IGamePluginService {
             Path downAnimationPath = Paths.get("Enemy/src/main/resources/enemy_textures/down");
             Path leftAnimationPath = Paths.get("Enemy/src/main/resources/enemy_textures/left");
             Path stillAnimationPath = Paths.get("Enemy/src/main/resources/enemy_textures/wait");
-            Path dieAnimationPath = Paths.get("Enemy/src/main/resources/v_textures/dead");
+            Path dieAnimationPath = Paths.get("Enemy/src/main/resources/enemy_textures/dead");
 
 
             ITextureAnimator upAnimation = animatorController.createTextureAnimator(gameData, upAnimationPath, 0, 7, 20f);

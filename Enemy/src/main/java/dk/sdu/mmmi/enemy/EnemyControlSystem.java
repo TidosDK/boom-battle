@@ -59,7 +59,6 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
             }
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
                 path = pathFinding.pathFind(startNode, goalNode, world.getMap());
-                moveUsingPath(path);
             }
 
 
