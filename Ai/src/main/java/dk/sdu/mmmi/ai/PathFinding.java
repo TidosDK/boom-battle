@@ -169,7 +169,7 @@ public class PathFinding implements IPathFinding {
      * @param startNode   is the node you are starting from
      * @param currentNode is the node you are calculating the heuristic for
      * @param goalNode    is the node you are trying to reach
-     * @return
+     * @return the node with the calculated heuristic
      */
     public Node calculateHeuristic(Node startNode, Node currentNode, Node goalNode) {
         currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY())));

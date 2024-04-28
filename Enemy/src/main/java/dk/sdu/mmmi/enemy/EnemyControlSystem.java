@@ -79,13 +79,13 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
     /**
      * Moves the enemy in the specified direction using the path provide by the pathfinding interface.
      *
-     * @param path the optimal path to an IActor.
+     * @param givenPath the optimal path to an IActor.
      */
-    private void moveUsingPath(ArrayList<Node> path) {
-        Boolean canMove = true;
+    private void moveUsingPath(ArrayList<Node> givenPath) {
+        boolean canMove = true;
         Direction direction = null;
-        if (path != null && !path.isEmpty()) {
-            for (Node node : path) {
+        if (givenPath != null && !givenPath.isEmpty()) {
+            for (Node node : givenPath) {
                 if (canMove) {
                     int x = node.getX() - enemy.getGridPosition().getX();
                     int y = node.getY() - enemy.getGridPosition().getY();
