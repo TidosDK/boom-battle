@@ -10,23 +10,23 @@ import java.util.ArrayList;
 
 
 /**
- * PathFinding class that implements the IPathFinding interface
+ * PathFinding class that implements the IPathFinding interface.
  */
 public class PathFinding implements IPathFinding {
 
-    Node[][] nodeMap;
-    int maxCol;
-    int maxRow;
-    ArrayList<Node> openList = new ArrayList<>();
-    ArrayList<Node> checkedList = new ArrayList<>();
-    ArrayList<Node> pathList = new ArrayList<>();
+    private Node[][] nodeMap;
+    private int maxCol;
+    private int maxRow;
+    private ArrayList<Node> openList = new ArrayList<>();
+    private ArrayList<Node> checkedList = new ArrayList<>();
+    private ArrayList<Node> pathList = new ArrayList<>();
 
 
     /**
-     * Method that finds a path from the start node to the goal node
+     * Method that finds a path from the start node to the goal node.
      *
      * @param goalNode is the node you are trying to reach
-     * @param map     is the map you are trying to navigate
+     * @param map      is the map you are trying to navigate
      */
     @Override
     public ArrayList<Node> pathFind(Node start, Node goalNode, Map map) {
@@ -68,14 +68,12 @@ public class PathFinding implements IPathFinding {
 
     }
 
-    ;
-
     /**
-     * Method that finds a path from the start node to the goal node
+     * Method that finds a path from the start node to the goal node.
      *
      * @param startNode is the node you are starting from
-     * @param goalNode is the node you are trying to reach
-     * @param map   is the map you are trying to navigate
+     * @param goalNode  is the node you are trying to reach
+     * @param map       is the map you are trying to navigate
      */
     public void aStar(Node startNode, Node goalNode, Node[][] map) {
         Node currentNode;
@@ -119,7 +117,6 @@ public class PathFinding implements IPathFinding {
             }
 
 
-
             for (int i = 0; i < openList.size(); i++) {
                 if (openList.get(i).getF() < bestNodeFCost) {
                     bestNodeI = i;
@@ -137,9 +134,9 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * Method that opens a node
+     * Method that opens a node.
      *
-     * @param node       is the node you are trying to open
+     * @param node        is the node you are trying to open
      * @param currentNode is the node you are coming from
      */
     private void openNode(Node node, Node currentNode) {
@@ -151,9 +148,9 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * Method that reconstructs the optimal path
+     * Method that reconstructs the optimal path.
      *
-     * @param goalNode is the node you are trying to reach
+     * @param goalNode  is the node you are trying to reach
      * @param startNode is the node you are starting from
      */
     public void reconstructPath(Node goalNode, Node startNode) {
@@ -167,11 +164,11 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * Method that calculates the heuristic
+     * Method that calculates the heuristic.
      *
-     * @param startNode is the node you are starting from
-     * @param currentNode   is the node you are calculating the heuristic for
-     * @param goalNode  is the node you are trying to reach
+     * @param startNode   is the node you are starting from
+     * @param currentNode is the node you are calculating the heuristic for
+     * @param goalNode    is the node you are trying to reach
      * @return
      */
     public Node calculateHeuristic(Node startNode, Node currentNode, Node goalNode) {
@@ -181,7 +178,5 @@ public class PathFinding implements IPathFinding {
 
         return currentNode;
     }
-
-
 
 }

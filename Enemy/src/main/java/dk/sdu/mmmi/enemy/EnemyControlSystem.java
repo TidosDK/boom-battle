@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import static java.lang.Math.abs;
 import static java.util.stream.Collectors.toList;
 
 public class EnemyControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
@@ -70,15 +69,15 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
         }
     }
 
-    private void drawUsingPath(ArrayList<Node> path) {
+    private void drawUsingPath(ArrayList<Node> pathParam) {
 
     }
 
-    private void moveUsingPath(ArrayList<Node> path) {
+    private void moveUsingPath(ArrayList<Node> pathParam) {
 
-        if (path != null && !path.isEmpty()) {
+        if (pathParam != null && !pathParam.isEmpty()) {
 
-            for (Node node : path) {
+            for (Node node : pathParam) {
                 if (enemy.getGridPosition().getX() < node.getX()) {
                     move(Direction.RIGHT);
                 } else if (enemy.getGridPosition().getX() > node.getX()) {
