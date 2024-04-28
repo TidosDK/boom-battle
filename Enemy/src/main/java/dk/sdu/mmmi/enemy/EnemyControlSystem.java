@@ -101,7 +101,6 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
                     if (World.getInstance().getMap() instanceof IMap) {
                         IMap mapInstance = (IMap) World.getInstance().getMap();
                         if (!mapInstance.isMoveAllowed(enemy.getGridX(), enemy.getGridY(), direction)) {
-                            canMove = false;
                             continue;
                         } else {
                             move(direction);
