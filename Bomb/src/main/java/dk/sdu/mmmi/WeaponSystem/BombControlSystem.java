@@ -28,6 +28,8 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
         for (Entity entity : world.getEntities(Bomb.class)) {
             Bomb bomb = (Bomb) entity;
             if (bomb.calculateTimeTillExplosion(gameData) <= 0) {
+                bomb.setState(Bomb.State.EXPLODING);
+
                 // Explosion time reached; trigger the explosion visuals and effects.
                 Collection<Coordinates> blastArea = bomb.calculateBlastArea(world);
 
@@ -44,9 +46,8 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
 
                 // Damage calculation and handling.
                 this.dealDamage(blastArea, world, bomb);
-
-                // Remove the bomb entity after all explosion entities are placed.
                 world.removeEntity(bomb);
+                // Remove the bomb entity after all explosion entities are placed.
             } else {
                 // Set the texture path to the bomb as it counts down to explosion.
                 bomb.setTexturePath(bomb.getActiveTexturePath(BombAnimations.PLACEMENT.getValue()));
@@ -54,6 +55,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
         }
         for (Entity e : world.getEntities(Explosion.class)) {
             Explosion expl = (Explosion) e;
+            Bomb sourceBomb = expl.getBomb(); // Assumes you've added a 'getBomb' method to Explosion
             float creationTime = explosionCreationTimes.getOrDefault(expl, 0f);
 
             if (expl.getElapsedTime() + gameData.getDeltaTime() >= expl.getAnimTime() + creationTime) {
@@ -62,7 +64,6 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
             } else {
                 expl.setElapsedTime(expl.getElapsedTime() + gameData.getDeltaTime());
                 // Damage Calculation:
-                Bomb sourceBomb = expl.getBomb(); // Assumes you've added a 'getBomb' method to Explosion
                 Collection<Coordinates> blastArea = sourceBomb.calculateBlastArea(world);
                 dealDamage(blastArea, world, sourceBomb);
             }

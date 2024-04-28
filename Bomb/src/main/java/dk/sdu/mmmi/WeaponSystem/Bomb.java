@@ -23,6 +23,12 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     private int damagePoints;
     private int blastLength;
 
+    public enum State {
+        PLACED, EXPLODING, FINISHED
+    }
+
+    private State state; // Field to track the current state of the bomb
+
     private HashMap<Integer, ITextureAnimator> animators;
     private Path explosionRightPath;
     private Path explosionLeftPath;
@@ -35,6 +41,7 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     public Bomb(Path texturePath, float width, float height) {
         super(texturePath, width, height);
         animators = new HashMap<>();
+        this.state = State.PLACED; // Default state when a bomb is created
 
         explosionRightPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png");
         explosionLeftPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/left/left-explosion-2.png");
@@ -181,5 +188,13 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     @Override
     public void setDamagePoints(int damagePoints) {
         this.damagePoints = damagePoints;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }
