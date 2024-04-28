@@ -20,6 +20,9 @@ import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * This class is used to control the enemy entity.
+ */
 public class EnemyControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
     private World world;
     private GameData gameData;
@@ -73,6 +76,11 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
 
     }
 
+    /**
+     * Moves the enemy in the specified direction using the path provide by the pathfinding interface.
+     *
+     * @param path the optimal path to an IActor.
+     */
     private void moveUsingPath(ArrayList<Node> path) {
         Boolean canMove = true;
         Direction direction = null;

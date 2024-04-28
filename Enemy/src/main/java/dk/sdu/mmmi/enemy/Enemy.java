@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class is used to create an enemy entity.
+ * an enemy entity is an entity that can be damaged and can animate.
+*/
 public class Enemy extends Entity implements IDamageable, IAnimatable , IActor {
     private List<IWeapon> weapons;
     private HashMap<Integer, ITextureAnimator> animators;

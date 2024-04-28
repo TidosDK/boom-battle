@@ -1,5 +1,8 @@
 package dk.sdu.mmmi.common.data.ai;
 
+/**
+ * Node class that represents a node in the pathfinding algorithm.
+ */
 public class Node {
     private int x; //Map cords of Node
     private int y; //Map cords of Node
