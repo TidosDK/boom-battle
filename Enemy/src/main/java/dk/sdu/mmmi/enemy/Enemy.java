@@ -2,18 +2,22 @@ package dk.sdu.mmmi.enemy;
 
 
 import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
+import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.weapon.IWeapon;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Enemy extends Entity {
+public class Enemy extends Entity implements IDamageable, IAnimatable {
     private List<IWeapon> weapons;
-    private Map<animations, ITextureAnimator> animators;
+    private HashMap<Integer, ITextureAnimator> animators;
+    private int lifePoints = 1;
 
-    public Enemy(String texturePath, float width, float height) {
+    public Enemy(Path texturePath, float width, float height) {
         super(texturePath, width, height);
         this.weapons = new ArrayList<>(); // TODO: Better data structure.
         this.animators = new HashMap<>(); // TODO: Better data structure.
@@ -27,14 +31,42 @@ public class Enemy extends Entity {
         this.weapons.remove(weapon);
     }
 
-    public String getActiveTexturePath(animations key) {
+
+    @Override
+    public void removeLifepoints(int amount) {
+        lifePoints -= amount;
+    }
+
+    @Override
+    public int getLifepoints() {
+        return lifePoints;
+    }
+
+    @Override
+    public void setLifepoints(int lifepoints) {
+        this.lifePoints = lifepoints;
+    }
+
+    @Override
+    public Path getActiveTexturePath(Integer key) {
         if (animators.get(key) == null) {
             return getTexturePath();
         }
-        return animators.get(key).getCurrentImagePath();
+        return animators.get(key).getCurrentTexturePath();
     }
 
-    public void addAnimator(animations key, ITextureAnimator animator) {
+    @Override
+    public void addAnimator(Integer key, ITextureAnimator animator) {
         this.animators.put(key, animator);
+    }
+
+    @Override
+    public HashMap<Integer, ITextureAnimator> getAnimators() {
+        return animators;
+    }
+
+    @Override
+    public void setAnimators(HashMap<Integer, ITextureAnimator> animators) {
+        this.animators = animators;
     }
 }

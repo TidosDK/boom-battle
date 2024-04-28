@@ -1,7 +1,10 @@
-package dk.sdu.mmmi.AI;
+package dk.sdu.mmmi.ai;
 
-import dk.sdu.mmmi.basicmapsystem.BasicMapGenerator;
-import dk.sdu.mmmi.common.services.AI.IPathFinding;
+
+import dk.sdu.mmmi.common.data.ai.Node;
+import dk.sdu.mmmi.common.data.world.Map;
+import dk.sdu.mmmi.common.services.ai.IPathFinding;
+
 
 import java.util.ArrayList;
 
@@ -22,16 +25,13 @@ public class PathFinding implements IPathFinding {
     /**
      * Method that finds a path from the start node to the goal node
      *
-     * @param goalNode
-     * @param map
+     * @param goalNode is the node you are trying to reach
+     * @param map     is the map you are trying to navigate
      */
     @Override
     public ArrayList<Node> pathFind(Node start, Node goalNode, Map map) {
         maxCol = map.getWidth();
         maxRow = map.getHeight();
-        BasicMapGenerator mapGenerator = new BasicMapGenerator();
-
-        map.setMap(mapGenerator.basicMap(maxCol, maxRow));
         nodeMap = new Node[maxCol][maxRow];
         start.setStart(true);
         goalNode.setGoal(true);
@@ -73,9 +73,9 @@ public class PathFinding implements IPathFinding {
     /**
      * Method that finds a path from the start node to the goal node
      *
-     * @param startNode
-     * @param goalNode
-     * @param map
+     * @param startNode is the node you are starting from
+     * @param goalNode is the node you are trying to reach
+     * @param map   is the map you are trying to navigate
      */
     public void aStar(Node startNode, Node goalNode, Node[][] map) {
         Node currentNode;
@@ -139,8 +139,8 @@ public class PathFinding implements IPathFinding {
     /**
      * Method that opens a node
      *
-     * @param node
-     * @param currentNode
+     * @param node       is the node you are trying to open
+     * @param currentNode is the node you are coming from
      */
     private void openNode(Node node, Node currentNode) {
         if (!node.isOpen() && !node.isObstacle()) {
@@ -151,10 +151,10 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * Method that reconstructs the path
+     * Method that reconstructs the optimal path
      *
-     * @param goalNode
-     * @param startNode
+     * @param goalNode is the node you are trying to reach
+     * @param startNode is the node you are starting from
      */
     public void reconstructPath(Node goalNode, Node startNode) {
         Node current = goalNode;
@@ -169,9 +169,9 @@ public class PathFinding implements IPathFinding {
     /**
      * Method that calculates the heuristic
      *
-     * @param startNode
-     * @param currentNode
-     * @param goalNode
+     * @param startNode is the node you are starting from
+     * @param currentNode   is the node you are calculating the heuristic for
+     * @param goalNode  is the node you are trying to reach
      * @return
      */
     public Node calculateHeuristic(Node startNode, Node currentNode, Node goalNode) {

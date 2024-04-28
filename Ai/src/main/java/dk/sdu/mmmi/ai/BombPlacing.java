@@ -1,6 +1,6 @@
-package dk.sdu.mmmi.AI;
+package dk.sdu.mmmi.ai;
 
-import dk.sdu.mmmi.common.data.AI.Node;
+import dk.sdu.mmmi.common.data.ai.Node;
 
 public class BombPlacing {
     Node calculateOptimalPlacement(){

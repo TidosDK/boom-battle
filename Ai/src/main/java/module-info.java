@@ -1,6 +1,8 @@
+import dk.sdu.mmmi.common.services.ai.IPathFinding;
+import dk.sdu.mmmi.ai.PathFinding;
 module AI {
     requires Common;
-    requires BasicMap;
-    provides dk.sdu.mmmi.common.services.AI.IPathFinding with dk.sdu.mmmi.AI.PathFinding;
+    exports dk.sdu.mmmi.ai;
+    provides IPathFinding with PathFinding;
 
 }

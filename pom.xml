@@ -26,6 +26,7 @@
         <module>NonDestructibleObstacle</module>
         <module>Player</module>
         <module>TextureAnimator</module>
+        <module>Ai</module>
     </modules>
 
     <properties>
