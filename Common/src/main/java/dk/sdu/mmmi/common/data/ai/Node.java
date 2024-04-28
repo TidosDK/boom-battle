@@ -13,7 +13,7 @@ public class Node {
     private boolean open;
     private boolean obstacle;
 
-    public Node(int x, int y){
+    public Node(int x, int y) {
         this.setX(x);
         this.setY(y);
     }

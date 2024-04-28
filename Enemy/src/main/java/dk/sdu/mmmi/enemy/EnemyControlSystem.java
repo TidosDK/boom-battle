@@ -69,7 +69,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
         }
     }
 
-    private void drawUsingPath(ArrayList<Node> path) {
+    private void drawUsingPath(ArrayList<Node> pathParam) {
 
     }
 
