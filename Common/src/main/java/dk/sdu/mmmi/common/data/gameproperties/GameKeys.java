@@ -62,7 +62,7 @@ public class GameKeys {
         return this.space;
     }
 
-    public int getGETPOS() {
+    public int getGetPos() {
         return GETPOS;
     }
 }

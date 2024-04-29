@@ -120,7 +120,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         player.setDirection(direction);
         if (World.getInstance().getMap() instanceof IMap mapInstance) {
             if (!mapInstance.isMoveAllowed(player.getGridX(), player.getGridY(), direction)) {
-                handleProximity(player.getGridX(), player.getGridY(), direction);
+                handleProximity(direction);
                 return;
             }
         }
@@ -159,7 +159,13 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
-    private void handleProximity(int currentX, int currentY, Direction direction) {
+    /**
+     * Handles the movement of a player when the map indicates an obstacle in the desired direction.
+     * This method allows us to move the player as close to the obstacle as possible without colliding with it.
+     *
+     * @param direction The desired direction to move in.
+     */
+    private void handleProximity(Direction direction) {
         float scaler = gameData.getScaler();
         float newY;
         float newX;
@@ -178,7 +184,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
             case RIGHT:
                 newX = oldX + (movingSpeed * gameData.getDeltaTime()) * scaler;
                 newY = player.getGridY() * scaler;
-                targetX = currentX * scaler;
+                targetX = player.getGridX() * scaler;
                 player.setX(Math.min(newX, targetX));
                 player.setY(newY);
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.RIGHT.getValue()));
