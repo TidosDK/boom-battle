@@ -24,8 +24,8 @@ public class Enemy extends Entity implements IDamageable, IAnimatable, IActor {
 
     public Enemy(Path texturePath, float width, float height) {
         super(texturePath, width, height);
-        this.weapons = new ArrayList<>(); // TODO: Better data structure.
-        this.animators = new HashMap<>(); // TODO: Better data structure.
+        this.weapons = new ArrayList<>();
+        this.animators = new HashMap<>();
     }
 
     public List<IWeapon> getWeapons() {

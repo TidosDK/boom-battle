@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * This class is used to control the enemy entity.
  */
-public class EnemyControlSystem implements IActor, IEntityProcessingService { // implements IDamageable
+public class EnemyControlSystem implements IActor, IEntityProcessingService {
     private World world;
     private GameData gameData;
     private Enemy enemy;
@@ -72,9 +72,6 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
         }
     }
 
-    private void drawUsingPath(ArrayList<Node> pathParam) {
-
-    }
 
     /**
      * Moves the enemy in the specified direction using the path provide by the pathfinding interface.
@@ -136,22 +133,20 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService { //
     }
 
 
-    /**
-     * Places a bomb in the world.
-     */
     public void placeWeapon() {
         if (enemy.getWeapons().size() < maxWeapons) {
             for (IWeaponController weapon : getIWeaponProcessing()) {
-                enemy.getWeapons().add((IWeapon) weapon.createWeapon(this.enemy, this.gameData));
-                world.addEntity((Entity) enemy.getWeapons().get(enemy.getWeapons().size() - 1));
+                IWeapon bomb = (IWeapon) weapon.createWeapon(this.enemy, this.gameData);
+                enemy.getWeapons().add(bomb);
+                world.addEntity((Entity) bomb);
             }
         }
     }
 
     /**
-     * Moves the player in the specified direction.
+     * Moves the enemy in the specified direction.
      *
-     * @param direction The direction to move the player.
+     * @param direction The direction to move the enemy
      */
     public void move(Direction direction) {
         float scaler = gameData.getScaler();

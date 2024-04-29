@@ -40,7 +40,7 @@ public class PathFinding implements IPathFinding {
         int col = 0;
         int row = 0;
 
-        while (col < (maxCol + 1) && row < maxRow) {
+        while (col < maxCol  && row < maxRow) {
             nodeMap[col][row] = new Node(col, row);
 
             col++;
@@ -69,7 +69,7 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * Method that finds a path from the start node to the goal node.
+     * Method that finds the optimal path from the start node to the goal node.
      *
      * @param startNode is the node you are starting from
      * @param goalNode  is the node you are trying to reach
@@ -134,7 +134,8 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * Method that opens a node.
+     * This used is used to make a list op explored nodes.
+     * As well as setting the parent node which is used later to reconstruct the path
      *
      * @param node        is the node you are trying to open
      * @param currentNode is the node you are coming from
@@ -164,7 +165,10 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * Method that calculates the heuristic.
+     * Used to on every node to assign its heuristic values.
+     * Where G is the cost from the start node to the current node
+     * H is the estimated cost from the current node to the goal node
+     * F is the sum of G and H
      *
      * @param startNode   is the node you are starting from
      * @param currentNode is the node you are calculating the heuristic for
