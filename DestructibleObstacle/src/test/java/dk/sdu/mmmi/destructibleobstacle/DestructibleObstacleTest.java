@@ -2,8 +2,6 @@ package dk.sdu.mmmi.destructibleobstacle;
 
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
-import dk.sdu.mmmi.common.data.gameproperties.GameKeys;
-import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,34 +21,16 @@ import static org.mockito.Mockito.*;
 class DestructibleObstacleTest {
     private DestructibleObstacle destructibleObstacle;
     private GameData gameData;
-    private GameKeys gameKeys;
     private World world;
     private Path texture;
 
     @BeforeEach
     void setup() {
-        // Creates a new destructible obstacle and mocks the game data, game keys and world.
+        // Creates a new destructible obstacle and mocks the game data and world.
         texture = Paths.get("DestructibleObstacle/src/main/resources/destructible_obstacle_textures/block.png");
         gameData = mock(GameData.class);
-        gameKeys = mock(GameKeys.class);
         world = mock(World.class);
         destructibleObstacle = new DestructibleObstacle(world, 2f, 2f, texture);
-
-        // Sets the game data's delta time and scaler.
-        when(gameData.getDeltaTime()).thenReturn(0.016f);
-        when(gameData.getScaler()).thenReturn(1.6f);
-
-        // Sets the game data and the game keys.
-        when(gameData.getKeys()).thenReturn(gameKeys);
-        when(gameKeys.getUp()).thenReturn(0);
-        when(gameKeys.getRight()).thenReturn(1);
-        when(gameKeys.getDown()).thenReturn(2);
-        when(gameKeys.getLeft()).thenReturn(3);
-
-        // Assigns a mock Map to the World mock.
-        when(world.getMap()).thenReturn(mock(Map.class));
-        when(world.getMap().getWidth()).thenReturn(10);
-        when(world.getMap().getHeight()).thenReturn(10);
 
         // Mocks the world to add entities
         doAnswer(invocation -> {
