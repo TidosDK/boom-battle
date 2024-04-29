@@ -31,8 +31,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
     public void process(World worldParam, GameData gameDataParam) {
         this.world = worldParam;
         this.gameData = gameDataParam;
-//        System.out.println("Class gamedata: " + this.gameData.getKeys().isPressed(this.gameData.getKeys().getSpace()));
-//        System.out.println("World entities: " + world.getEntities(Player.class));
 
         for (Entity playerEntity : this.world.getEntities(Player.class)) {
             this.player = (Player) playerEntity;
@@ -47,7 +45,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                 this.player.removeWeapon(weapon);
             }
 
-//            System.out.println("About to check player status");
             checkPlayerStatus();
         }
 
@@ -91,8 +88,6 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         }
 
         if (gameData.getKeys().isPressed(gameData.getKeys().getSpace())) {
-//            System.out.println("I don't know if I play: " + this.gameData.getKeys().isPressed(this.gameData.getKeys().getSpace()));
-//            System.out.println("I'm gonna play");
             this.placeWeapon();
         }
     }
@@ -102,11 +97,9 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
      */
     public void placeWeapon() {
         if (player.getWeapons().size() < maxWeapons) {
-//            System.out.println("I'm playing\t\t " + player.getWeapons().size() + " " + this.maxWeapons);
-            for (IWeaponController weapon : getIWeaponProcessing()) {
-//                System.out.println("Cool weapon is about to be added");
-                player.getWeapons().add((IWeapon) weapon.createWeapon(this.player, this.gameData));
-                world.addEntity((Entity) player.getWeapons().get(player.getWeapons().size() - 1));
+            for (IWeaponController weaponController : getIWeaponProcessing()) {
+                player.getWeapons().add((IWeapon) weaponController.createWeapon(this.player, this.gameData));
+                world.addEntity((Entity) player.getWeapons().getLast());
             }
         }
     }
@@ -164,7 +157,16 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
-    private Collection<? extends IWeaponController> getIWeaponProcessing() {
+    public int getMaxWeapons() {
+        return maxWeapons;
+    }
+
+    public void setMaxWeapons(int maxWeapons) {
+        this.maxWeapons = maxWeapons;
+    }
+
+    // In order to test the PlayerControlSystem with WeaponControlSystems, this method needs to be protected.
+    protected Collection<? extends IWeaponController> getIWeaponProcessing() {
         return ServiceLoader.load(IWeaponController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
