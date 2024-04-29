@@ -54,7 +54,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
         if (bomb.calculateTimeTillExplosion(this.gameData) <= 0) {
             explodeBomb(bomb);
         } else {
-            bombCountdown(bomb);
+            updateBombCountdownState(bomb);
         }
     }
 
@@ -91,11 +91,11 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
     }
 
     /**
-     * Handles what's happening to the bomb entity as it counts down to explosion.
+     * This method is responsible for updating the bomb's state as it counts down to explosion.
      *
      * @param bomb The bomb entity to set the texture for.
      */
-    private void bombCountdown(Bomb bomb) {
+    private void updateBombCountdownState(Bomb bomb) {
         bomb.setTexturePath(bomb.getActiveTexturePath(BombAnimations.PLACEMENT.getValue()));
     }
 
