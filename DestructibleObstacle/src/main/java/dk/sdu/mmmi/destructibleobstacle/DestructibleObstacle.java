@@ -25,9 +25,15 @@ public class DestructibleObstacle extends Entity implements IDestructibleObstacl
 
     @Override
     public void destroyObstacle() {
-        // TODO: Implement destruction of obstacle here (e.g. the animation of the obstacle being destroyed)
-
-        world.removeEntity(this);
+        if (animators != null) { // Guard for ITextureAnimator being module
+            ITextureAnimator destroyAnimator = animators.get(DestructibleObstacleAnimations.DESTROY.getValue());
+            this.setTexturePath(destroyAnimator.getCurrentTexturePath());
+            if (destroyAnimator.getCurrentTextureIndex() == destroyAnimator.getNumberOfTextures() - 1) {
+                world.removeEntity(this);
+            }
+        } else {
+            world.removeEntity(this);
+        }
     }
 
     @Override

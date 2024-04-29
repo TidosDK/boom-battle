@@ -8,7 +8,6 @@ import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacleController;
 import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
@@ -23,25 +22,17 @@ public class DestructibleObstacleControlSystem implements IEntityProcessingServi
     public void process(World world, GameData gameData) {
         for (Entity entity : world.getEntities(DestructibleObstacle.class)) {
             if (entity instanceof DestructibleObstacle destructibleObstacle) {
-                checkDestructibleObstacleStatus(world, destructibleObstacle);
+                checkDestruction(destructibleObstacle);
             }
         }
     }
 
     /**
-     * Checks the destructible obstacle status and destroys the obstacle if the lifepoints are less than or equal to 0.
+     * Checks the destruction of the destructible obstacle and destroys it if necessary.
      */
-    private void checkDestructibleObstacleStatus(World world, DestructibleObstacle destructibleObstacle) {
-        if (destructibleObstacle.getLifepoints() <= 0) { // player is dead
-            ITextureAnimator destroyAnimator = destructibleObstacle.getAnimators().get(DestructibleObstacleAnimations.DESTROY.getValue());
-            if (destroyAnimator != null) { // Guard for ITextureAnimator being module
-                destructibleObstacle.setTexturePath(destroyAnimator.getCurrentTexturePath());
-                if (destroyAnimator.getCurrentTextureIndex() == destroyAnimator.getNumberOfTextures() - 1) {
-                    world.removeEntity(destructibleObstacle);
-                }
-            } else {
-                world.removeEntity(destructibleObstacle);
-            }
+    private void checkDestruction(DestructibleObstacle destructibleObstacle) {
+        if (destructibleObstacle.getLifepoints() <= 0) { // obstacle is destroyed
+            destructibleObstacle.destroyObstacle();
         }
     }
 
