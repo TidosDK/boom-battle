@@ -170,9 +170,7 @@ public class PlayerTest {
         assertEquals(0, mockPlayer.getWeapons().size(), "The list should be empty as the underlying player has removed the weapon.");
     }
 
-
-
-    // Verifies functional requirement F-01d
+    // Verifies functional requirement F-01d & some part of F-01e
     @Test()
     void testPlaceWeapon() {
         // Adds the player to the world and asserts that the player is in the world.
@@ -227,7 +225,9 @@ public class PlayerTest {
             mockPlayerControlSystem.process(world, gameData);
         }
 
-        // Asserts the player has 10 weapons.
+        // Does a final check to see if the player can place more weapons than the maxWeapons.
+        when(gameData.getKeys().isPressed(gameData.getKeys().getSpace())).thenReturn(true);
+        mockPlayerControlSystem.process(world, gameData);
         assertEquals(10, mockPlayer.getWeapons().size());
     }
 
