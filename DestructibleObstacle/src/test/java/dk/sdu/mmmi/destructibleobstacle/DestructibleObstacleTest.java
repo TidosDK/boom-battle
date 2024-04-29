@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,6 +50,23 @@ class DestructibleObstacleTest {
         when(world.getMap()).thenReturn(mock(Map.class));
         when(world.getMap().getWidth()).thenReturn(10);
         when(world.getMap().getHeight()).thenReturn(10);
+
+        // Mocks the world to add entities
+        doAnswer(invocation -> {
+            Entity entity = invocation.getArgument(0);
+            world.getEntities().add(entity);
+            return null;
+        }).when(world).addEntity(any(Entity.class));
+
+        // Mocks the world to remove entities
+        doAnswer(invocation -> {
+            Entity entity = invocation.getArgument(0);
+            world.getEntities().remove(entity);
+            return null;
+        }).when(world).removeEntity(any(Entity.class));
+
+        // Mocks the world to retrieve the list of entities
+        when(world.getEntities()).thenReturn(new ArrayList<>());
     }
 
     // Verifies functional requirement F-05 & F-05b
@@ -68,38 +84,11 @@ class DestructibleObstacleTest {
         world.addEntity(destructibleObstacle);
 
         // Checks if the destructible obstacle exists in the world
-        boolean destructibleObstacleExists = false;
-        for (Entity entity : world.getEntities()) {
-            if (entity.getClass().equals(DestructibleObstacle.class)) {
-                destructibleObstacleExists = true;
-                break;
-            }
-        }
-
-        // Asserts that the destructible obstacle exists in the world
-        assertTrue(destructibleObstacleExists);
+        assertTrue(world.getEntities().contains(destructibleObstacle));
     }
 
     @Test
     void testDestruction() {
-        // Mocks the world to add entities
-        doAnswer(invocation -> {
-            Entity entity = invocation.getArgument(0);
-            world.getEntities().add(entity);
-            return null;
-        }).when(world).addEntity(any(Entity.class));
-
-        // Mocks the world to remove entities
-        doAnswer(invocation -> {
-            Entity entity = invocation.getArgument(0);
-            world.getEntities().remove(entity);
-            return null;
-        }).when(world).removeEntity(any(Entity.class));
-
-        // Mocks the world to retrieve the list of entities
-        when(world.getEntities()).thenReturn(new ArrayList<>());
-
-
         // Adds the destructible obstacle to the world
         world.addEntity(destructibleObstacle);
 
@@ -107,58 +96,31 @@ class DestructibleObstacleTest {
         destructibleObstacle.destroyObstacle();
 
         // Checks if the destructible obstacle exists in the world
-        boolean destructibleObstacleExists = false;
-        for (Entity entity : world.getEntities()) {
-            if (entity.getClass().equals(DestructibleObstacle.class)) {
-                destructibleObstacleExists = true;
-                break;
-            }
-        }
-
-        // Asserts that the destructible obstacle does not exist in the world
-        assertFalse(destructibleObstacleExists);
+        assertFalse(world.getEntities().contains(destructibleObstacle));
     }
 
     @Test
     void testTakeDamage() {
-        // Arrange
-        destructibleObstacle.setLifepoints(1);
-        ArrayList<Entity> mockEntityList = new ArrayList<>();
-
-        // Mock the world to return the destructible obstacle
-        doAnswer(invocation -> {
-            ArrayList<Entity> entities = new ArrayList<>();
-            for (Entity entity : mockEntityList) {
-                if (entity.getClass().equals(DestructibleObstacle.class)) {
-                    entities.add(entity);
-                }
-            }
-            return entities;
-        }).when(world).getEntities(DestructibleObstacle.class);
-//        doAnswer(invocation -> mockEntityList.stream()
-//                .filter(entity -> entity.getClass().equals(DestructibleObstacle.class))
-//                .collect(Collectors.toList())).when(world).getEntities(DestructibleObstacle.class);
-
-        // Mock world.removeEntity, using the mock list from above
-        doAnswer(invocation -> {
-            mockEntityList.remove(invocation.getArgument(0));
-            return null;
-        }).when(world).removeEntity(any(Entity.class));
-
-        // Act
-        mockEntityList.add(destructibleObstacle);
-
+        // Setting up the test
         DestructibleObstacleControlSystem destructibleObstacleControlSystem = new DestructibleObstacleControlSystem();
-        destructibleObstacleControlSystem.process(world, gameData); // Should do nothing.
+        world.addEntity(destructibleObstacle);
+        destructibleObstacle.setLifepoints(2);
 
-        destructibleObstacle.removeLifepoints(1); // Should take the destructible obstacle to 1 Life points.
+        // Should take the destructible obstacle to 1 Life points.
+        destructibleObstacle.removeLifepoints(1);
         assertEquals(1, destructibleObstacle.getLifepoints());
 
-        destructibleObstacle.removeLifepoints(1); // Should take the player to 0 Life points, "killing" it.
-        assertEquals(0, destructibleObstacle.getLifepoints());
-        destructibleObstacleControlSystem.process(world, gameData); // Should remove the destructible obstacle from the world.
+        // Should do nothing
+        destructibleObstacleControlSystem.process(world, gameData);
+        assertTrue(world.getEntities().contains(destructibleObstacle));
 
-        // Asserts the player has been removed from the world.
-        assertTrue(mockEntityList.isEmpty());
+        // Should take the destructible obstacle to 0 Life points
+        destructibleObstacle.removeLifepoints(1);
+        assertEquals(0, destructibleObstacle.getLifepoints());
+
+        // Should "kill" / remove the destructible obstacle from the world.
+        destructibleObstacleControlSystem.process(world, gameData);
+
+        assertFalse(world.getEntities().contains(destructibleObstacle));
     }
 }
