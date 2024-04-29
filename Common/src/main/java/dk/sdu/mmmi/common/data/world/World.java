@@ -38,16 +38,16 @@ public class World {
     }
 
     public List<Entity> getEntities(Class<? extends Entity>... entityClasses) {
-        List<Entity> entities = new ArrayList<>();
+        List<Entity> entityList = new ArrayList<>();
 
         for (Entity entity : this.getEntities()) {
             for (Class<? extends Entity> entityClass : entityClasses) {
                 if (entityClass.isInstance(entity)) {
-                    entities.add(entity);
+                    entityList.add(entity);
                 }
             }
         }
-        return entities;
+        return entityList;
     }
 
     public void addEntity(Entity entity) {

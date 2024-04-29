@@ -5,14 +5,14 @@ import dk.sdu.mmmi.common.data.entity.Entity;
 import java.nio.file.Path;
 
 /**
- * Explosion: Entity class for the explosion tile
+ * Explosion: Entity class for the explosion tile.
  */
 public class Explosion extends Entity {
     private float elapsedTime;
     private float explosionTime;
 
     /**
-     * Constructor for the Explosion class
+     * Constructor for the Explosion class.
      *
      * @param texturePath   Path to the texture
      * @param x             X coordinate of the explosion tile

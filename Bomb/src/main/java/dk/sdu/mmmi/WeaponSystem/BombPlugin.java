@@ -5,10 +5,6 @@ import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.data.entity.Entity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class BombPlugin implements IGamePluginService {
     @Override
     public void start(World world, GameData gameData) {

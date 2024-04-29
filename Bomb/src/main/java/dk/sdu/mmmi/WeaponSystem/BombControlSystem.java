@@ -28,17 +28,17 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
     private GameData gameData;
 
     @Override
-    public synchronized void process(World world, GameData gameData) {
-        this.world = world;
-        this.gameData = gameData;
+    public synchronized void process(World worldParam, GameData gameDataParam) {
+        this.world = worldParam;
+        this.gameData = gameDataParam;
 
         // For each bomb entity in the world, check if the bomb has reached its explosion time.
-        for (Entity entity : world.getEntities(Bomb.class)) {
+        for (Entity entity : this.world.getEntities(Bomb.class)) {
             if (entity instanceof Bomb bomb) {
                 checkBombExplosionTime(bomb);
             }
         }
-        for (Entity entity : world.getEntities(Explosion.class)) {
+        for (Entity entity : this.world.getEntities(Explosion.class)) {
             if (entity instanceof Explosion explosion) {
                 removeExplosionWhenFinished(explosion);
             }
@@ -137,16 +137,16 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
     }
 
     @Override
-    public Entity createWeapon(Entity weaponPlacer, GameData gameData) {
+    public Entity createWeapon(Entity weaponPlacer, GameData gameDataParam) {
         Path defaultTexture = Paths.get("Bomb/src/main/resources/bomb_textures/planted/bomb-planted-2.png");
-        Bomb bomb = new Bomb(defaultTexture, gameData.getScaler(), gameData.getScaler());
+        Bomb bomb = new Bomb(defaultTexture, gameDataParam.getScaler(), gameDataParam.getScaler());
         for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
-            bomb.addAnimator(BombAnimations.PLACEMENT.getValue(), animatorController.createTextureAnimator(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 16f));
+            bomb.addAnimator(BombAnimations.PLACEMENT.getValue(), animatorController.createTextureAnimator(gameDataParam, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 16f));
         }
         bomb.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));
         bomb.setDamagePoints(2);
         bomb.setBlastLength(3);
-        bomb.setTimeSincePlacement(gameData.getDeltaTime());
+        bomb.setTimeSincePlacement(gameDataParam.getDeltaTime());
         bomb.setTimeTillExplosionInSeconds(2f);
         bomb.setTextureLayer(TextureLayer.POWER_UP.getValue());
         return bomb;
