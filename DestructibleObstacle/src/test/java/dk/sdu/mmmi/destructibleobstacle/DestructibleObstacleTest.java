@@ -81,6 +81,45 @@ class DestructibleObstacleTest {
     }
 
     @Test
+    void testDestruction() {
+        // Mocks the world to add entities
+        doAnswer(invocation -> {
+            Entity entity = invocation.getArgument(0);
+            world.getEntities().add(entity);
+            return null;
+        }).when(world).addEntity(any(Entity.class));
+
+        // Mocks the world to remove entities
+        doAnswer(invocation -> {
+            Entity entity = invocation.getArgument(0);
+            world.getEntities().remove(entity);
+            return null;
+        }).when(world).removeEntity(any(Entity.class));
+
+        // Mocks the world to retrieve the list of entities
+        when(world.getEntities()).thenReturn(new ArrayList<>());
+
+
+        // Adds the destructible obstacle to the world
+        world.addEntity(destructibleObstacle);
+
+        // Destroys the destructible obstacle
+        destructibleObstacle.destroyObstacle();
+
+        // Checks if the destructible obstacle exists in the world
+        boolean destructibleObstacleExists = false;
+        for (Entity entity : world.getEntities()) {
+            if (entity.getClass().equals(DestructibleObstacle.class)) {
+                destructibleObstacleExists = true;
+                break;
+            }
+        }
+
+        // Asserts that the destructible obstacle does not exist in the world
+        assertFalse(destructibleObstacleExists);
+    }
+
+    @Test
     void testTakeDamage() {
         // Arrange
         destructibleObstacle.setLifepoints(1);
@@ -121,44 +160,5 @@ class DestructibleObstacleTest {
 
         // Asserts the player has been removed from the world.
         assertTrue(mockEntityList.isEmpty());
-    }
-
-    @Test
-    void testDestroyed() {
-        // Mocks the world to add entities
-        doAnswer(invocation -> {
-            Entity entity = invocation.getArgument(0);
-            world.getEntities().add(entity);
-            return null;
-        }).when(world).addEntity(any(Entity.class));
-
-        // Mocks the world to remove entities
-        doAnswer(invocation -> {
-            Entity entity = invocation.getArgument(0);
-            world.getEntities().remove(entity);
-            return null;
-        }).when(world).removeEntity(any(Entity.class));
-
-        // Mocks the world to retrieve the list of entities
-        when(world.getEntities()).thenReturn(new ArrayList<>());
-
-
-        // Adds the destructible obstacle to the world
-        world.addEntity(destructibleObstacle);
-
-        // Destroys the destructible obstacle
-        destructibleObstacle.destroyObstacle();
-
-        // Checks if the destructible obstacle exists in the world
-        boolean destructibleObstacleExists = false;
-        for (Entity entity : world.getEntities()) {
-            if (entity.getClass().equals(DestructibleObstacle.class)) {
-                destructibleObstacleExists = true;
-                break;
-            }
-        }
-
-        // Asserts that the destructible obstacle does not exist in the world
-        assertFalse(destructibleObstacleExists);
     }
 }
