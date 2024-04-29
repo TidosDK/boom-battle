@@ -134,7 +134,7 @@ public class PathFinding implements IPathFinding {
     }
 
     /**
-     * This used is used to make a list op explored nodes.
+     * This used is used to make a list of explored nodes.
      * As well as setting the parent node which is used later to reconstruct the path
      *
      * @param node        is the node you are trying to open
