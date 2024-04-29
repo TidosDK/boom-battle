@@ -8,6 +8,8 @@ public class Explosion extends Entity {
     private float elapsedTime;
     private float animTime; // Duration of the explosion animation
 
+    private Bomb bomb; // To store the associated bomb entity
+
     public Explosion(Path texturePath, float x, float y, float width, float height, float animTime) {
         super(texturePath, width, height);
         this.setX(x); // Set the X coordinate
@@ -25,6 +27,14 @@ public class Explosion extends Entity {
 
     public float getAnimTime() {
         return animTime;
+    }
+
+    public void setBomb(Bomb bomb) {
+        this.bomb = bomb;
+    }
+
+    public Bomb getBomb() {
+        return bomb;
     }
 
 }

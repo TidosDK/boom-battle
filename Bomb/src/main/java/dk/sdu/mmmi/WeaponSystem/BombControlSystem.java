@@ -28,6 +28,8 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
         for (Entity entity : world.getEntities(Bomb.class)) {
             Bomb bomb = (Bomb) entity;
             if (bomb.calculateTimeTillExplosion(gameData) <= 0) {
+                bomb.setState(Bomb.State.EXPLODING);
+
                 // Explosion time reached; trigger the explosion visuals and effects.
                 Collection<Coordinates> blastArea = bomb.calculateBlastArea(world);
 
@@ -36,7 +38,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
                     Path texturePath = bomb.getFireExplosionTexturePath(coord);
 
                     Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
-
+                    explosion.setBomb(bomb);
                     // Add creation time to the HashMap
                     explosionCreationTimes.put(explosion, gameData.getDeltaTime());
                     world.addEntity(explosion);
@@ -44,9 +46,8 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
 
                 // Damage calculation and handling.
                 this.dealDamage(blastArea, world, bomb);
-
-                // Remove the bomb entity after all explosion entities are placed.
                 world.removeEntity(bomb);
+                // Remove the bomb entity after all explosion entities are placed.
             } else {
                 // Set the texture path to the bomb as it counts down to explosion.
                 bomb.setTexturePath(bomb.getActiveTexturePath(BombAnimations.PLACEMENT.getValue()));
@@ -54,13 +55,17 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
         }
         for (Entity e : world.getEntities(Explosion.class)) {
             Explosion expl = (Explosion) e;
+            Bomb sourceBomb = expl.getBomb(); // Assumes you've added a 'getBomb' method to Explosion
             float creationTime = explosionCreationTimes.getOrDefault(expl, 0f);
 
             if (expl.getElapsedTime() + gameData.getDeltaTime() >= expl.getAnimTime() + creationTime) {
                 world.removeEntity(expl);
-                explosionCreationTimes.remove(expl); // Remove from HashMap after removal
+                explosionCreationTimes.remove(expl);
             } else {
-                expl.setElapsedTime(expl.getElapsedTime() + gameData.getDeltaTime()); // Initial elapsed time (accumulate delta time)
+                expl.setElapsedTime(expl.getElapsedTime() + gameData.getDeltaTime());
+                // Damage Calculation:
+                Collection<Coordinates> blastArea = sourceBomb.calculateBlastArea(world);
+                dealDamage(blastArea, world, sourceBomb);
             }
         }
     }
@@ -72,7 +77,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
                     if (entity instanceof IDamageable) {
                         IDamageable damageable = (IDamageable) entity;
                         damageable.removeLifepoints(weapon.getDamagePoints());
-                        System.out.println("Lifepoints for player: " + damageable.getLifepoints());
+                        // debugging HP print System.out.println("Lifepoints for player: " + damageable.getLifepoints());
                     }
                 }
             }

@@ -23,6 +23,12 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     private int damagePoints;
     private int blastLength;
 
+    public enum State {
+        PLACED, EXPLODING, FINISHED
+    }
+
+    private State state; // Field to track the current state of the bomb
+
     private HashMap<Integer, ITextureAnimator> animators;
     private Path explosionRightPath;
     private Path explosionLeftPath;
@@ -35,6 +41,7 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     public Bomb(Path texturePath, float width, float height) {
         super(texturePath, width, height);
         animators = new HashMap<>();
+        this.state = State.PLACED; // Default state when a bomb is created
 
         explosionRightPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png");
         explosionLeftPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/left/left-explosion-2.png");
@@ -87,32 +94,42 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
 
         return explosionCenterPath;
     }
-
     public Collection<Coordinates> calculateBlastArea(World world) {
-        IMap map = (IMap) world.getMap();
-        Coordinates position = this.getCoordinates();
+
         Collection<Coordinates> blastArea = new ArrayList<>();
-
-        // Add the origin of the explosion
-        blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
-
-        // Loop to add coordinates in four directions from the bomb's position
+        Coordinates position = this.getCoordinates();
         int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // right, left, up, down
 
-        for (int[] direction : directions) {
-            for (int j = 1; j <= this.blastLength; j++) {
-                int x = position.getGridX() + j * direction[0];
-                int y = position.getGridY() + j * direction[1];
-
-                // If the next tile in the direction is an obstacle, stop adding to that direction
-                if (map.isTileObstacle(x, y)) {
-                    break;
+        if (world.getMap() instanceof IMap) {
+            IMap map = (IMap) world.getMap();
+            // Add the origin of the explosion
+            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
+            // Loop to add coordinates in four directions from the bomb's position
+            for (int[] direction : directions) {
+                for (int j = 1; j <= this.blastLength; j++) {
+                    int x = position.getGridX() + j * direction[0];
+                    int y = position.getGridY() + j * direction[1];
+                    // If the next tile in the direction is an obstacle, stop adding to that direction
+                    if (map.isTileObstacle(x, y)) {
+                        break;
+                    }
+                    Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                    blastArea.add(blastPos);
                 }
-                Coordinates blastPos = new Coordinates(new GridPosition(x, y));
-                blastArea.add(blastPos);
+            }
+        } else {
+            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
+
+            for (int[] direction : directions) {
+                for (int j = 1; j <= this.blastLength; j++) {
+                    int x = position.getGridX() + j * direction[0];
+                    int y = position.getGridY() + j * direction[1];
+                    // If the next tile in the direction is an obstacle, stop adding to that direction
+                    Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                    blastArea.add(blastPos);
+                }
             }
         }
-
         return blastArea;
     }
 
@@ -171,5 +188,13 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     @Override
     public void setDamagePoints(int damagePoints) {
         this.damagePoints = damagePoints;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }
