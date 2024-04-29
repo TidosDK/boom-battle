@@ -43,6 +43,9 @@ public class Main extends Game {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             this.gameData.getKeys().setKey(this.gameData.getKeys().getSpace(), true);
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+            this.gameData.getKeys().setKey(this.gameData.getKeys().getGETPOS(), true);
+        }
 
 
         if (!Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -59,6 +62,9 @@ public class Main extends Game {
         }
         if (!Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             this.gameData.getKeys().setKey(this.gameData.getKeys().getSpace(), false);
+        }
+        if (!Gdx.input.isKeyPressed(Input.Keys.K)) {
+            this.gameData.getKeys().setKey(this.gameData.getKeys().getGETPOS(), false);
         }
     }
 
