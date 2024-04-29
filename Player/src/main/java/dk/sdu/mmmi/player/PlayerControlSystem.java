@@ -89,7 +89,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
 
         if (gameData.getKeys().isPressed(gameData.getKeys().getSpace())) {
             this.placeWeapon();
-        } else if (gameData.getKeys().isPressed(gameData.getKeys().getGETPOS())) {
+        } else if (gameData.getKeys().isPressed(gameData.getKeys().getGetPos())) {
             System.out.println("Player position: " + player.getX() + ", " + player.getY());
         }
     }

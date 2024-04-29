@@ -14,7 +14,7 @@ public class GameKeys {
     private final int right = 2;
     private final int down = 3;
     private final int space = 4;
-    private final int GETPOS = 5;
+    private final int getpos = 5;
 
     private GameKeys() {
         keys = new boolean[this.numKeys];
@@ -63,6 +63,6 @@ public class GameKeys {
     }
 
     public int getGetPos() {
-        return GETPOS;
+        return getpos;
     }
 }
