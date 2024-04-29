@@ -5,6 +5,10 @@ import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.data.entity.Entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class BombPlugin implements IGamePluginService {
     @Override
     public void start(World world, GameData gameData) {
@@ -13,8 +17,8 @@ public class BombPlugin implements IGamePluginService {
 
     @Override
     public void stop(World world, GameData gameData) {
-        for (Entity bomb : world.getEntities(Bomb.class)) {
-            world.removeEntity(bomb);
+        for (Entity entity : world.getEntities(Bomb.class, Explosion.class)) {
+            world.removeEntity(entity);
         }
     }
 }
