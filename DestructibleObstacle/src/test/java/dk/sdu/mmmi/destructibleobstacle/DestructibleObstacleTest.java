@@ -5,6 +5,7 @@ import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.gameproperties.GameKeys;
 import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,20 +72,17 @@ class DestructibleObstacleTest {
 
     // Verifies functional requirement F-05 & F-05b
     @Test
-    void testDestructibleObstacleExists() {
-        // Mocks the world to add entities and retrieve the list of entities
-        doAnswer(invocation -> {
-            Entity entity = invocation.getArgument(0);
-            world.getEntities().add(entity);
-            return null;
-        }).when(world).addEntity(any(Entity.class));
-        when(world.getEntities()).thenReturn(new ArrayList<>());
-
+    void testDestructibleObstacleCreation() {
         // Adds the destructible obstacle to the world
-        world.addEntity(destructibleObstacle);
+        DestructibleObstacleControlSystem destructibleObstacleControlSystem = new DestructibleObstacleControlSystem();
+        IDestructibleObstacle iDestructibleObstacle = destructibleObstacleControlSystem.createDestructibleObstacle(gameData, world);
+
+        if (iDestructibleObstacle instanceof DestructibleObstacle obstacle) {
+            world.addEntity(obstacle);
+        }
 
         // Checks if the destructible obstacle exists in the world
-        assertTrue(world.getEntities().contains(destructibleObstacle));
+        assertTrue(world.getEntities().contains(iDestructibleObstacle));
     }
 
     @Test
