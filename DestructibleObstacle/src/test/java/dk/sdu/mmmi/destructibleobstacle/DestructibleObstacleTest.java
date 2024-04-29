@@ -3,7 +3,6 @@ package dk.sdu.mmmi.destructibleobstacle;
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
-import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -52,17 +51,12 @@ class DestructibleObstacleTest {
 
     // Verifies functional requirement F-05 & F-05b
     @Test
-    void testDestructibleObstacleCreation() {
+    void testDestructibleObstacleExists() {
         // Adds the destructible obstacle to the world
-        DestructibleObstacleControlSystem destructibleObstacleControlSystem = new DestructibleObstacleControlSystem();
-        IDestructibleObstacle iDestructibleObstacle = destructibleObstacleControlSystem.createDestructibleObstacle(gameData, world);
-
-        if (iDestructibleObstacle instanceof DestructibleObstacle obstacle) {
-            world.addEntity(obstacle);
-        }
+        world.addEntity(destructibleObstacle);
 
         // Checks if the destructible obstacle exists in the world
-        assertTrue(world.getEntities().contains(iDestructibleObstacle));
+        assertTrue(world.getEntities().contains(destructibleObstacle));
     }
 
     @Test

@@ -3,25 +3,33 @@ package dk.sdu.mmmi.nondestructibleobstacle;
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
-import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * This class is used to test the NonDestructibleObstacle class.
+ */
 class NonDestructibleObstacleTest {
+    private NonDestructibleObstacle nonDestructibleObstacle;
     private GameData gameData;
     private World world;
+    private Path texture;
 
     @BeforeEach
     void setup() {
-        // Mocks the game data and world.
+        // Creates a new destructible obstacle and mocks the game data and world.
+        texture = Paths.get("NonDestructibleObstacle/src/main/resources/non_destructible_obstacle_textures/non-destructible-wall.png");
         gameData = mock(GameData.class);
         world = mock(World.class);
+        nonDestructibleObstacle = new NonDestructibleObstacle(world, 2f, 2f, texture);
 
         // Mocks the world to add entities
         doAnswer(invocation -> {
@@ -43,37 +51,24 @@ class NonDestructibleObstacleTest {
 
     // Verifies functional requirement F-05 & F-05a
     @Test
-    void testDestructibleObstacleCreation() {
-        // Creates a new destructible obstacle using the control system
-        NonDestructibleObstacleControlSystem nonDestructibleObstacleControlSystem = new NonDestructibleObstacleControlSystem();
-        INonDestructibleObstacle iNonDestructibleObstacle = nonDestructibleObstacleControlSystem.createNonDestructibleObstacle(gameData, world);
-
+    void testDestructibleObstacleExists() {
         // Adds the destructible obstacle to the world
-        if (iNonDestructibleObstacle instanceof NonDestructibleObstacle obstacle) {
-            world.addEntity(obstacle);
-        }
+        world.addEntity(nonDestructibleObstacle);
 
         // Checks if the destructible obstacle exists in the world
-        assertTrue(world.getEntities().contains(iNonDestructibleObstacle));
+        assertTrue(world.getEntities().contains(nonDestructibleObstacle));
     }
 
     @Test
     void testDestructibleObstacleRemoval() {
-        // Creates a new destructible obstacle using the control system
-        NonDestructibleObstacleControlSystem nonDestructibleObstacleControlSystem = new NonDestructibleObstacleControlSystem();
-        INonDestructibleObstacle iNonDestructibleObstacle = nonDestructibleObstacleControlSystem.createNonDestructibleObstacle(gameData, world);
-
         // Adds the destructible obstacle to the world
-        if (iNonDestructibleObstacle instanceof NonDestructibleObstacle obstacle) {
-            world.addEntity(obstacle);
-        }
+        world.addEntity(nonDestructibleObstacle);
 
         // Removes the destructible obstacle from the world
-        if (iNonDestructibleObstacle instanceof NonDestructibleObstacle obstacle) {
-            world.removeEntity(obstacle);
-        }
+        world.removeEntity(nonDestructibleObstacle);
+
 
         // Checks if the destructible obstacle exists in the world
-        assertFalse(world.getEntities().contains(iNonDestructibleObstacle));
+        assertFalse(world.getEntities().contains(nonDestructibleObstacle));
     }
 }
