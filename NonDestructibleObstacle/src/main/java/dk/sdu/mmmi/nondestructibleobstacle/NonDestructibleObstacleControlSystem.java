@@ -16,8 +16,8 @@ public class NonDestructibleObstacleControlSystem implements INonDestructibleObs
         INonDestructibleObstacle nonDestructibleObstacle = new NonDestructibleObstacle(world, gamedata.getScaler(), gamedata.getScaler(), defaultTexture);
 
         // Set texture layer of non destructible obstacle instance
-        if (nonDestructibleObstacle instanceof NonDestructibleObstacle) {
-            ((NonDestructibleObstacle) nonDestructibleObstacle).setTextureLayer(TextureLayer.CONSTRUCTIONS.getValue());
+        if (nonDestructibleObstacle instanceof NonDestructibleObstacle obstacle) {
+            obstacle.setTextureLayer(TextureLayer.CONSTRUCTIONS.getValue());
         }
 
         return nonDestructibleObstacle;
