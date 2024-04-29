@@ -29,6 +29,8 @@ public class DestructibleObstacleControlSystem implements IEntityProcessingServi
 
     /**
      * Checks the destruction of the destructible obstacle and destroys it if necessary.
+     *
+     * @param destructibleObstacle The destructible obstacle to check for destruction
      */
     private void checkDestruction(DestructibleObstacle destructibleObstacle) {
         if (destructibleObstacle.getLifepoints() <= 0) { // obstacle is destroyed
