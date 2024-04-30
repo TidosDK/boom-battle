@@ -43,7 +43,11 @@ public class Explosion extends Entity {
         return this.explosionTime;
     }
 
+    public void setBomb(Bomb bomb) {
+        this.bomb = bomb;
+    }
     public Bomb getBomb() {
         return this.bomb;
     }
+
 }
