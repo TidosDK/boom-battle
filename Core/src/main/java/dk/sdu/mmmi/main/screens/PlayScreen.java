@@ -51,7 +51,7 @@ public class PlayScreen implements Screen {
         world = World.getInstance();
         camera = new OrthographicCamera();
         float width = 25f;
-        float height = 25f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
+        float height = 25f * (gameData.getGameScreenHeight() / (float) gameData.getGameScreenWidth());
         camera.setToOrtho(false, width, height);
         shapeRenderer = new ShapeRenderer();
         stages = new ArrayList<>();

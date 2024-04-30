@@ -26,7 +26,7 @@ public class EndScreen implements Screen {
 
         this.gameData = GameData.getInstance();
 
-        this.viewport = new FitViewport(150, 100, new OrthographicCamera()); // TODO: Find a better way to set the viewport size.
+        this.viewport = new FitViewport(gameData.getGameScreenWidth(), gameData.getGameScreenHeight(), new OrthographicCamera());
 
         this.stage = new Stage(viewport, game.getBatch());
 
