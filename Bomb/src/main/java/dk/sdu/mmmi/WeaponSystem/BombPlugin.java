@@ -16,5 +16,9 @@ public class BombPlugin implements IGamePluginService {
         for (Entity bomb : world.getEntities(Bomb.class)) {
             world.removeEntity(bomb);
         }
+
+        for (Entity explosion : world.getEntities(Explosion.class)) {
+            world.removeEntity(explosion);
+        }
     }
 }
