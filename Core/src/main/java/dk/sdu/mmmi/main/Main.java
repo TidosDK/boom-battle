@@ -75,7 +75,7 @@ public class Main extends Game {
 
 
     /**
-     * Getters and setters
+     * Getters and setters.
      */
     public SpriteBatch getBatch() {
         return batch;
