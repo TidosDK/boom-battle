@@ -123,7 +123,8 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
      *
      * @param world The game world
      * @return A collection of coordinates in the blast area
-     */public Collection<Coordinates> calculateBlastArea(World world) {
+     */
+    public Collection<Coordinates> calculateBlastArea(World world) {
         if (this.cachedBlastArea != null) {
             return this.cachedBlastArea; // Return cached area if available
         }

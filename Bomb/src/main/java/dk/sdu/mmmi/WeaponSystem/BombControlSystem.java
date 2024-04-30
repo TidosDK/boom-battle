@@ -123,7 +123,6 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
     }
 
 
-
     /**
      * Deals damage to entities in the blast area.
      *

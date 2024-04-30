@@ -58,6 +58,7 @@ public class BombTest {
 
     /**
      * Create a mock blast area for testing.
+     *
      * @return A collection of coordinates representing the blast area
      */
     private Collection<Coordinates> createMockBlastArea() {
@@ -173,7 +174,6 @@ public class BombTest {
         // Assert
         verify(damageableEntity).removeLifepoints(expectedDamage);
     }
-
 
 
 }
