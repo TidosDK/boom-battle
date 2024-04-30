@@ -37,6 +37,8 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     private final Path explosionMidHorizontalPath;
     private final Path explosionMidVerticalPath;
     private final Path explosionCenterPath;
+    private Collection<Coordinates> cachedBlastArea; // New field to store the blast area
+
 
     /**
      * Constructor for the Bomb class.
@@ -49,6 +51,7 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
         super(texturePath, width, height);
         animators = new HashMap<>();
         this.state = State.PLACED; // Default state when a bomb is created
+
 
         // Set path for explosion textures
         explosionRightPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png");
@@ -120,33 +123,38 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
      *
      * @param world The game world
      * @return A collection of coordinates in the blast area
-     */
-    public Collection<Coordinates> calculateBlastArea(World world) {
+     */public Collection<Coordinates> calculateBlastArea(World world) {
+        if (this.cachedBlastArea != null) {
+            return this.cachedBlastArea; // Return cached area if available
+        }
+
         Coordinates position = this.getCoordinates();
         Collection<Coordinates> blastArea = new ArrayList<>();
-        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // right, left, up, down
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // Right, left, up, down
 
         if (world.getMap() instanceof IMap) {
             IMap map = (IMap) world.getMap();
-            // Add the origin of the explosion
-            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
-            // Loop to add coordinates in four directions from the bomb's position
+
+            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY()))); // Origin
             for (int[] direction : directions) {
                 for (int j = 1; j <= this.blastLength; j++) {
                     int x = position.getGridX() + j * direction[0];
                     int y = position.getGridY() + j * direction[1];
-                    // If the next tile in the direction is an obstacle, stop adding to that direction
+
                     if (map.isTileObstacle(x, y)) {
                         Coordinates blastPos = new Coordinates(new GridPosition(x, y));
                         blastArea.add(blastPos);
                         break;
                     }
+
                     Coordinates blastPos = new Coordinates(new GridPosition(x, y));
                     blastArea.add(blastPos);
                 }
             }
+
             blastArea = blastArea.stream().filter(c -> !map.outOfBounds(c.getGridX(), c.getGridY())).toList();
         } else {
+            // Handle case where world is not imap
             blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
             for (int[] direction : directions) {
                 for (int j = 1; j <= this.blastLength; j++) {
@@ -158,8 +166,11 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
                 }
             }
         }
+
+        this.cachedBlastArea = blastArea; // Cache the area
         return blastArea;
     }
+
 
     @Override
     public Path getActiveTexturePath(Integer key) {
