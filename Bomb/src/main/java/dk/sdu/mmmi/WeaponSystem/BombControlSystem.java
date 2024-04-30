@@ -81,6 +81,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
 
             Explosion explosion = new Explosion(texturePath, coordinate.getX(), coordinate.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
             explosion.setTextureLayer(TextureLayer.EFFECT.getValue());
+            explosion.setBomb(bomb);
 
             // Add creation time to the HashMap
             this.explosionCreationTimes.put(explosion, gameData.getDeltaTime());
@@ -103,16 +104,23 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
      *
      * @param explosion The explosion entity to remove.
      */
+
     public void removeExplosionWhenFinished(Explosion explosion) {
         float creationTime = this.explosionCreationTimes.getOrDefault(explosion, 0f);
+        Bomb sourceBomb = explosion.getBomb();
+
+        // Use cached blast area
+        Collection<Coordinates> blastArea = sourceBomb.calculateBlastArea(world);
 
         if (explosion.getElapsedTime() + gameData.getDeltaTime() >= explosion.getExplosionTime() + creationTime) {
-            this.explosionCreationTimes.remove(explosion); // Remove the explosion from the HashMap
-            world.removeEntity(explosion); // Remove the explosion from the world
+            this.explosionCreationTimes.remove(explosion);
+            world.removeEntity(explosion);
         } else {
-            explosion.setElapsedTime(explosion.getElapsedTime() + gameData.getDeltaTime()); // Initial elapsed time (accumulate delta time)
+            explosion.setElapsedTime(explosion.getElapsedTime() + gameData.getDeltaTime());
+            dealDamage(world, blastArea, sourceBomb);
         }
     }
+
 
 
     /**
