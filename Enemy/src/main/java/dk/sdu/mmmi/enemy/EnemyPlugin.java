@@ -19,11 +19,16 @@ import static java.util.stream.Collectors.toList;
 public class EnemyPlugin implements IGamePluginService {
     private GameData gameData;
 
+    /**
+     * Create an enemy entity.
+     * Sets the sprite of the enemy and its animations.
+     *
+     * @return Enemy entity
+     */
     public Enemy createEnemy() {
         Path defaultTexture = Paths.get("Enemy/src/main/resources/enemy_textures/up/up-7.png");
         Enemy enemy = new Enemy(defaultTexture, gameData.getScaler(), (3.3f / 2.2f) * gameData.getScaler());
         enemy.setTextureLayer(TextureLayer.CHARACTER.getValue());
-
 
 
         for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
@@ -72,6 +77,11 @@ public class EnemyPlugin implements IGamePluginService {
         }
     }
 
+    /**
+     * Get all ITextureAnimatorController implementations.
+     *
+     * @return Collection of ITextureAnimatorController
+     */
     private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {
         return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }

@@ -1,6 +1,7 @@
 
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
+import dk.sdu.mmmi.common.services.ai.IOptimalBombPlacement;
 import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 import dk.sdu.mmmi.common.services.weapon.IWeapon;
@@ -17,6 +18,7 @@ module Enemy {
     uses IWeaponController;
     uses ITextureAnimatorController;
     uses IPathFinding;
+    uses IOptimalBombPlacement;
     requires Common;
     provides IGamePluginService with EnemyPlugin;
     provides IEntityProcessingService with EnemyControlSystem;

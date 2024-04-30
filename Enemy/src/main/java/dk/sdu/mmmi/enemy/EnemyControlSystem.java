@@ -5,6 +5,7 @@ import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.common.services.ai.IOptimalBombPlacement;
 import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
@@ -13,10 +14,7 @@ import dk.sdu.mmmi.common.services.weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.ai.IPathFinding;
 import dk.sdu.mmmi.common.data.ai.Node;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -31,7 +29,9 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
     private IMap map;
     private ArrayList<Node> path = new ArrayList<>();
 
-    private final float movingSpeed = 1f;
+    private final float movingSpeed = 2.5f;
+
+    private Node nodeBombPlacement;
 
     @Override
     public void process(World worldParam, GameData gameDataParam) {
@@ -39,7 +39,6 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
         this.gameData = gameDataParam;
         Node goalNode = null;
         Node startNode;
-
         for (Entity playerEntity : this.world.getEntities(Enemy.class)) {
             this.enemy = (Enemy) playerEntity;
             startNode = new Node(this.enemy.getGridPosition().getX(), this.enemy.getGridPosition().getY());
@@ -63,7 +62,12 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
 
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
                 path = pathFinding.pathFind(startNode, goalNode, world.getMap());
+
             }
+            for (IOptimalBombPlacement bombPlacement : getIOptimalBombPlacementProcessing()) {
+                nodeBombPlacement = bombPlacement.optimalBombPlacement(startNode, goalNode, world.getMap());
+            }
+
             checkEnemyStatus();
         }
 
@@ -129,9 +133,18 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
 
             moveUsingPath(path);
 
+            checkBombPlacement();
+
         }
     }
 
+    private void checkBombPlacement() {
+        if (nodeBombPlacement != null) {
+            if (this.enemy.getGridPosition().getX() == nodeBombPlacement.getX() && this.enemy.getGridPosition().getY() == nodeBombPlacement.getY()) {
+                placeWeapon();
+            }
+        }
+    }
 
     public void placeWeapon() {
         if (enemy.getWeapons().size() < maxWeapons) {
@@ -202,6 +215,10 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
 
     private Collection<? extends IPathFinding> getIPathFindingProcessing() {
         return ServiceLoader.load(IPathFinding.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    }
+
+    private Collection<? extends IOptimalBombPlacement> getIOptimalBombPlacementProcessing() {
+        return ServiceLoader.load(IOptimalBombPlacement.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
 

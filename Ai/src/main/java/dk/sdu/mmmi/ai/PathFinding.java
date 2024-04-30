@@ -22,12 +22,6 @@ public class PathFinding implements IPathFinding {
     private ArrayList<Node> pathList = new ArrayList<>();
 
 
-    /**
-     * Method that finds a path from the start node to the goal node.
-     *
-     * @param goalNode is the node you are trying to reach
-     * @param map      is the map you are trying to navigate
-     */
     @Override
     public ArrayList<Node> pathFind(Node start, Node goalNode, Map map) {
         maxCol = map.getWidth();
@@ -40,7 +34,7 @@ public class PathFinding implements IPathFinding {
         int col = 0;
         int row = 0;
 
-        while (col < maxCol  && row < maxRow) {
+        while (col < maxCol && row < maxRow) {
             nodeMap[col][row] = new Node(col, row);
 
             col++;
