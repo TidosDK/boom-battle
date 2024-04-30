@@ -13,9 +13,7 @@ import dk.sdu.mmmi.common.services.weapon.IWeaponController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.ServiceLoader;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -125,14 +123,18 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
      * @param weapon    The bomb entity that caused the explosion.
      */
     private static void dealDamage(World world, Collection<Coordinates> blastArea, Bomb weapon) {
+        List<IDamageable> damageableList = new ArrayList<>();
         for (Coordinates coordinates : blastArea) {
             for (Entity entity : world.getEntities()) {
                 if (entity.getGridPosition().equals(coordinates.getGridPosition())) {
                     if (entity instanceof IDamageable damageable) {
-                        damageable.removeLifepoints(weapon.getDamagePoints());
+                        damageableList.add(damageable);
                     }
                 }
             }
+        }
+        for (IDamageable damageable : damageableList) {
+            damageable.removeLifepoints(weapon.getDamagePoints());
         }
     }
 

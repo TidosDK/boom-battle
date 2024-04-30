@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.WeaponSystem;
 
 import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.entity.TextureLayer;
 
 import java.nio.file.Path;
 
@@ -10,6 +11,7 @@ import java.nio.file.Path;
 public class Explosion extends Entity {
     private float elapsedTime;
     private float explosionTime;
+    private Bomb bomb;
 
     /**
      * Constructor for the Explosion class.
@@ -23,6 +25,7 @@ public class Explosion extends Entity {
      */
     public Explosion(Path texturePath, float x, float y, float width, float height, float explosionTime) {
         super(texturePath, width, height);
+        super.setTextureLayer(TextureLayer.DEFAULT.getValue());
         this.setX(x);
         this.setY(y);
         this.explosionTime = explosionTime;
@@ -38,5 +41,9 @@ public class Explosion extends Entity {
 
     public float getExplosionTime() {
         return this.explosionTime;
+    }
+
+    public Bomb getBomb() {
+        return this.bomb;
     }
 }

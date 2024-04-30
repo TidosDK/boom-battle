@@ -122,16 +122,8 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
      * @return A collection of coordinates in the blast area
      */
     public Collection<Coordinates> calculateBlastArea(World world) {
-        IMap map;
-        if (world.getMap() instanceof IMap iMap) {
-             map = iMap;
-        } else {
-            throw new IllegalArgumentException("The world's map must be an instance of IMap");
-        }
-
         Coordinates position = this.getCoordinates();
         Collection<Coordinates> blastArea = new ArrayList<>();
-        Coordinates position = this.getCoordinates();
         int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // right, left, up, down
 
         if (world.getMap() instanceof IMap) {
@@ -145,15 +137,17 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
                     int y = position.getGridY() + j * direction[1];
                     // If the next tile in the direction is an obstacle, stop adding to that direction
                     if (map.isTileObstacle(x, y)) {
+                        Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                        blastArea.add(blastPos);
                         break;
                     }
                     Coordinates blastPos = new Coordinates(new GridPosition(x, y));
                     blastArea.add(blastPos);
                 }
             }
+            blastArea = blastArea.stream().filter(c -> !map.outOfBounds(c.getGridX(), c.getGridY())).toList();
         } else {
             blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
-
             for (int[] direction : directions) {
                 for (int j = 1; j <= this.blastLength; j++) {
                     int x = position.getGridX() + j * direction[0];
@@ -162,8 +156,6 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
                     Coordinates blastPos = new Coordinates(new GridPosition(x, y));
                     blastArea.add(blastPos);
                 }
-                Coordinates blastPosition = new Coordinates(new GridPosition(x, y));
-                blastArea.add(blastPosition);
             }
         }
         return blastArea;

@@ -66,7 +66,7 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
 
     @Override
     public boolean outOfBounds(int x, int y) {
-        return true;
+        return x < 0 || x >= getWidth() || y < 0 || y >= getHeight();
     }
 
     private boolean handleEdgeCases(float x, float y, Direction direction) {

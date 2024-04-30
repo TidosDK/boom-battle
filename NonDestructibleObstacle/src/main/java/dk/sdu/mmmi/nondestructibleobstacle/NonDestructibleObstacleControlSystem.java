@@ -17,7 +17,7 @@ public class NonDestructibleObstacleControlSystem implements INonDestructibleObs
 
         // Set texture layer of non destructible obstacle instance
         if (nonDestructibleObstacle instanceof NonDestructibleObstacle) {
-            ((NonDestructibleObstacle) nonDestructibleObstacle).setTextureLayer(TextureLayer.CONSTRUCTIONS.getValue());
+            ((NonDestructibleObstacle) nonDestructibleObstacle).setTextureLayer(TextureLayer.NON_DESTRUCTIBLE_OBSTACLE.getValue());
         }
 
         return nonDestructibleObstacle;
