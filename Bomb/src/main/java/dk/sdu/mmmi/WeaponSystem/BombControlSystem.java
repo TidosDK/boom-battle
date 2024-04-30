@@ -19,65 +19,117 @@ import java.util.ServiceLoader;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * BombControlSystem: Controls the bomb entities and their explosions.
+ */
 public class BombControlSystem implements IEntityProcessingService, IWeaponController {
-
     private HashMap<Entity, Float> explosionCreationTimes = new HashMap<>();
+    private World world;
+    private GameData gameData;
 
     @Override
-    public synchronized void process(World world, GameData gameData) {
-        for (Entity entity : world.getEntities(Bomb.class)) {
-            Bomb bomb = (Bomb) entity;
-            if (bomb.calculateTimeTillExplosion(gameData) <= 0) {
-                bomb.setState(Bomb.State.EXPLODING);
+    public synchronized void process(World worldParam, GameData gameDataParam) {
+        this.world = worldParam;
+        this.gameData = gameDataParam;
 
-                // Explosion time reached; trigger the explosion visuals and effects.
-                Collection<Coordinates> blastArea = bomb.calculateBlastArea(world);
-
-                for (Coordinates coord : blastArea) {
-                    // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
-                    Path texturePath = bomb.getFireExplosionTexturePath(coord);
-
-                    Explosion explosion = new Explosion(texturePath, coord.getX(), coord.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
-                    explosion.setBomb(bomb);
-                    // Add creation time to the HashMap
-                    explosionCreationTimes.put(explosion, gameData.getDeltaTime());
-                    world.addEntity(explosion);
-                }
-
-                // Damage calculation and handling.
-                this.dealDamage(blastArea, world, bomb);
-                world.removeEntity(bomb);
-                // Remove the bomb entity after all explosion entities are placed.
-            } else {
-                // Set the texture path to the bomb as it counts down to explosion.
-                bomb.setTexturePath(bomb.getActiveTexturePath(BombAnimations.PLACEMENT.getValue()));
+        // For each bomb entity in the world, check if the bomb has reached its explosion time.
+        for (Entity entity : this.world.getEntities(Bomb.class)) {
+            if (entity instanceof Bomb bomb) {
+                checkBombExplosionTime(bomb);
             }
         }
-        for (Entity e : world.getEntities(Explosion.class)) {
-            Explosion expl = (Explosion) e;
-            Bomb sourceBomb = expl.getBomb(); // Assumes you've added a 'getBomb' method to Explosion
-            float creationTime = explosionCreationTimes.getOrDefault(expl, 0f);
-
-            if (expl.getElapsedTime() + gameData.getDeltaTime() >= expl.getAnimTime() + creationTime) {
-                world.removeEntity(expl);
-                explosionCreationTimes.remove(expl);
-            } else {
-                expl.setElapsedTime(expl.getElapsedTime() + gameData.getDeltaTime());
-                // Damage Calculation:
-                Collection<Coordinates> blastArea = sourceBomb.calculateBlastArea(world);
-                dealDamage(blastArea, world, sourceBomb);
+        for (Entity entity : this.world.getEntities(Explosion.class)) {
+            if (entity instanceof Explosion explosion) {
+                removeExplosionWhenFinished(explosion);
             }
         }
     }
 
-    private static void dealDamage(Collection<Coordinates> blastArea, World world, Bomb weapon) {
+    /**
+     * Checks if the bomb entity has reached its explosion time and explodes it if so.
+     *
+     * @param bomb The bomb entity to check.
+     */
+    public void checkBombExplosionTime(Bomb bomb) {
+        if (bomb.calculateTimeTillExplosion(this.gameData) <= 0) {
+            explodeBomb(bomb);
+        } else {
+            updateBombCountdownState(bomb);
+        }
+    }
+
+    /**
+     * Lets the bomb entity explode.
+     *
+     * @param bomb The bomb entity to explode.
+     */
+    private void explodeBomb(Bomb bomb) {
+        Collection<Coordinates> blastArea = bomb.calculateBlastArea(world);
+        createExplosions(bomb, blastArea);
+        dealDamage(world, blastArea, bomb);
+        world.removeEntity(bomb);
+    }
+
+    /**
+     * Creates explosion entities in the blast area of the bomb.
+     *
+     * @param bomb      The bomb entity that caused the explosion.
+     * @param blastArea The blast area to create explosions in.
+     */
+    private void createExplosions(Bomb bomb, Collection<Coordinates> blastArea) {
+        for (Coordinates coordinate : blastArea) {
+            // For each coordinate in the blast area, create an explosion entity with the appropriate texture.
+            Path texturePath = bomb.getFireExplosionTexturePath(coordinate);
+
+            Explosion explosion = new Explosion(texturePath, coordinate.getX(), coordinate.getY(), gameData.getScaler(), gameData.getScaler(), 1f);
+            explosion.setTextureLayer(TextureLayer.EFFECT.getValue());
+
+            // Add creation time to the HashMap
+            this.explosionCreationTimes.put(explosion, gameData.getDeltaTime());
+            world.addEntity(explosion);
+        }
+    }
+
+    /**
+     * This method is responsible for updating the bomb's state as it counts down to explosion.
+     *
+     * @param bomb The bomb entity to set the texture for.
+     */
+    private void updateBombCountdownState(Bomb bomb) {
+        bomb.setTexturePath(bomb.getActiveTexturePath(BombAnimations.PLACEMENT.getValue()));
+    }
+
+
+    /**
+     * Checks if explosion time is reached and removes the explosion entity when so.
+     *
+     * @param explosion The explosion entity to remove.
+     */
+    public void removeExplosionWhenFinished(Explosion explosion) {
+        float creationTime = this.explosionCreationTimes.getOrDefault(explosion, 0f);
+
+        if (explosion.getElapsedTime() + gameData.getDeltaTime() >= explosion.getExplosionTime() + creationTime) {
+            this.explosionCreationTimes.remove(explosion); // Remove the explosion from the HashMap
+            world.removeEntity(explosion); // Remove the explosion from the world
+        } else {
+            explosion.setElapsedTime(explosion.getElapsedTime() + gameData.getDeltaTime()); // Initial elapsed time (accumulate delta time)
+        }
+    }
+
+
+    /**
+     * Deals damage to entities in the blast area.
+     *
+     * @param world     The world to deal damage in.
+     * @param blastArea The blast area to deal damage to.
+     * @param weapon    The bomb entity that caused the explosion.
+     */
+    private static void dealDamage(World world, Collection<Coordinates> blastArea, Bomb weapon) {
         for (Coordinates coordinates : blastArea) {
             for (Entity entity : world.getEntities()) {
                 if (entity.getGridPosition().equals(coordinates.getGridPosition())) {
-                    if (entity instanceof IDamageable) {
-                        IDamageable damageable = (IDamageable) entity;
+                    if (entity instanceof IDamageable damageable) {
                         damageable.removeLifepoints(weapon.getDamagePoints());
-                        // debugging HP print System.out.println("Lifepoints for player: " + damageable.getLifepoints());
                     }
                 }
             }
@@ -85,21 +137,26 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
     }
 
     @Override
-    public Entity createWeapon(Entity weaponPlacer, GameData gameData) {
+    public Entity createWeapon(Entity weaponPlacer, GameData gameDataParam) {
         Path defaultTexture = Paths.get("Bomb/src/main/resources/bomb_textures/planted/bomb-planted-2.png");
-        Bomb bomb = new Bomb(defaultTexture, gameData.getScaler(), gameData.getScaler());
+        Bomb bomb = new Bomb(defaultTexture, gameDataParam.getScaler(), gameDataParam.getScaler());
         for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
-            bomb.addAnimator(BombAnimations.PLACEMENT.getValue(), animatorController.createTextureAnimator(gameData, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 16f));
+            bomb.addAnimator(BombAnimations.PLACEMENT.getValue(), animatorController.createTextureAnimator(gameDataParam, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 16f));
         }
         bomb.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));
         bomb.setDamagePoints(2);
         bomb.setBlastLength(3);
-        bomb.setTimeSincePlacement(gameData.getDeltaTime());
+        bomb.setTimeSincePlacement(gameDataParam.getDeltaTime());
         bomb.setTimeTillExplosionInSeconds(2f);
         bomb.setTextureLayer(TextureLayer.POWER_UP.getValue());
         return bomb;
     }
 
+    /**
+     * Get all ITextureAnimatorController implementations.
+     *
+     * @return Collection of ITextureAnimatorController
+     */
     private Collection<? extends ITextureAnimatorController> getITextureAnimatorController() {
         return ServiceLoader.load(ITextureAnimatorController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
