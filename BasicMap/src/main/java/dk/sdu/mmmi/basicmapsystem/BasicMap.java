@@ -64,6 +64,11 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
 
     }
 
+    @Override
+    public boolean outOfBounds(int x, int y) {
+        return true;
+    }
+
     private boolean handleEdgeCases(float x, float y, Direction direction) {
         float xUnscaled = x / GameData.getInstance().getScaler();
         float yUnscaled = y / GameData.getInstance().getScaler();

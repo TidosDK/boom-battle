@@ -53,9 +53,9 @@ public class MapRenderer {
             return;
         }
         IDestructibleObstacle obst = destructObstCon.createDestructibleObstacle(gameData, world);
-        if (obst instanceof Entity) {
-            ((Entity) obst).setCoordinates(new Coordinates(new GridPosition(gridX, gridY)));
-            world.addEntity((Entity) obst);
+        if (obst instanceof Entity entity) {
+            entity.setCoordinates(new Coordinates(new GridPosition(gridX, gridY)));
+            world.addEntity(entity);
         }
     }
 

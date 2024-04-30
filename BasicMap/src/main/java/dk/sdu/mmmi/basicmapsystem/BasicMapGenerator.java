@@ -40,9 +40,11 @@ public class BasicMapGenerator implements IMapGenerator {
                     map[x][y] = true;
                     mapRenderer.createNonDestructibleObstacle(x, y);
                 } else if (isCorner(x, y, width, height)) {
+                    map[x][y] = false;
                     mapRenderer.createPathTile(x, y);
                 } else {
                     map[x][y] = true;
+                    mapRenderer.createPathTile(x, y);
                     mapRenderer.createDestructibleObstacle(x, y);
                 }
             }
