@@ -32,6 +32,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
     private final float movingSpeed = 2.5f;
 
     private Node nodeBombPlacement;
+    ArrayList<Entity> weaponsList = new ArrayList<>();
 
     @Override
     public void process(World worldParam, GameData gameDataParam) {
@@ -39,6 +40,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
         this.gameData = gameDataParam;
         Node goalNode = null;
         Node startNode;
+
         for (Entity playerEntity : this.world.getEntities(Enemy.class)) {
             this.enemy = (Enemy) playerEntity;
             startNode = new Node(this.enemy.getGridPosition().getX(), this.enemy.getGridPosition().getY());
@@ -60,14 +62,28 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
                 }
             }
 
+            for (Entity weapon : this.world.getEntities()) {
+                if (weapon instanceof IWeapon) {
+                    weaponsList.add(weapon);
+                }
+            }
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
-                path = pathFinding.pathFind(startNode, goalNode, world.getMap());
+                if (weaponsList.isEmpty()) {
+                    path = pathFinding.pathFind(startNode, goalNode, world.getMap());
+                } else {
+                    Node temp = runAwayFromBombs(weaponsList);
+                    if (!world.getMap().getMap()[temp.getX()][temp.getY()]) {
+                        path = pathFinding.pathFind(startNode, runAwayFromBombs(weaponsList), world.getMap());
+                    }
+
+                }
+
 
             }
             for (IOptimalBombPlacement bombPlacement : getIOptimalBombPlacementProcessing()) {
                 nodeBombPlacement = bombPlacement.optimalBombPlacement(startNode, goalNode, world.getMap());
             }
-
+            System.out.println(weaponsList.size());
             checkEnemyStatus();
         }
 
@@ -207,6 +223,41 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             default:
                 break;
         }
+    }
+
+
+    private Node runAwayFromBombs(ArrayList<Entity> weaponsList) {
+        // still in development
+        int x = 0;
+        int y = 0;
+
+        Entity closetWeapon = weaponsList.getFirst();
+        ArrayList<int[]> distances = new ArrayList<>();
+        int[] furthestDistance = new int[2];
+
+        for (Entity weapon : weaponsList) {
+            int minForX = Math.min(enemy.getGridX(), weapon.getGridX());
+            int maxForX = Math.max(enemy.getGridX(), weapon.getGridX());
+
+            int differenceX = (maxForX - minForX);
+
+            int minForY = Math.min(enemy.getGridY(), weapon.getGridY());
+            int maxForY = Math.max(enemy.getGridY(), weapon.getGridY());
+            int differenceY = (maxForY - minForY);
+
+            distances.add(new int[]{differenceX, differenceY,weaponsList.indexOf(weapon)});
+        }
+        for (int[] distance : distances) {
+            if (distance[0] > furthestDistance[0] && distance[1] > furthestDistance[1]) {
+                furthestDistance = distance;
+                closetWeapon = weaponsList.get(distance[2]);
+            }
+        }
+        System.out.println("X: " + furthestDistance[0] + " Y: " + furthestDistance[1]);
+        x = closetWeapon.getGridX() + furthestDistance[0];
+        y = closetWeapon.getGridY() + furthestDistance[1];
+
+        return new Node(x, y);
     }
 
     private Collection<? extends IWeaponController> getIWeaponProcessing() {
