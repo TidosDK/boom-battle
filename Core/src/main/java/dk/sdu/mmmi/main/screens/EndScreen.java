@@ -39,6 +39,10 @@ public class EndScreen implements Screen {
         Label gameOverLabel = new Label("GAME OVER", font);
         Label playAgainLabel = new Label("Click to play again", font);
 
+        // Make the text in both of the labels 3x larger
+        gameOverLabel.setFontScale(4);
+        playAgainLabel.setFontScale(4);
+
         table.add(gameOverLabel).expandX(); // Expand the label as much as possible, in the x direction.
         table.row(); // Move to the next row.
         table.add(playAgainLabel).expandX().padTop(10f); // Add padding to the top of the label.
