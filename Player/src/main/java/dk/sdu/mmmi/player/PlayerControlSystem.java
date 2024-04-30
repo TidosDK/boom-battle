@@ -37,8 +37,10 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
 
             List<IWeapon> weaponsToBeRemoved = new ArrayList<>();
             for (IWeapon weapon : this.player.getWeapons()) {
-                if (!this.world.getEntities().contains((Entity) weapon)) {
-                    weaponsToBeRemoved.add(weapon);
+                if (weapon instanceof Entity entityWeapon) {
+                    if (!this.world.getEntities().contains(entityWeapon)) {
+                        weaponsToBeRemoved.add(weapon);
+                    }
                 }
             }
             for (IWeapon weapon : weaponsToBeRemoved) {
@@ -208,6 +210,11 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
+    /**
+     * Get all IWeaponProcessing implementations.
+     *
+     * @return Collection of IWeaponProcessing instances.
+     */
     private Collection<? extends IWeaponController> getIWeaponProcessing() {
         return ServiceLoader.load(IWeaponController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
