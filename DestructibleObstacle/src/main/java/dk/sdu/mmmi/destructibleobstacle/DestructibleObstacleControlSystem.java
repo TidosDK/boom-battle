@@ -7,7 +7,6 @@ import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacleController;
-import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;

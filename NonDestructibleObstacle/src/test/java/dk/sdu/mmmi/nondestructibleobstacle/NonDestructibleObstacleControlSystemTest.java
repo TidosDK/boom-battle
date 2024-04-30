@@ -3,7 +3,6 @@ package dk.sdu.mmmi.nondestructibleobstacle;
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
-import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,15 +40,12 @@ class NonDestructibleObstacleControlSystemTest {
     void testDestructibleObstacleCreation() {
         // Creates a new destructible obstacle using the control system
         NonDestructibleObstacleControlSystem nonDestructibleObstacleControlSystem = new NonDestructibleObstacleControlSystem();
-        INonDestructibleObstacle iNonDestructibleObstacle = nonDestructibleObstacleControlSystem.createNonDestructibleObstacle(gameData, world);
+        NonDestructibleObstacle nonDestructibleObstacle = (NonDestructibleObstacle) nonDestructibleObstacleControlSystem.createNonDestructibleObstacle(gameData, world);
 
-        // Adds the destructible obstacle to the world
-        if (iNonDestructibleObstacle instanceof NonDestructibleObstacle obstacle) {
-            world.addEntity(obstacle);
-        }
+        world.addEntity(nonDestructibleObstacle);
 
         // Checks if the destructible obstacle exists in the world
-        assertTrue(world.getEntities().contains(iNonDestructibleObstacle));
+        assertTrue(world.getEntities().contains(nonDestructibleObstacle));
     }
 
 }
