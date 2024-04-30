@@ -73,10 +73,6 @@ public class Main extends Game {
         super.dispose(); // Don't know if this is necessary
     }
 
-
-    /**
-     * Getters and setters.
-     */
     public SpriteBatch getBatch() {
         return batch;
     }
