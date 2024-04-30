@@ -16,11 +16,13 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class BombTest {
+    /**
+     * Mock objects for testing.
+     */
 
     private World mockWorld;
     private GameData mockGameData;
@@ -30,6 +32,9 @@ public class BombTest {
     private Bomb mockBomb;
     private Explosion mockExplosion;
 
+    /**
+     * Setup the test environment.
+     */
     @Before
     public void setUp() {
         mockWorld = mock(World.class);
@@ -51,7 +56,10 @@ public class BombTest {
 
     }
 
-
+    /**
+     * Create a mock blast area for testing.
+     * @return A collection of coordinates representing the blast area
+     */
     private Collection<Coordinates> createMockBlastArea() {
         // Create a mock blast area
         Collection<Coordinates> blastArea = new ArrayList<>();
@@ -65,8 +73,10 @@ public class BombTest {
         return blastArea;
     }
 
+    /**
+     * Test that the bomb's state is set to EXPLODING when the time is up.
+     */
 
-    // Test that the bomb explodes when the time is up
     @Test
     public void testBombExplosionTimer() {
         // Arrange
@@ -79,6 +89,9 @@ public class BombTest {
         verify(mockBomb).setState(Bomb.State.EXPLODING);
     }
 
+    /**
+     * Test that a bomb creates an explosion entity for each coordinate in the blast area.
+     */
     @Test
     public void testBombExplosionCreation() {
         // Arrange
@@ -125,6 +138,9 @@ public class BombTest {
         }
     }
 
+    /**
+     * Test that bomb deals damage to damageable entities in the blast area.
+     */
     @Test
     public void testDealDamageReducesDamagableHealth() {
         // Arrange
@@ -161,4 +177,3 @@ public class BombTest {
 
 
 }
-
