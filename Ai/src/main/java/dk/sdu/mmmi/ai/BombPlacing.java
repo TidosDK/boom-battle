@@ -25,6 +25,10 @@ public class BombPlacing implements IOptimalBombPlacement {
 
     /**
      * Checks if the bomb placement is a match compared to the given criteria for a good bomb placement.
+     *
+     * @param goalNode      the node where the bomb should be placed
+     * @param bombPlacement the node where the bomb is placed
+     * @return boolean value indicating if the bomb placement is good or not
      */
     private boolean isGoodBombPlacement(Node bombPlacement, Node goalNode) {
         // needs further implementation to use bomb blast length
