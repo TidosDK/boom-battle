@@ -50,6 +50,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
      */
     public void checkBombExplosionTime(Bomb bomb) {
         if (bomb.calculateTimeTillExplosion(this.gameData) <= 0) {
+            bomb.setState(Bomb.State.EXPLODING);
             explodeBomb(bomb);
         } else {
             updateBombCountdownState(bomb);
