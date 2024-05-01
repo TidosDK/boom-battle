@@ -1,0 +1,19 @@
+@startuml EnemyStateMachine
+title Enemy State Machine
+
+[*] --> Idle
+Idle --> Chasing : detects player
+Chasing --> Attacking : player in attack range
+Attacking --> Chasing : player moves out of range
+Chasing --> Idle : loses player
+Attacking --> Damaged : takes damage
+Damaged --> Idle : survives damage
+Damaged --> [*] : HP reaches 0
+
+Idle: Enemy is not engaged in any activity.
+Chasing: Enemy has detected the player and is pursuing them.
+Attacking: Enemy is in range and attacking the player.
+Damaged: Enemy has taken damage.
+Destroyed: Enemy is dead.
+
+@enduml

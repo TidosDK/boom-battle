@@ -1,0 +1,13 @@
+@startuml ObstacleStateMachine
+title Obstacle State Machine
+
+[*] --> Intact
+Intact --> Damaged : hit by bomb explosion
+Damaged --> Destroyed : subsequent damage
+Destroyed --> [*] : obstacle is removed
+
+Intact: Obstacle is undamaged.
+Damaged: Obstacle has taken damage.
+Destroyed: Obstacle is destroyed
+
+@enduml
