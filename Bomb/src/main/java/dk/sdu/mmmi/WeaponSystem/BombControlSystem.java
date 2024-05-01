@@ -141,9 +141,7 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
                 }
             }
         }
-        for (IDamageable damageable : damageableList) {
-            damageable.removeLifepoints(weapon.getDamagePoints());
-        }
+        damageableList.forEach(damageable -> damageable.removeLifepoints(weapon.getDamagePoints());
     }
 
     @Override
