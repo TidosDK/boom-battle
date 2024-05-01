@@ -202,9 +202,11 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
             case DOWN:
                 newX = player.getGridX() * scaler;
                 newY = oldY - (movingSpeed * gameData.getDeltaTime()) * gameData.getScaler();
+                targetY = player.getGridY() * scaler;
                 player.setX(newX);
-                player.setY((newY < 0) ? 0 : newY);
+                player.setY((newY < 0) ? 0 : Math.max(newY, targetY));
                 player.setTexturePath(player.getActiveTexturePath(PlayerAnimations.DOWN.getValue()));
+                break;
             default:
                 break;
         }
