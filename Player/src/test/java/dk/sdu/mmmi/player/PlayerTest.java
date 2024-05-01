@@ -87,7 +87,7 @@ public class PlayerTest {
         }
 
         // Asserts that the player exists in the world
-        //assertTrue(playerExists);
+        assertTrue(playerExists);
     }
 
     // Verifies functional requirement F-01a
