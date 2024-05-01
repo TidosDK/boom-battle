@@ -12,7 +12,7 @@ public class NonDestructibleObstacleControlSystem implements INonDestructibleObs
 
     @Override
     public INonDestructibleObstacle createNonDestructibleObstacle(GameData gamedata, World world) {
-        Path defaultTexture = Path.of("DestructibleObstacle/src/main/resources/destructible_obstacle_textures/block.png");
+        Path defaultTexture = Path.of("NonDestructibleObstacle/src/main/resources/non_destructible_obstacle_textures/non-destructible-wall.png");
         NonDestructibleObstacle nonDestructibleObstacle = new NonDestructibleObstacle(world, gamedata.getScaler(), gamedata.getScaler(), defaultTexture);
 
         // Set texture layer of non destructible obstacle instance

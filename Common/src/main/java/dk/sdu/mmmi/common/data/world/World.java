@@ -37,17 +37,17 @@ public class World {
         return this.entities;
     }
 
-    public <child extends Entity> List<Entity> getEntities(Class<child>... entityChildClasses) {
-        List<Entity> children = new ArrayList<>();
+    public List<Entity> getEntities(Class<? extends Entity>... entityClasses) {
+        List<Entity> entityList = new ArrayList<>();
 
         for (Entity entity : this.getEntities()) {
-            for (Class<child> childClass : entityChildClasses) {
-                if (childClass.equals(entity.getClass())) {
-                    children.add(entity);
+            for (Class<? extends Entity> entityClass : entityClasses) {
+                if (entityClass.isInstance(entity)) {
+                    entityList.add(entity);
                 }
             }
         }
-        return children;
+        return entityList;
     }
 
     public void addEntity(Entity entity) {

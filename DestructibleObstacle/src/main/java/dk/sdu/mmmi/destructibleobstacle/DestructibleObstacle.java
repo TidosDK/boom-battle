@@ -3,6 +3,7 @@ package dk.sdu.mmmi.destructibleobstacle;
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
+import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
 import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
@@ -26,11 +27,15 @@ public class DestructibleObstacle extends Entity implements IDestructibleObstacl
     @Override
     public void destroyObstacle() {
         ITextureAnimator destroyAnimator = animators.get(DestructibleObstacleAnimations.DESTROY.getValue());
-
         if (destroyAnimator != null) { // Guard for ITextureAnimator being module
             this.setTexturePath(destroyAnimator.getCurrentTexturePath());
             if (destroyAnimator.getCurrentTextureIndex() == destroyAnimator.getNumberOfTextures() - 1) {
                 world.removeEntity(this);
+            }
+            // TODO: You have to fix animation for destructible obstacle
+            world.removeEntity(this);
+            if (world.getMap() instanceof IMap map) {
+                map.setMapTile(this.getGridX(), this.getGridY(), false);
             }
         } else {
             world.removeEntity(this);

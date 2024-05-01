@@ -1,0 +1,29 @@
+@startuml
+
+left to right direction
+actor Player
+
+usecase "Move Player" as MP
+usecase "Place Bomb" as PB
+usecase "Destroy Obstacle" as DO
+usecase "Pickup Power-up" as PPU
+usecase "Pickup Bomb" as PUB
+usecase "Use Power-ups" as UPU
+usecase "{Abstract} Pickup" as APU
+
+Player --> UPU
+Player --> MP
+Player --> PB
+Player --> DO
+Player --> APU
+
+PPU ..> APU
+PUB ..> APU
+PPU <.. UPU : <<extend>>
+PUB <.. PB : <<extend>>
+DO <.. PPU : <<extend>>
+MP ..> PB : <<extend>>
+MP ..> DO : <<extend>>
+MP ..> UPU : <<extend>>
+
+@enduml

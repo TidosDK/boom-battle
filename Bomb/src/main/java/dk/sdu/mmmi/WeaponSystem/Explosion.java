@@ -1,30 +1,54 @@
 package dk.sdu.mmmi.WeaponSystem;
 
 import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.entity.TextureLayer;
 
 import java.nio.file.Path;
 
+/**
+ * Explosion: Entity class for the explosion tile.
+ */
 public class Explosion extends Entity {
     private float elapsedTime;
-    private float animTime; // Duration of the explosion animation
+    private float explosionTime;
+    private Bomb bomb;
 
-    public Explosion(Path texturePath, float x, float y, float width, float height, float animTime) {
+    /**
+     * Constructor for the Explosion class.
+     *
+     * @param texturePath   Path to the texture
+     * @param x             X coordinate of the explosion tile
+     * @param y             Y coordinate of the explosion tile
+     * @param width         Width of the explosion texture
+     * @param height        Height of the explosion texture
+     * @param explosionTime Duration of the explosion. The explosion will disappear after this time has passed.
+     */
+    public Explosion(Path texturePath, float x, float y, float width, float height, float explosionTime) {
         super(texturePath, width, height);
-        this.setX(x); // Set the X coordinate
-        this.setY(y); // Set the Y coordinate
-        this.animTime = animTime; // Set the duration of the animation
+        super.setTextureLayer(TextureLayer.DEFAULT.getValue());
+        this.setX(x);
+        this.setY(y);
+        this.explosionTime = explosionTime;
     }
 
     public void setElapsedTime(float time) {
-        elapsedTime = time;
+        this.elapsedTime = time;
     }
 
     public float getElapsedTime() {
-        return elapsedTime;
+        return this.elapsedTime;
     }
 
-    public float getAnimTime() {
-        return animTime;
+    public float getExplosionTime() {
+        return this.explosionTime;
+    }
+
+    public void setBomb(Bomb bomb) {
+        this.bomb = bomb;
+    }
+
+    public Bomb getBomb() {
+        return this.bomb;
     }
 
 }
