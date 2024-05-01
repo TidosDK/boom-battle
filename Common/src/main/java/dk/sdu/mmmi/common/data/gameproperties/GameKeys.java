@@ -8,12 +8,13 @@ public class GameKeys {
     private static boolean[] pressedKeys;
     private static GameKeys instance = null;
 
-    private final int numKeys = 5;
+    private final int numKeys = 6;
     private final int up = 0;
     private final int left = 1;
     private final int right = 2;
     private final int down = 3;
     private final int space = 4;
+    private final int getpos = 5;
 
     private GameKeys() {
         keys = new boolean[this.numKeys];
@@ -59,5 +60,9 @@ public class GameKeys {
 
     public int getSpace() {
         return this.space;
+    }
+
+    public int getGetPos() {
+        return getpos;
     }
 }

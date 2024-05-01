@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.basicmapsystem;
 
 import dk.sdu.mmmi.common.data.entity.Entity;
+import dk.sdu.mmmi.common.data.entity.TextureLayer;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,5 +12,6 @@ public class PathTile extends Entity {
 
     public PathTile(float width, float height) {
         super(PATH_TEXTURE, width, height);
+        super.setTextureLayer(TextureLayer.BACKGROUND.getValue());
     }
 }

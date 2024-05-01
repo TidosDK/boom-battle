@@ -13,8 +13,8 @@ public class BombPlugin implements IGamePluginService {
 
     @Override
     public void stop(World world, GameData gameData) {
-        for (Entity bomb : world.getEntities(Bomb.class)) {
-            world.removeEntity(bomb);
+        for (Entity entity : world.getEntities(Bomb.class, Explosion.class)) {
+            world.removeEntity(entity);
         }
     }
 }

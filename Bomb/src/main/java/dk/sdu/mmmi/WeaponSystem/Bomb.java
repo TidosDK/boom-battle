@@ -23,19 +23,37 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     private int damagePoints;
     private int blastLength;
 
-    private HashMap<Integer, ITextureAnimator> animators;
-    private Path explosionRightPath;
-    private Path explosionLeftPath;
-    private Path explosionUpPath;
-    private Path explosionDownPath;
-    private Path explosionMidHorizontalPath;
-    private Path explosionMidVerticalPath;
-    private Path explosionCenterPath;
+    public enum State {
+        PLACED, EXPLODING, FINISHED
+    }
 
+    private State state;
+
+    private HashMap<Integer, ITextureAnimator> animators;
+    private final Path explosionRightPath;
+    private final Path explosionLeftPath;
+    private final Path explosionUpPath;
+    private final Path explosionDownPath;
+    private final Path explosionMidHorizontalPath;
+    private final Path explosionMidVerticalPath;
+    private final Path explosionCenterPath;
+    private Collection<Coordinates> cachedBlastArea; // New field to store the blast area
+
+
+    /**
+     * Constructor for the Bomb class.
+     *
+     * @param texturePath Path to the default texture of the bomb
+     * @param width       Width of the bomb texture
+     * @param height      Height of the bomb texture
+     */
     public Bomb(Path texturePath, float width, float height) {
         super(texturePath, width, height);
         animators = new HashMap<>();
+        this.state = State.PLACED; // Default state when a bomb is created
 
+
+        // Set path for explosion textures
         explosionRightPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png");
         explosionLeftPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/left/left-explosion-2.png");
         explosionUpPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/up/up-explosion-2.png");
@@ -45,93 +63,132 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
         explosionCenterPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/center/center-explosion-2.png");
     }
 
+    /**
+     * Calculates the time until the bomb explodes.
+     *
+     * @param gameData The game data
+     * @return The time until the bomb explodes
+     */
     public float calculateTimeTillExplosion(GameData gameData) {
-        timeSincePlacement += gameData.getDeltaTime();
-        return timeTillExplosionInSeconds - timeSincePlacement;
+        this.timeSincePlacement += gameData.getDeltaTime();
+        return this.timeTillExplosionInSeconds - this.timeSincePlacement;
     }
 
 
-    public Path getFireExplosionTexturePath(Coordinates coord) {
-        Coordinates originCoords = this.getCoordinates();
-        GridPosition position = originCoords.getGridPosition();
+    /**
+     * Chooses the correct texture for the explosion based on the coordinates of the explosion.
+     *
+     * @param coordinates The coordinates of the explosion
+     * @return The path to the explosion texture
+     */
+    public Path getFireExplosionTexturePath(Coordinates coordinates) {
+        Coordinates initialCoordinates = this.getCoordinates();
+        GridPosition position = initialCoordinates.getGridPosition();
 
-        int dx = coord.getGridPosition().getX() - position.getX();
-        int dy = coord.getGridPosition().getY() - position.getY();
+        int dx = coordinates.getGridPosition().getX() - position.getX();
+        int dy = coordinates.getGridPosition().getY() - position.getY();
 
         // Determine if the explosion is at the end or the middle of the blast radius
-        boolean isEndOfBlastX = Math.abs(dx) == blastLength;
-        boolean isEndOfBlastY = Math.abs(dy) == blastLength;
+        boolean isEndOfBlastX = Math.abs(dx) == this.blastLength;
+        boolean isEndOfBlastY = Math.abs(dy) == this.blastLength;
 
         // Center of the explosion
         if (dx == 0 && dy == 0) {
-            return explosionCenterPath;
+            return this.explosionCenterPath;
         }
 
         // Horizontal explosion
         if (dy == 0) {
             if (dx > 0) { // Right
-                return isEndOfBlastX ? explosionRightPath : explosionMidHorizontalPath;
+                return isEndOfBlastX ? this.explosionRightPath : this.explosionMidHorizontalPath;
             } else if (dx < 0) { // Left
-                return isEndOfBlastX ? explosionLeftPath : explosionMidHorizontalPath;
+                return isEndOfBlastX ? this.explosionLeftPath : this.explosionMidHorizontalPath;
             }
         }
 
         // Vertical explosion
         if (dx == 0) {
             if (dy > 0) { // Up
-                return isEndOfBlastY ? explosionUpPath : explosionMidVerticalPath;
+                return isEndOfBlastY ? this.explosionUpPath : this.explosionMidVerticalPath;
             } else if (dy < 0) { // Down
-                return isEndOfBlastY ? explosionDownPath : explosionMidVerticalPath;
+                return isEndOfBlastY ? this.explosionDownPath : this.explosionMidVerticalPath;
             }
         }
 
-        return explosionCenterPath;
+        return this.explosionCenterPath;
     }
 
+    /**
+     * Calculates the area of the bomb's blast radius.
+     *
+     * @param world The game world
+     * @return A collection of coordinates in the blast area
+     */
     public Collection<Coordinates> calculateBlastArea(World world) {
-        IMap map = (IMap) world.getMap();
+        if (this.cachedBlastArea != null) {
+            return this.cachedBlastArea; // Return cached area if available
+        }
+
         Coordinates position = this.getCoordinates();
         Collection<Coordinates> blastArea = new ArrayList<>();
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // Right, left, up, down
 
-        // Add the origin of the explosion
-        blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
+        if (world.getMap() instanceof IMap) {
+            IMap map = (IMap) world.getMap();
 
-        // Loop to add coordinates in four directions from the bomb's position
-        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; // right, left, up, down
+            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY()))); // Origin
+            for (int[] direction : directions) {
+                for (int j = 1; j <= this.blastLength; j++) {
+                    int x = position.getGridX() + j * direction[0];
+                    int y = position.getGridY() + j * direction[1];
 
-        for (int[] direction : directions) {
-            for (int j = 1; j <= this.blastLength; j++) {
-                int x = position.getGridX() + j * direction[0];
-                int y = position.getGridY() + j * direction[1];
+                    if (map.isTileObstacle(x, y)) {
+                        Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                        blastArea.add(blastPos);
+                        break;
+                    }
 
-                // If the next tile in the direction is an obstacle, stop adding to that direction
-                if (map.isTileObstacle(x, y)) {
-                    break;
+                    Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                    blastArea.add(blastPos);
                 }
-                Coordinates blastPos = new Coordinates(new GridPosition(x, y));
-                blastArea.add(blastPos);
+            }
+
+            blastArea = blastArea.stream().filter(c -> !map.outOfBounds(c.getGridX(), c.getGridY())).toList();
+        } else {
+            // Handle case where world is not imap
+            blastArea.add(new Coordinates(new GridPosition(position.getGridX(), position.getGridY())));
+            for (int[] direction : directions) {
+                for (int j = 1; j <= this.blastLength; j++) {
+                    int x = position.getGridX() + j * direction[0];
+                    int y = position.getGridY() + j * direction[1];
+                    // If the next tile in the direction is an obstacle, stop adding to that direction
+                    Coordinates blastPos = new Coordinates(new GridPosition(x, y));
+                    blastArea.add(blastPos);
+                }
             }
         }
 
+        this.cachedBlastArea = blastArea; // Cache the area
         return blastArea;
     }
 
+
     @Override
     public Path getActiveTexturePath(Integer key) {
-        if (animators.get(key) == null) {
+        if (this.animators.get(key) == null) {
             return getTexturePath();
         }
-        return animators.get(key).getCurrentTexturePath();
+        return this.animators.get(key).getCurrentTexturePath();
     }
 
     @Override
     public void addAnimator(Integer key, ITextureAnimator animator) {
-        animators.put(key, animator);
+        this.animators.put(key, animator);
     }
 
     @Override
     public HashMap<Integer, ITextureAnimator> getAnimators() {
-        return animators;
+        return this.animators;
     }
 
     @Override
@@ -140,7 +197,7 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     }
 
     public float getTimeSincePlacement() {
-        return timeSincePlacement;
+        return this.timeSincePlacement;
     }
 
     public void setTimeSincePlacement(float timeOfPlacement) {
@@ -148,7 +205,7 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     }
 
     public float getTimeTillExplosionInSeconds() {
-        return timeTillExplosionInSeconds;
+        return this.timeTillExplosionInSeconds;
     }
 
     public void setTimeTillExplosionInSeconds(float timeTillExplosionInSeconds) {
@@ -156,7 +213,7 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     }
 
     public int getBlastLength() {
-        return blastLength;
+        return this.blastLength;
     }
 
     public void setBlastLength(int blastLength) {
@@ -165,11 +222,19 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
 
     @Override
     public int getDamagePoints() {
-        return damagePoints;
+        return this.damagePoints;
     }
 
     @Override
     public void setDamagePoints(int damagePoints) {
         this.damagePoints = damagePoints;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }
