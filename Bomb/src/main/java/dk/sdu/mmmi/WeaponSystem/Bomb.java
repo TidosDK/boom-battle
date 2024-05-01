@@ -27,7 +27,7 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
         PLACED, EXPLODING, FINISHED
     }
 
-    private State state; // Field to track the current state of the bomb
+    private State state;
 
     private HashMap<Integer, ITextureAnimator> animators;
     private final Path explosionRightPath;
