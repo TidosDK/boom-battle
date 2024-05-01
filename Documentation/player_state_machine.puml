@@ -1,0 +1,31 @@
+@startuml PlayerStateMachine
+title Player State Machine
+
+[*] --> Idle
+Idle --> Moving : inputs movement commands
+Moving --> Idle : stops moving
+
+Idle --> PlacingBomb : inputs place bomb
+Moving --> PlacingBomb : inputs place bomb
+
+Idle --> UsingPowerUp : activates power-up
+Moving --> UsingPowerUp : activates power-up
+
+PlacingBomb --> Idle : completes placing
+UsingPowerUp --> Idle : power-up duration ends
+
+Idle --> Damaged : takes damage
+Moving --> Damaged : takes damage
+PlacingBomb --> Damaged : takes damage while placing
+UsingPowerUp --> Damaged : takes damage while using
+
+Damaged --> [*] : HP reaches 0
+Damaged --> Idle : damage is not fatal
+
+Idle: Player is not moving or performing any action.
+Moving: Player inputs movement commands.
+PlacingBomb: Player is placing a bomb.
+UsingPowerUp: Player is using a power-up.
+Damaged: Player has taken damage.
+
+@enduml
