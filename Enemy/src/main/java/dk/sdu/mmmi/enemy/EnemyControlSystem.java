@@ -73,19 +73,12 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
                 if (weaponsList.isEmpty()) {
                     path = pathFinding.pathFind(startNode, listOfGoalNodes, world.getMap());
                 }
-                else {
-                    Node temp = runAwayFromBombs(weaponsList);
-                    if (!world.getMap().getMap()[temp.getX()][temp.getY()]) {
-                    }
-
-                }
 
 
             }
             for (IOptimalBombPlacement bombPlacement : getIOptimalBombPlacementProcessing()) {
                 nodeBombPlacement = bombPlacement.optimalBombPlacement(startNode, goalNode, world.getMap());
             }
-            System.out.println(weaponsList.size());
             checkEnemyStatus();
         }
 
@@ -103,7 +96,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
     private void moveUsingPath(ArrayList<Node> givenPath) {
         boolean canMove = true;
         Direction direction = null;
-        if (givenPath != null && !givenPath.isEmpty()) {
+        if (!givenPath.isEmpty()) {
             for (Node node : givenPath) {
                 if (canMove) {
                     int x = node.getX() - enemy.getGridPosition().getX();
@@ -186,9 +179,9 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
         float oldX = enemy.getX();
         float oldY = enemy.getY();
         enemy.setDirection(direction);
-        if (World.getInstance().getMap() instanceof IMap) {
-            IMap mapInstance = (IMap) World.getInstance().getMap();
+        if (World.getInstance().getMap() instanceof IMap mapInstance) {
             if (!mapInstance.isMoveAllowed(enemy.getGridX(), enemy.getGridY(), direction)) {
+                handleProximity(direction);
                 return;
             }
         }
@@ -227,6 +220,57 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
+    /**
+     * Handles the movement of a player when the map indicates an obstacle in the desired direction.
+     * This method allows us to move the player as close to the obstacle as possible without colliding with it.
+     *
+     * @param direction The desired direction to move in.
+     */
+    private void handleProximity(Direction direction) {
+        float scaler = gameData.getScaler();
+        float newY;
+        float newX;
+        float targetX;
+        float targetY;
+        float oldX = enemy.getX();
+        float oldY = enemy.getY();
+
+        switch (direction) {
+            case LEFT:
+                newX = oldX - (movingSpeed * gameData.getDeltaTime()) * scaler;
+                newY = enemy.getGridY() * scaler;
+                enemy.setX((newX < 0) ? 0 : newX);
+                enemy.setY(newY);
+                enemy.setTexturePath(enemy.getActiveTexturePath(EnemyAnimations.LEFT.getValue()));
+            case RIGHT:
+                newX = oldX + (movingSpeed * gameData.getDeltaTime()) * scaler;
+                newY = enemy.getGridY() * scaler;
+                targetX = enemy.getGridX() * scaler;
+                enemy.setX(Math.min(newX, targetX));
+                enemy.setY(newY);
+                enemy.setTexturePath(enemy.getActiveTexturePath(EnemyAnimations.RIGHT.getValue()));
+                break;
+            case UP:
+                newX = enemy.getGridX() * scaler;
+                newY = oldY + (movingSpeed * gameData.getDeltaTime()) * scaler;
+                targetY = (enemy.getGridY()) * scaler;
+                enemy.setX(newX);
+                enemy.setY(Math.min(newY, targetY));
+                enemy.setTexturePath(enemy.getActiveTexturePath(EnemyAnimations.UP.getValue()));
+                break;
+            case DOWN:
+                newX = enemy.getGridX() * scaler;
+                newY = oldY - (movingSpeed * gameData.getDeltaTime()) * gameData.getScaler();
+                targetY = enemy.getGridY() * scaler;
+                enemy.setX(newX);
+                enemy.setY((newY < 0) ? 0 : Math.max(newY, targetY));
+                enemy.setTexturePath(enemy.getActiveTexturePath(EnemyAnimations.DOWN.getValue()));
+                break;
+            default:
+                break;
+        }
+    }
+
 
     private Node runAwayFromBombs(ArrayList<Entity> weaponsList) {
         // still in development
@@ -247,7 +291,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             int maxForY = Math.max(enemy.getGridY(), weapon.getGridY());
             int differenceY = (maxForY - minForY);
 
-            distances.add(new int[]{differenceX, differenceY,weaponsList.indexOf(weapon)});
+            distances.add(new int[]{differenceX, differenceY, weaponsList.indexOf(weapon)});
         }
         for (int[] distance : distances) {
             if (distance[0] > furthestDistance[0] && distance[1] > furthestDistance[1]) {

@@ -6,6 +6,8 @@ import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.ai.IPathFinding;
+import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
+import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
 
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class PathFinding implements IPathFinding {
     private ArrayList<Node> openList = new ArrayList<>();
     private ArrayList<Node> checkedList = new ArrayList<>();
     private ArrayList<Node> pathList = new ArrayList<>();
-    private World world;
+    private final World world = World.getInstance();
 
 
     @Override
@@ -55,7 +57,6 @@ public class PathFinding implements IPathFinding {
             }
         }
 
-
         goalNode.setGoal(true);
 
 
@@ -75,15 +76,15 @@ public class PathFinding implements IPathFinding {
 
         }
 
-        for (int i = 0; i < nodeMap.length; i++) {
-            for (int j = 0; j < nodeMap[0].length; j++) {
-                if (map.getMap()[i][j]) {
-                    nodeMap[i][j].setObstacle(true);
-                }
+        for (Entity entity : world.getEntities()) {
+            if (entity instanceof IDestructibleObstacle) {
+                nodeMap[entity.getGridX()][entity.getGridY()].setDestructibleObstacle(true);
+            }
+            if (entity instanceof INonDestructibleObstacle) {
+                nodeMap[entity.getGridX()][entity.getGridY()].setObstacle(true);
             }
         }
         aStar(start, goalNode, nodeMap);
-
 
         return pathList;
 
@@ -191,6 +192,8 @@ public class PathFinding implements IPathFinding {
      * Where G is the cost from the start node to the current node
      * H is the estimated cost from the current node to the goal node
      * F is the sum of G and H
+     * If the node is an DestroyableObstacle the G value is increased by 2
+     * To make the pathfinding algorithm prioritize other empty tiles
      *
      * @param startNode   is the node you are starting from
      * @param currentNode is the node you are calculating the heuristic for
@@ -198,9 +201,16 @@ public class PathFinding implements IPathFinding {
      * @return the node with the calculated heuristic
      */
     public Node calculateHeuristic(Node startNode, Node currentNode, Node goalNode) {
-        currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY())));
-        currentNode.setH(Math.abs((currentNode.getX() - goalNode.getX()) + (currentNode.getY() - goalNode.getY())));
-        currentNode.setF((currentNode.getG() + currentNode.getH()));
+        if (currentNode.isDestructibleObstacle()) {
+            currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY()) + 2));
+            currentNode.setH(Math.abs((currentNode.getX() - goalNode.getX()) + (currentNode.getY() - goalNode.getY())));
+            currentNode.setF((currentNode.getG() + currentNode.getH()));
+        } else {
+            currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY())));
+            currentNode.setH(Math.abs((currentNode.getX() - goalNode.getX()) + (currentNode.getY() - goalNode.getY())));
+            currentNode.setF((currentNode.getG() + currentNode.getH()));
+        }
+
 
         return currentNode;
     }
