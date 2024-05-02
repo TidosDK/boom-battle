@@ -101,20 +101,27 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
                 if (canMove) {
                     int x = node.getX() - enemy.getGridPosition().getX();
                     int y = node.getY() - enemy.getGridPosition().getY();
+                    int movedX;
+                    int movedY;
                     if (x > 0) {
+                        movedX = 1;
                         direction = Direction.RIGHT;
                     } else if (x < 0) {
+                        movedX = -1;
                         direction = Direction.LEFT;
                     } else if (y > 0) {
+                        movedY = 1;
                         direction = Direction.UP;
                     } else if (y < 0) {
+                        movedY = -1;
                         direction = Direction.DOWN;
                     }
-                    if (World.getInstance().getMap() instanceof IMap) {
-                        IMap mapInstance = (IMap) World.getInstance().getMap();
+                    if (World.getInstance().getMap() instanceof IMap mapInstance) {
                         if (!mapInstance.isMoveAllowed(enemy.getGridX(), enemy.getGridY(), direction)) {
                             continue;
                         } else {
+                            System.out.println("\nMoving");
+
                             move(direction);
                         }
                     }
@@ -143,7 +150,12 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             enemy.setTexturePath(enemy.getActiveTexturePath(EnemyAnimations.STILL.getValue()));
 
             moveUsingPath(path);
-
+            if (!path.isEmpty()){
+                System.out.println(path.getFirst().isDestructibleObstacle() + " Node : " + path.getLast().getX() + " " + path.getLast().getY());
+                if (path.getLast().isDestructibleObstacle()){
+                    placeWeapon();
+                }
+            }
             checkBombPlacement();
 
         }

@@ -20,7 +20,7 @@ import java.util.List;
 public class Enemy extends Entity implements IDamageable, IAnimatable, IActor {
     private List<IWeapon> weapons;
     private HashMap<Integer, ITextureAnimator> animators;
-    private int lifePoints = 1;
+    private int lifePoints = 500000;
 
     public Enemy(Path texturePath, float width, float height) {
         super(texturePath, width, height);

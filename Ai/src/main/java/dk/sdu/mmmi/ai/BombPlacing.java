@@ -32,6 +32,9 @@ public class BombPlacing implements IOptimalBombPlacement {
      */
     private boolean isGoodBombPlacement(Node bombPlacement, Node goalNode) {
         // needs further implementation to use bomb blast length
+        if (bombPlacement == null || goalNode == null) {
+            return false;
+        }
         int minForX = Math.min(bombPlacement.getX(), goalNode.getX());
         int maxForX = Math.max(bombPlacement.getX(), goalNode.getX());
 

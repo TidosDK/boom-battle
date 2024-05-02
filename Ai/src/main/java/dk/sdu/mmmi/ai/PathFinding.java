@@ -8,6 +8,7 @@ import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.ai.IPathFinding;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
+import dk.sdu.mmmi.common.services.weapon.IWeapon;
 
 
 import java.util.ArrayList;
@@ -34,57 +35,61 @@ public class PathFinding implements IPathFinding {
         nodeMap = new Node[maxCol][maxRow];
         start.setStart(true);
 
-        Node goalNode = listOfGoalNode.getFirst();
-        ArrayList<int[]> distances = new ArrayList<>();
-        int[] furthestDistance = new int[2];
+        Node goalNode = null;
+        if (!listOfGoalNode.isEmpty()){
+            goalNode = listOfGoalNode.getFirst();
+            ArrayList<int[]> distances = new ArrayList<>();
+            int[] furthestDistance = new int[2];
 
-        for (Node node : listOfGoalNode) {
-            int minForX = Math.min(start.getX(), node.getX());
-            int maxForX = Math.max(start.getX(), node.getX());
+            for (Node node : listOfGoalNode) {
+                int minForX = Math.min(start.getX(), node.getX());
+                int maxForX = Math.max(start.getX(), node.getX());
 
-            int differenceX = (maxForX - minForX);
+                int differenceX = (maxForX - minForX);
 
-            int minForY = Math.min(start.getY(), node.getY());
-            int maxForY = Math.max(start.getY(), node.getY());
-            int differenceY = (maxForY - minForY);
+                int minForY = Math.min(start.getY(), node.getY());
+                int maxForY = Math.max(start.getY(), node.getY());
+                int differenceY = (maxForY - minForY);
 
-            distances.add(new int[]{differenceX, differenceY, listOfGoalNode.indexOf(node)});
-        }
-        for (int[] distance : distances) {
-            if (distance[0] > furthestDistance[0] && distance[1] > furthestDistance[1]) {
-                furthestDistance = distance;
-                goalNode = listOfGoalNode.get(distance[2]);
+                distances.add(new int[]{differenceX, differenceY, listOfGoalNode.indexOf(node)});
             }
-        }
-
-        goalNode.setGoal(true);
-
-
-        int col = 0;
-        int row = 0;
-
-        while (col < maxCol && row < maxRow) {
-            nodeMap[col][row] = new Node(col, row);
-
-            col++;
-
-            if (col == maxCol) {
-                col = 0;
-                row++;
+            for (int[] distance : distances) {
+                if (distance[0] > furthestDistance[0] && distance[1] > furthestDistance[1]) {
+                    furthestDistance = distance;
+                    goalNode = listOfGoalNode.get(distance[2]);
+                }
             }
 
+            goalNode.setGoal(true);
 
+
+            int col = 0;
+            int row = 0;
+
+            while (col < maxCol && row < maxRow) {
+                nodeMap[col][row] = new Node(col, row);
+
+                col++;
+
+                if (col == maxCol) {
+                    col = 0;
+                    row++;
+                }
+
+
+            }
+
+            for (Entity entity : world.getEntities()) {
+                if (entity instanceof IDestructibleObstacle) {
+                    nodeMap[entity.getGridX()][entity.getGridY()].setDestructibleObstacle(true);
+                }
+                if (entity instanceof INonDestructibleObstacle) {
+                    nodeMap[entity.getGridX()][entity.getGridY()].setObstacle(true);
+                }
+            }
+            aStar(start, goalNode, nodeMap);
         }
 
-        for (Entity entity : world.getEntities()) {
-            if (entity instanceof IDestructibleObstacle) {
-                nodeMap[entity.getGridX()][entity.getGridY()].setDestructibleObstacle(true);
-            }
-            if (entity instanceof INonDestructibleObstacle) {
-                nodeMap[entity.getGridX()][entity.getGridY()].setObstacle(true);
-            }
-        }
-        aStar(start, goalNode, nodeMap);
 
         return pathList;
 
@@ -192,7 +197,7 @@ public class PathFinding implements IPathFinding {
      * Where G is the cost from the start node to the current node
      * H is the estimated cost from the current node to the goal node
      * F is the sum of G and H
-     * If the node is an DestroyableObstacle the G value is increased by 2
+     * If the node is an DestroyableObstacle the H value is increased
      * To make the pathfinding algorithm prioritize other empty tiles
      *
      * @param startNode   is the node you are starting from
@@ -202,8 +207,8 @@ public class PathFinding implements IPathFinding {
      */
     public Node calculateHeuristic(Node startNode, Node currentNode, Node goalNode) {
         if (currentNode.isDestructibleObstacle()) {
-            currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY()) + 2));
-            currentNode.setH(Math.abs((currentNode.getX() - goalNode.getX()) + (currentNode.getY() - goalNode.getY())));
+            currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY())));
+            currentNode.setH(Math.abs((currentNode.getX() - goalNode.getX()) + (currentNode.getY() - goalNode.getY())) +10);
             currentNode.setF((currentNode.getG() + currentNode.getH()));
         } else {
             currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY())));
