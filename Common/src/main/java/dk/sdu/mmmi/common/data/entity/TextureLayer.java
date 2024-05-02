@@ -29,6 +29,8 @@ public enum TextureLayer {
      */
     EFFECT(8),
 
+    NON_DESTRUCTIBLE_OBSTACLE(9),
+
     /**
      * Character: layer for character and NPC textures.
      */

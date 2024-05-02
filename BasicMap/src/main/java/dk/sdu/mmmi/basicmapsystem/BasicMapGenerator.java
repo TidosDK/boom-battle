@@ -15,6 +15,12 @@ public class BasicMapGenerator implements IMapGenerator {
 
     }
 
+    private boolean isCorner(int x, int y, int width, int height) {
+        boolean corner = (x == 0 && y == 0) || (x == 0 && y == height - 1) || (x == width - 1 && y == 0) || (x == width - 1 && y == height - 1);
+        boolean adjacentToCorner = (x == 1 && y == 0) || (x == 0 && y == 1) || (x == 1 && y == 1) || (x == 0 && y == height - 2) || (x == width - 2 && y == 0) || (x == width - 1 && y == 1) || (x == width - 2 && y == height - 1) || (x == width - 1 && y == height - 2);
+        return corner || adjacentToCorner;
+    }
+
     /**
      * Generates a default map for the game where every other column has a wall on every other row.
      *
@@ -30,18 +36,19 @@ public class BasicMapGenerator implements IMapGenerator {
         // Generate a map where every other column has a wall on every other row
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (x == 0 || y == 0 || x == (width - 1) || y == (height - 1)) {
-                    map[x][y] = false;
-                    mapRenderer.createPathTile(x, y);
-                } else if ((x % 2 == 1) && (y % 2 == 1)) {
+                if ((x % 2 == 1) && (y % 2 == 1)) {
                     map[x][y] = true;
                     mapRenderer.createNonDestructibleObstacle(x, y);
-                } else {
+                } else if (isCorner(x, y, width, height)) {
+                    map[x][y] = false;
                     mapRenderer.createPathTile(x, y);
+                } else {
+                    map[x][y] = true;
+                    mapRenderer.createPathTile(x, y);
+                    mapRenderer.createDestructibleObstacle(x, y);
                 }
             }
         }
-        //mapRenderer.createDestructibleObstacle(1, 0);
 
         return map;
     }

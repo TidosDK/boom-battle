@@ -19,8 +19,8 @@ public interface IMap {
     /**
      * Sets a given tile as an obstacle or not.
      *
-     * @param x the x-coordinate of the tile
-     * @param y the y-coordinate of the tile
+     * @param x          the x-coordinate of the tile
+     * @param y          the y-coordinate of the tile
      * @param isObstacle true if the tile should be an obstacle, false otherwise
      * @return true if the operation was successful, false otherwise
      * @throws RuntimeException if the operation fails
@@ -29,10 +29,13 @@ public interface IMap {
 
     /**
      * Checks if a move in a given direction from a given tile is allowed or not.
-     * @param x the x-coordinate of the tile
-     * @param y the y-coordinate of the tile
+     *
+     * @param x         the x-coordinate of the tile
+     * @param y         the y-coordinate of the tile
      * @param direction the direction of the move
      * @return true if the move is allowed, false otherwise
      */
     boolean isMoveAllowed(int x, int y, Direction direction);
+
+    boolean outOfBounds(int x, int y);
 }
