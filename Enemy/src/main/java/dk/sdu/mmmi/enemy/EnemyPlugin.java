@@ -63,8 +63,8 @@ public class EnemyPlugin implements IGamePluginService {
 
         this.gameData = gameDataParam;
         Entity enemy = createEnemy();
-        enemy.setY(10);
-        enemy.setX(11);
+        enemy.setY(16);
+        enemy.setX(16);
         world.addEntity(enemy);
 
 

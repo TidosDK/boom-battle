@@ -10,5 +10,5 @@ import java.util.ArrayList;
  * @see dk.sdu.mmmi.common.data.ai.Node
  */
 public interface IPathFinding {
-    ArrayList<Node> pathFind(Node start, Node goal, Map map);
+    ArrayList<Node> pathFind(Node start, ArrayList<Node> goal, Map map);
 }

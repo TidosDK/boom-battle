@@ -2,7 +2,9 @@ package dk.sdu.mmmi.ai;
 
 
 import dk.sdu.mmmi.common.data.ai.Node;
+import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.world.Map;
+import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.ai.IPathFinding;
 
 
@@ -20,14 +22,40 @@ public class PathFinding implements IPathFinding {
     private ArrayList<Node> openList = new ArrayList<>();
     private ArrayList<Node> checkedList = new ArrayList<>();
     private ArrayList<Node> pathList = new ArrayList<>();
+    private World world;
 
 
     @Override
-    public ArrayList<Node> pathFind(Node start, Node goalNode, Map map) {
+    public ArrayList<Node> pathFind(Node start, ArrayList<Node> listOfGoalNode, Map map) {
         maxCol = map.getWidth();
         maxRow = map.getHeight();
         nodeMap = new Node[maxCol][maxRow];
         start.setStart(true);
+
+        Node goalNode = listOfGoalNode.getFirst();
+        ArrayList<int[]> distances = new ArrayList<>();
+        int[] furthestDistance = new int[2];
+
+        for (Node node : listOfGoalNode) {
+            int minForX = Math.min(start.getX(), node.getX());
+            int maxForX = Math.max(start.getX(), node.getX());
+
+            int differenceX = (maxForX - minForX);
+
+            int minForY = Math.min(start.getY(), node.getY());
+            int maxForY = Math.max(start.getY(), node.getY());
+            int differenceY = (maxForY - minForY);
+
+            distances.add(new int[]{differenceX, differenceY, listOfGoalNode.indexOf(node)});
+        }
+        for (int[] distance : distances) {
+            if (distance[0] > furthestDistance[0] && distance[1] > furthestDistance[1]) {
+                furthestDistance = distance;
+                goalNode = listOfGoalNode.get(distance[2]);
+            }
+        }
+
+
         goalNode.setGoal(true);
 
 

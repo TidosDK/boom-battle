@@ -38,6 +38,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
     public void process(World worldParam, GameData gameDataParam) {
         this.world = worldParam;
         this.gameData = gameDataParam;
+        ArrayList<Node> listOfGoalNodes = new ArrayList<>();
         Node goalNode = null;
         Node startNode;
 
@@ -59,6 +60,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             for (Entity player : this.world.getEntities()) {
                 if (player instanceof IActor && player != this.enemy) {
                     goalNode = new Node(player.getGridPosition().getX(), player.getGridPosition().getY());
+                    listOfGoalNodes.add(goalNode);
                 }
             }
 
@@ -69,11 +71,11 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             }
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
                 if (weaponsList.isEmpty()) {
-                    path = pathFinding.pathFind(startNode, goalNode, world.getMap());
-                } else {
+                    path = pathFinding.pathFind(startNode, listOfGoalNodes, world.getMap());
+                }
+                else {
                     Node temp = runAwayFromBombs(weaponsList);
                     if (!world.getMap().getMap()[temp.getX()][temp.getY()]) {
-                        path = pathFinding.pathFind(startNode, runAwayFromBombs(weaponsList), world.getMap());
                     }
 
                 }

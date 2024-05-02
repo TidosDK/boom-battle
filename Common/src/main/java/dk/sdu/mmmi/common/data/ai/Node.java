@@ -15,6 +15,8 @@ public class Node {
     private boolean goal;
     private boolean open;
     private boolean obstacle;
+    private boolean destructibleObstacle;
+
 
     public Node(int x, int y) {
         this.setX(x);
@@ -107,5 +109,13 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
+    }
+
+    public boolean isDestructibleObstacle() {
+        return destructibleObstacle;
+    }
+
+    public void setDestructibleObstacle(boolean destructibleObstacle) {
+        this.destructibleObstacle = destructibleObstacle;
     }
 }
