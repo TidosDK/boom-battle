@@ -177,7 +177,6 @@ public class PlayerTest {
         List<Entity> players = new ArrayList<>();
         players.add(underlyingPlayer);
         when(world.getEntities(Player.class)).thenReturn(players);
-        assertTrue(world.getEntities(Player.class).contains(underlyingPlayer));
 
         // Defines a list for the mock entities in the world.
         ArrayList<Entity> entities = new ArrayList<>();
@@ -210,6 +209,8 @@ public class PlayerTest {
         }).when(mockPlayerControlSystem).process(world, gameData);
 
 
+        // Adds 10 weapons to the player and asserts that the player has 10 weapons.
+        // Also assures that weapons are only placed when the space key is pressed.
         for (int expectedWeaponsInList = 1; expectedWeaponsInList <= underlyingPlayerControlSystem.getMaxWeapons(); expectedWeaponsInList++) {
             // Mocks the space key to be pressed.
             when(gameData.getKeys().isPressed(gameData.getKeys().getSpace())).thenReturn(true);
