@@ -170,6 +170,68 @@ public class PlayerTest {
         assertEquals(0, mockPlayer.getWeapons().size(), "The list should be empty as the underlying player has removed the weapon.");
     }
 
+    // Verifies functional requirement F-01d & some part of F-01e
+    @Test()
+    void testPlaceWeapon() {
+        // Adds the player to the world and asserts that the player is in the world.
+        List<Entity> players = new ArrayList<>();
+        players.add(underlyingPlayer);
+        when(world.getEntities(Player.class)).thenReturn(players);
+
+        // Defines a list for the mock entities in the world.
+        ArrayList<Entity> entities = new ArrayList<>();
+
+        // Configures world.
+        when(world.getEntities()).thenReturn(entities);
+        doAnswer(invocation -> {
+            world.getEntities().add(invocation.getArgument(0));
+            return null;
+        }).when(world).addEntity(any(Entity.class));
+
+        // Defines the underlying PlayerControlSystem for which the mockPlayerControlSystem will use.
+        TestPlayerControlSystem underlyingPlayerControlSystem = new TestPlayerControlSystem();
+        underlyingPlayerControlSystem.setMaxWeapons(10);
+
+        // Defines the mock PlayerControlSystem.
+        TestPlayerControlSystem mockPlayerControlSystem = mock(TestPlayerControlSystem.class);
+        List<IWeapon> mockWeapons = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            mockWeapons.add(mock(MockWeapon.class));
+        }
+
+        // Configures the mocking behavior of mockPlayer
+        when(mockPlayer.getWeapons()).thenReturn(underlyingPlayer.getWeapons());
+
+        // Configures the mocking behavior of mockPlayerControlSystem
+        doAnswer(invocation -> {
+            underlyingPlayerControlSystem.process(world, gameData);
+            return null;
+        }).when(mockPlayerControlSystem).process(world, gameData);
+
+
+        // Adds 10 weapons to the player and asserts that the player has 10 weapons.
+        // Also assures that weapons are only placed when the space key is pressed.
+        for (int expectedWeaponsInList = 1; expectedWeaponsInList <= underlyingPlayerControlSystem.getMaxWeapons(); expectedWeaponsInList++) {
+            // Mocks the space key to be pressed.
+            when(gameData.getKeys().isPressed(gameData.getKeys().getSpace())).thenReturn(true);
+
+            // Processes PlayerControlSystem to place a weapon.
+            mockPlayerControlSystem.process(world, gameData);
+
+            // Asserts the player has "expectedWeaponsInList".
+            assertEquals(expectedWeaponsInList, mockPlayer.getWeapons().size());
+
+            // Mocks the space key to be unpressed and processes PlayerControlSystem to test if it places a weapon.
+            when(gameData.getKeys().isPressed(gameData.getKeys().getSpace())).thenReturn(false);
+            mockPlayerControlSystem.process(world, gameData);
+        }
+
+        // Does a final check to see if the player can place more weapons than the maxWeapons.
+        when(gameData.getKeys().isPressed(gameData.getKeys().getSpace())).thenReturn(true);
+        mockPlayerControlSystem.process(world, gameData);
+        assertEquals(10, mockPlayer.getWeapons().size());
+    }
+
     // Verifies functional requirement F-01f
     @Test()
     void testTakeDamage() {

@@ -101,9 +101,9 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
      */
     public void placeWeapon() {
         if (player.getWeapons().size() < maxWeapons) {
-            for (IWeaponController weapon : getIWeaponProcessing()) {
-                player.getWeapons().add((IWeapon) weapon.createWeapon(this.player, this.gameData));
-                world.addEntity((Entity) player.getWeapons().get(player.getWeapons().size() - 1));
+            for (IWeaponController weaponController : getIWeaponProcessing()) {
+                player.getWeapons().add((IWeapon) weaponController.createWeapon(this.player, this.gameData));
+                world.addEntity((Entity) player.getWeapons().getLast());
             }
         }
     }
@@ -159,6 +159,14 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
             default:
                 break;
         }
+    }
+
+    public int getMaxWeapons() {
+        return maxWeapons;
+    }
+
+    public void setMaxWeapons(int maxWeapons) {
+        this.maxWeapons = maxWeapons;
     }
 
     /**
@@ -217,7 +225,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
      *
      * @return Collection of IWeaponProcessing instances.
      */
-    private Collection<? extends IWeaponController> getIWeaponProcessing() {
+    protected Collection<? extends IWeaponController> getIWeaponProcessing() {
         return ServiceLoader.load(IWeaponController.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
