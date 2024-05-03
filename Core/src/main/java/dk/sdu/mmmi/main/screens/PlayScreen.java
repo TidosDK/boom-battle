@@ -1,6 +1,5 @@
 package dk.sdu.mmmi.main.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -35,6 +34,9 @@ public class PlayScreen implements Screen {
     private Collection<ICustomStage> stages;
     private CustomStage gameStage;
 
+    // Related to end game
+    private float endGamePauseTimer = Float.POSITIVE_INFINITY;
+
     /**
      * Constructor for PlayScreen - used roughly the same as the create() method, from the Main class.
      *
@@ -48,7 +50,7 @@ public class PlayScreen implements Screen {
         world = World.getInstance();
         camera = new OrthographicCamera();
         float width = 25f;
-        float height = 25f * (Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth());
+        float height = 25f * (gameData.getGameScreenHeight() / (float) gameData.getGameScreenWidth());
         camera.setToOrtho(false, width, height);
         shapeRenderer = new ShapeRenderer();
         stages = new ArrayList<>();
@@ -114,6 +116,20 @@ public class PlayScreen implements Screen {
         gameStage.setEntities(world.getEntities());
 
         stages.forEach(stage -> stage.drawStage(batch));
+
+        // TEMPORARY: Check if game is over. If so, wait 3 seconds before changing to EndScreen.
+        if (isOneOrLessActorAlive()) {
+            if (this.endGamePauseTimer != Float.POSITIVE_INFINITY) {
+                this.endGamePauseTimer -= v;
+            } else {
+                this.endGamePauseTimer = 3f;
+            }
+
+            if (this.endGamePauseTimer <= 0f) {
+                game.setScreen(new EndScreen(game));
+                this.dispose();
+            }
+        }
     }
 
     /**
@@ -159,6 +175,10 @@ public class PlayScreen implements Screen {
         batch.dispose();
         for (Sprite sprite : entitySprites.values()) {
             sprite.getTexture().dispose();
+        }
+
+        for (IGamePluginService plugin : getPluginServices()) {
+            plugin.stop(world, gameData);
         }
     }
 
