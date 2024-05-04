@@ -11,7 +11,6 @@ import dk.sdu.mmmi.common.services.weapon.IWeapon;
 import dk.sdu.mmmi.common.services.map.IMap;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,13 +29,13 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     private State state;
 
     private HashMap<Integer, ITextureAnimator> animators;
-    protected static Path explosionRightPath;
-    protected static Path explosionLeftPath;
-    protected static Path explosionUpPath;
-    protected static Path explosionDownPath;
-    protected static Path explosionMidHorizontalPath;
-    protected static Path explosionMidVerticalPath;
-    protected static Path explosionCenterPath;
+    private static Path explosionRightPath;
+    private static Path explosionLeftPath;
+    private static Path explosionUpPath;
+    private static Path explosionDownPath;
+    private static Path explosionMidHorizontalPath;
+    private static Path explosionMidVerticalPath;
+    private static Path explosionCenterPath;
     private Collection<Coordinates> cachedBlastArea; // New field to store the blast area
 
 
@@ -226,5 +225,61 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public static Path getExplosionRightPath() {
+        return explosionRightPath;
+    }
+
+    public static void setExplosionRightPath(Path explosionRightPath) {
+        Bomb.explosionRightPath = explosionRightPath;
+    }
+
+    public static Path getExplosionCenterPath() {
+        return explosionCenterPath;
+    }
+
+    public static void setExplosionCenterPath(Path explosionCenterPath) {
+        Bomb.explosionCenterPath = explosionCenterPath;
+    }
+
+    public static Path getExplosionMidVerticalPath() {
+        return explosionMidVerticalPath;
+    }
+
+    public static void setExplosionMidVerticalPath(Path explosionMidVerticalPath) {
+        Bomb.explosionMidVerticalPath = explosionMidVerticalPath;
+    }
+
+    public static Path getExplosionMidHorizontalPath() {
+        return explosionMidHorizontalPath;
+    }
+
+    public static void setExplosionMidHorizontalPath(Path explosionMidHorizontalPath) {
+        Bomb.explosionMidHorizontalPath = explosionMidHorizontalPath;
+    }
+
+    public static Path getExplosionDownPath() {
+        return explosionDownPath;
+    }
+
+    public static void setExplosionDownPath(Path explosionDownPath) {
+        Bomb.explosionDownPath = explosionDownPath;
+    }
+
+    public static Path getExplosionUpPath() {
+        return explosionUpPath;
+    }
+
+    public static void setExplosionUpPath(Path explosionUpPath) {
+        Bomb.explosionUpPath = explosionUpPath;
+    }
+
+    public static Path getExplosionLeftPath() {
+        return explosionLeftPath;
+    }
+
+    public static void setExplosionLeftPath(Path explosionLeftPath) {
+        Bomb.explosionLeftPath = explosionLeftPath;
     }
 }

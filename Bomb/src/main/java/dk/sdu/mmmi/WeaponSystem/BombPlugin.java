@@ -11,13 +11,13 @@ public class BombPlugin implements IGamePluginService {
     @Override
     public void start(World world, GameData gameData) {
         // Set path for explosion textures
-        Bomb.explosionRightPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png");
-        Bomb.explosionLeftPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/left/left-explosion-2.png");
-        Bomb.explosionUpPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/up/up-explosion-2.png");
-        Bomb.explosionDownPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/down/down-explosion-2.png");
-        Bomb.explosionMidHorizontalPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-horizontal/mid-hori-explosion-2.png");
-        Bomb.explosionMidVerticalPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-vertical/mid-vert-explosion-2.png");
-        Bomb.explosionCenterPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/center/center-explosion-2.png");
+        Bomb.setExplosionRightPath(Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png"));
+        Bomb.setExplosionLeftPath(Paths.get("Bomb/src/main/resources/bomb_textures/explosion/left/left-explosion-2.png"));
+        Bomb.setExplosionUpPath(Paths.get("Bomb/src/main/resources/bomb_textures/explosion/up/up-explosion-2.png"));
+        Bomb.setExplosionDownPath(Paths.get("Bomb/src/main/resources/bomb_textures/explosion/down/down-explosion-2.png"));
+        Bomb.setExplosionMidHorizontalPath(Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-horizontal/mid-hori-explosion-2.png"));
+        Bomb.setExplosionMidVerticalPath(Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-vertical/mid-vert-explosion-2.png"));
+        Bomb.setExplosionCenterPath(Paths.get("Bomb/src/main/resources/bomb_textures/explosion/center/center-explosion-2.png"));
         System.out.println("Module started: Bomb");
     }
 
