@@ -30,13 +30,13 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
     private State state;
 
     private HashMap<Integer, ITextureAnimator> animators;
-    private final Path explosionRightPath;
-    private final Path explosionLeftPath;
-    private final Path explosionUpPath;
-    private final Path explosionDownPath;
-    private final Path explosionMidHorizontalPath;
-    private final Path explosionMidVerticalPath;
-    private final Path explosionCenterPath;
+    protected static Path explosionRightPath;
+    protected static Path explosionLeftPath;
+    protected static Path explosionUpPath;
+    protected static Path explosionDownPath;
+    protected static Path explosionMidHorizontalPath;
+    protected static Path explosionMidVerticalPath;
+    protected static Path explosionCenterPath;
     private Collection<Coordinates> cachedBlastArea; // New field to store the blast area
 
 
@@ -51,16 +51,6 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
         super(texturePath, width, height);
         animators = new HashMap<>();
         this.state = State.PLACED; // Default state when a bomb is created
-
-
-        // Set path for explosion textures
-        explosionRightPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/right/right-explosion-2.png");
-        explosionLeftPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/left/left-explosion-2.png");
-        explosionUpPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/up/up-explosion-2.png");
-        explosionDownPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/down/down-explosion-2.png");
-        explosionMidHorizontalPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-horizontal/mid-hori-explosion-2.png");
-        explosionMidVerticalPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/mid-vertical/mid-vert-explosion-2.png");
-        explosionCenterPath = Paths.get("Bomb/src/main/resources/bomb_textures/explosion/center/center-explosion-2.png");
     }
 
     /**
@@ -94,28 +84,28 @@ public class Bomb extends Entity implements IWeapon, IAnimatable {
 
         // Center of the explosion
         if (dx == 0 && dy == 0) {
-            return this.explosionCenterPath;
+            return Bomb.explosionCenterPath;
         }
 
         // Horizontal explosion
         if (dy == 0) {
             if (dx > 0) { // Right
-                return isEndOfBlastX ? this.explosionRightPath : this.explosionMidHorizontalPath;
+                return isEndOfBlastX ? Bomb.explosionRightPath : Bomb.explosionMidHorizontalPath;
             } else if (dx < 0) { // Left
-                return isEndOfBlastX ? this.explosionLeftPath : this.explosionMidHorizontalPath;
+                return isEndOfBlastX ? Bomb.explosionLeftPath : Bomb.explosionMidHorizontalPath;
             }
         }
 
         // Vertical explosion
         if (dx == 0) {
             if (dy > 0) { // Up
-                return isEndOfBlastY ? this.explosionUpPath : this.explosionMidVerticalPath;
+                return isEndOfBlastY ? Bomb.explosionUpPath : Bomb.explosionMidVerticalPath;
             } else if (dy < 0) { // Down
-                return isEndOfBlastY ? this.explosionDownPath : this.explosionMidVerticalPath;
+                return isEndOfBlastY ? Bomb.explosionDownPath : Bomb.explosionMidVerticalPath;
             }
         }
 
-        return this.explosionCenterPath;
+        return Bomb.explosionCenterPath;
     }
 
     /**

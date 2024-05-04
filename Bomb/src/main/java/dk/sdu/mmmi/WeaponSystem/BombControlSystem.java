@@ -24,6 +24,8 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
     private HashMap<Entity, Float> explosionCreationTimes = new HashMap<>();
     private World world;
     private GameData gameData;
+    private final Path defaultTexturePath = Paths.get("Bomb/src/main/resources/bomb_textures/planted/bomb-planted-2.png");
+    private final Path plantedTexturesPath = Paths.get("Bomb/src/main/resources/bomb_textures/planted/");
 
     @Override
     public synchronized void process(World worldParam, GameData gameDataParam) {
@@ -146,10 +148,9 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
 
     @Override
     public Entity createWeapon(Entity weaponPlacer, GameData gameDataParam) {
-        Path defaultTexture = Paths.get("Bomb/src/main/resources/bomb_textures/planted/bomb-planted-2.png");
-        Bomb bomb = new Bomb(defaultTexture, gameDataParam.getScaler(), gameDataParam.getScaler());
+        Bomb bomb = new Bomb(this.defaultTexturePath, gameDataParam.getScaler(), gameDataParam.getScaler());
         for (ITextureAnimatorController animatorController : getITextureAnimatorController()) {
-            bomb.addAnimator(BombAnimations.PLACEMENT.getValue(), animatorController.createTextureAnimator(gameDataParam, Paths.get("Bomb/src/main/resources/bomb_textures/planted/"), 0, 5, 16f));
+            bomb.addAnimator(BombAnimations.PLACEMENT.getValue(), animatorController.createTextureAnimator(gameDataParam, plantedTexturesPath, 0, 5, 16f));
         }
         bomb.setCoordinates(new Coordinates(new GridPosition(weaponPlacer.getGridX(), weaponPlacer.getGridY())));
         bomb.setDamagePoints(2);
