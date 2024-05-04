@@ -3,11 +3,13 @@ package dk.sdu.mmmi.enemy;
 import dk.sdu.mmmi.common.data.entity.Direction;
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
+import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.ai.IOptimalBombPlacement;
 import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.map.IMap;
+import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
 import dk.sdu.mmmi.common.services.weapon.IWeapon;
 import dk.sdu.mmmi.common.services.weapon.IWeaponController;
@@ -32,7 +34,6 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
     private final float movingSpeed = 2.5f;
 
     private Node nodeBombPlacement;
-    ArrayList<Entity> weaponsList = new ArrayList<>();
 
     @Override
     public void process(World worldParam, GameData gameDataParam) {
@@ -64,17 +65,9 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
                 }
             }
 
-            for (Entity weapon : this.world.getEntities()) {
-                if (weapon instanceof IWeapon) {
-                    weaponsList.add(weapon);
-                }
-            }
+
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
-                if (weaponsList.isEmpty()) {
-                    path = pathFinding.pathFind(startNode, listOfGoalNodes, world.getMap());
-                }
-
-
+                path = pathFinding.pathFind(startNode, listOfGoalNodes, world.getMap());
             }
             for (IOptimalBombPlacement bombPlacement : getIOptimalBombPlacementProcessing()) {
                 nodeBombPlacement = bombPlacement.optimalBombPlacement(startNode, goalNode, world.getMap());
@@ -101,27 +94,19 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
                 if (canMove) {
                     int x = node.getX() - enemy.getGridPosition().getX();
                     int y = node.getY() - enemy.getGridPosition().getY();
-                    int movedX;
-                    int movedY;
                     if (x > 0) {
-                        movedX = 1;
                         direction = Direction.RIGHT;
                     } else if (x < 0) {
-                        movedX = -1;
                         direction = Direction.LEFT;
                     } else if (y > 0) {
-                        movedY = 1;
                         direction = Direction.UP;
                     } else if (y < 0) {
-                        movedY = -1;
                         direction = Direction.DOWN;
                     }
                     if (World.getInstance().getMap() instanceof IMap mapInstance) {
                         if (!mapInstance.isMoveAllowed(enemy.getGridX(), enemy.getGridY(), direction)) {
                             continue;
                         } else {
-                            System.out.println("\nMoving");
-
                             move(direction);
                         }
                     }
@@ -150,9 +135,9 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             enemy.setTexturePath(enemy.getActiveTexturePath(EnemyAnimations.STILL.getValue()));
 
             moveUsingPath(path);
-            if (!path.isEmpty()){
-                System.out.println(path.getFirst().isDestructibleObstacle() + " Node : " + path.getLast().getX() + " " + path.getLast().getY());
-                if (path.getLast().isDestructibleObstacle()){
+            if (!path.isEmpty()) {
+                if (path.getLast().isDestructibleObstacle()) {
+                    // should also check that the enemy is close to the node
                     placeWeapon();
                 }
             }
@@ -283,40 +268,6 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
         }
     }
 
-
-    private Node runAwayFromBombs(ArrayList<Entity> weaponsList) {
-        // still in development
-        int x = 0;
-        int y = 0;
-
-        Entity closetWeapon = weaponsList.getFirst();
-        ArrayList<int[]> distances = new ArrayList<>();
-        int[] furthestDistance = new int[2];
-
-        for (Entity weapon : weaponsList) {
-            int minForX = Math.min(enemy.getGridX(), weapon.getGridX());
-            int maxForX = Math.max(enemy.getGridX(), weapon.getGridX());
-
-            int differenceX = (maxForX - minForX);
-
-            int minForY = Math.min(enemy.getGridY(), weapon.getGridY());
-            int maxForY = Math.max(enemy.getGridY(), weapon.getGridY());
-            int differenceY = (maxForY - minForY);
-
-            distances.add(new int[]{differenceX, differenceY, weaponsList.indexOf(weapon)});
-        }
-        for (int[] distance : distances) {
-            if (distance[0] > furthestDistance[0] && distance[1] > furthestDistance[1]) {
-                furthestDistance = distance;
-                closetWeapon = weaponsList.get(distance[2]);
-            }
-        }
-        System.out.println("X: " + furthestDistance[0] + " Y: " + furthestDistance[1]);
-        x = closetWeapon.getGridX() + furthestDistance[0];
-        y = closetWeapon.getGridY() + furthestDistance[1];
-
-        return new Node(x, y);
-    }
 
     private Collection<? extends IWeaponController> getIWeaponProcessing() {
         return ServiceLoader.load(IWeaponController.class).stream().map(ServiceLoader.Provider::get).collect(toList());

@@ -8,7 +8,6 @@ import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.ai.IPathFinding;
 import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
-import dk.sdu.mmmi.common.services.weapon.IWeapon;
 
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class PathFinding implements IPathFinding {
         start.setStart(true);
 
         Node goalNode = null;
-        if (!listOfGoalNode.isEmpty()){
+        if (!listOfGoalNode.isEmpty()) {
             goalNode = listOfGoalNode.getFirst();
             ArrayList<int[]> distances = new ArrayList<>();
             int[] furthestDistance = new int[2];
@@ -90,10 +89,7 @@ public class PathFinding implements IPathFinding {
             aStar(start, goalNode, nodeMap);
         }
 
-
         return pathList;
-
-
     }
 
     /**
@@ -208,7 +204,7 @@ public class PathFinding implements IPathFinding {
     public Node calculateHeuristic(Node startNode, Node currentNode, Node goalNode) {
         if (currentNode.isDestructibleObstacle()) {
             currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY())));
-            currentNode.setH(Math.abs((currentNode.getX() - goalNode.getX()) + (currentNode.getY() - goalNode.getY())) +10);
+            currentNode.setH(Math.abs((currentNode.getX() - goalNode.getX()) + (currentNode.getY() - goalNode.getY())) + 10);
             currentNode.setF((currentNode.getG() + currentNode.getH()));
         } else {
             currentNode.setG(Math.abs((currentNode.getX() - startNode.getX()) + (currentNode.getY() - startNode.getY())));
