@@ -152,7 +152,6 @@ public class BombControlSystem implements IEntityProcessingService, IWeaponContr
             for (Entity entity : entities) {
                 if (entity instanceof IDamageable damageable) {
                     damageableList.add(damageable);
-                    System.out.println("Entity at position: " + coordinates.getGridPosition() + " is damageable");
                 }
             }
         }
