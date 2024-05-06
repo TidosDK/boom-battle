@@ -43,9 +43,7 @@ public class PlayerControlSystem implements IActor, IEntityProcessingService {
                     }
                 }
             }
-            for (IWeapon weapon : weaponsToBeRemoved) {
-                this.player.removeWeapon(weapon);
-            }
+            weaponsToBeRemoved.forEach(this.player::removeWeapon);
 
             checkPlayerStatus();
         }
