@@ -65,7 +65,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
                 path = pathFinding.pathFind(startNode, listOfGoalNodes, world.getMap());
             }
-            
+
             IOptimalBombPlacement bombPlacement = getIOptimalBombPlacementProcessing();
             nodeBombPlacement = bombPlacement.optimalBombPlacement(startNode, goalNode, world.getMap());
 
