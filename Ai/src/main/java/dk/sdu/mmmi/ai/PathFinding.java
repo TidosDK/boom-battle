@@ -107,7 +107,7 @@ public class PathFinding implements IPathFinding {
         int bestNodeI = 0;
         int bestNodeFCost = 1000;
 
-        while (openList.size() > 0) {
+        while (!openList.isEmpty()) {
             currentNode = openList.get(bestNodeI);
             col = currentNode.getX();
             row = currentNode.getY();

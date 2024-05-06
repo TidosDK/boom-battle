@@ -52,9 +52,7 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
                 }
             }
 
-            for (IWeapon weapon : weaponsToBeRemoved) {
-                this.enemy.removeWeapon(weapon);
-            }
+            weaponsToBeRemoved.forEach(this.enemy::removeWeapon);
 
             for (Entity player : this.world.getEntities()) {
                 if (player instanceof IActor && player != this.enemy) {
@@ -67,9 +65,10 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
             for (IPathFinding pathFinding : getIPathFindingProcessing()) {
                 path = pathFinding.pathFind(startNode, listOfGoalNodes, world.getMap());
             }
-            for (IOptimalBombPlacement bombPlacement : getIOptimalBombPlacementProcessing()) {
-                nodeBombPlacement = bombPlacement.optimalBombPlacement(startNode, goalNode, world.getMap());
-            }
+            
+            IOptimalBombPlacement bombPlacement = getIOptimalBombPlacementProcessing();
+            nodeBombPlacement = bombPlacement.optimalBombPlacement(startNode, goalNode, world.getMap());
+
             checkEnemyStatus();
         }
 
@@ -87,31 +86,32 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
     private void moveUsingPath(ArrayList<Node> givenPath) {
         boolean canMove = true;
         Direction direction = null;
-        if (!givenPath.isEmpty()) {
-            for (Node node : givenPath) {
-                if (canMove) {
-                    int x = node.getX() - enemy.getGridPosition().getX();
-                    int y = node.getY() - enemy.getGridPosition().getY();
-                    if (x > 0) {
-                        direction = Direction.RIGHT;
-                    } else if (x < 0) {
-                        direction = Direction.LEFT;
-                    } else if (y > 0) {
-                        direction = Direction.UP;
-                    } else if (y < 0) {
-                        direction = Direction.DOWN;
-                    }
-                    if (World.getInstance().getMap() instanceof IMap mapInstance) {
-                        if (!mapInstance.isMoveAllowed(enemy.getGridX(), enemy.getGridY(), direction)) {
-                            continue;
-                        } else {
-                            move(direction);
-                        }
-                    }
-                    canMove = false;
+        if (givenPath.isEmpty()) {
+            return;
+        }
+        for (Node node : givenPath) {
+            if (canMove) {
+                int x = node.getX() - enemy.getGridPosition().getX();
+                int y = node.getY() - enemy.getGridPosition().getY();
+                if (x > 0) {
+                    direction = Direction.RIGHT;
+                } else if (x < 0) {
+                    direction = Direction.LEFT;
+                } else if (y > 0) {
+                    direction = Direction.UP;
+                } else if (y < 0) {
+                    direction = Direction.DOWN;
                 }
-
+                if (World.getInstance().getMap() instanceof IMap mapInstance) {
+                    if (!mapInstance.isMoveAllowed(enemy.getGridX(), enemy.getGridY(), direction)) {
+                        continue;
+                    } else {
+                        move(direction);
+                    }
+                }
+                canMove = false;
             }
+
         }
     }
 
@@ -275,8 +275,8 @@ public class EnemyControlSystem implements IActor, IEntityProcessingService {
         return ServiceLoader.load(IPathFinding.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
-    private Collection<? extends IOptimalBombPlacement> getIOptimalBombPlacementProcessing() {
-        return ServiceLoader.load(IOptimalBombPlacement.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    private IOptimalBombPlacement getIOptimalBombPlacementProcessing() {
+        return ServiceLoader.load(IOptimalBombPlacement.class).stream().map(ServiceLoader.Provider::get).findFirst().orElse(null);
     }
 
 
