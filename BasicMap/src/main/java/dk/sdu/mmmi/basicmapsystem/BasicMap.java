@@ -95,7 +95,7 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
     /**
      * Iterates over all collidables and updates the map accordingly.
      */
-    private void updateMap() {
+    void updateMap() {
         for (ICollidable collidable : getCollidables()) {
             Coordinates position = collidable.getCoordinates();
             GridPosition gridPosition = position.getGridPosition();
@@ -108,7 +108,7 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
      *
      * @return a collection of all collidables
      */
-    private Collection<? extends ICollidable> getCollidables() {
+    Collection<? extends ICollidable> getCollidables() {
         return ServiceLoader.load(ICollidable.class).stream().map(ServiceLoader.Provider::get).toList();
     }
 }
