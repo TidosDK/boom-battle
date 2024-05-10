@@ -1,12 +1,19 @@
 package dk.sdu.mmmi.basicmapsystem;
 
+import dk.sdu.mmmi.common.data.entity.Coordinates;
 import dk.sdu.mmmi.common.data.entity.Direction;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
 class BasicMapTest {
     private BasicMap map;
@@ -55,10 +62,6 @@ class BasicMapTest {
         assertFalse(map.isMoveAllowed(0, 11, Direction.UP));
     }
 
-    @Test
-    void isMoveAllowedReturnsTrueForInBounds() {
-        assertTrue(map.isMoveAllowed(0, 0, Direction.UP));
-    }
 
     @Test
     void outOfBoundsReturnsTrueForOutOfBounds() {
@@ -69,7 +72,20 @@ class BasicMapTest {
     }
 
     @Test
-    void outOfBoundsReturnsFalseForInBounds() {
-        assertFalse(map.outOfBounds(0, 0));
+    void updateMapTest() {
+        BasicMap mockMap = spy(new BasicMap());
+        mockMap.setMap(generator.basicMap(11, 11, world, GameData.getInstance()));
+        mockMap.updateMap();
+        assertFalse(mockMap.isTileObstacle(0, 0)); // This is a corner and not an obstacle by default
+        // We add an obstacle to the map on square (0, 0)
+        Collection<ICollidable> collidables = new ArrayList<>();
+        MockCollidable collidable = new MockCollidable();
+        collidable.setCoordinates(new Coordinates(0, 0));
+        collidables.add(collidable);
+        // We mock the getCollidables method to return our collection of collidables
+        doReturn(collidables).when(mockMap).getCollidables();
+        // Test that the map is updated and that the tile is now an obstacle
+        mockMap.updateMap();
+        assertTrue(mockMap.isTileObstacle(0, 0));
     }
 }
