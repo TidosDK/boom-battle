@@ -50,6 +50,9 @@ public class BasicMap extends Map implements IMap, IMapProcessingService {
         boolean[][] map = this.getMap();
         int maxX = map.length - 1;
         int maxY = map[0].length - 1;
+        if (outOfBounds(gridX, gridY)) {
+            return false;
+        }
         try {
             return switch (direction) {
                 case UP -> (gridY == maxY) ? handleEdgeCases(gridX, gridY, direction) : !map[gridX][gridY + 1];
