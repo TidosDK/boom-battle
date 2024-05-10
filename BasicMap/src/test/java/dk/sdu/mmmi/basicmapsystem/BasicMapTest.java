@@ -22,7 +22,7 @@ class BasicMapTest {
     }
 
     @Test
-    void isTileObstacle_returnsTrueForOutOfBounds() {
+    void isTileObstacleReturnsTrueForOutOfBounds() {
         assertTrue(map.isTileObstacle(-1, 0));
         assertTrue(map.isTileObstacle(0, -1));
         assertTrue(map.isTileObstacle(11, 0));
@@ -30,12 +30,12 @@ class BasicMapTest {
     }
 
     @Test
-    void isTileObstacle_returnsFalseForInBounds() {
+    void isTileObstacleReturnsFalseForInBounds() {
         assertFalse(map.isTileObstacle(0, 0));
     }
 
     @Test
-    void setMapTile_returnsFalseForOutOfBounds() {
+    void setMapTileReturnsFalseForOutOfBounds() {
         assertFalse(map.setMapTile(-1, 0, true));
         assertFalse(map.setMapTile(0, -1, true));
         assertFalse(map.setMapTile(11, 0, true));
@@ -43,12 +43,12 @@ class BasicMapTest {
     }
 
     @Test
-    void setMapTile_returnsTrueForInBounds() {
+    void setMapTileReturnsTrueForInBounds() {
         assertTrue(map.setMapTile(0, 0, true));
     }
 
     @Test
-    void isMoveAllowed_returnsFalseForOutOfBounds() {
+    void isMoveAllowedReturnsFalseForOutOfBounds() {
         assertFalse(map.isMoveAllowed(-1, 0, Direction.UP));
         assertFalse(map.isMoveAllowed(0, -1, Direction.UP));
         assertFalse(map.isMoveAllowed(11, 0, Direction.UP));
@@ -56,12 +56,12 @@ class BasicMapTest {
     }
 
     @Test
-    void isMoveAllowed_returnsTrueForInBounds() {
+    void isMoveAllowedReturnsTrueForInBounds() {
         assertTrue(map.isMoveAllowed(0, 0, Direction.UP));
     }
 
     @Test
-    void outOfBounds_returnsTrueForOutOfBounds() {
+    void outOfBoundsReturnsTrueForOutOfBounds() {
         assertTrue(map.outOfBounds(-1, 0));
         assertTrue(map.outOfBounds(0, -1));
         assertTrue(map.outOfBounds(11, 0));
@@ -69,7 +69,7 @@ class BasicMapTest {
     }
 
     @Test
-    void outOfBounds_returnsFalseForInBounds() {
+    void outOfBoundsReturnsFalseForInBounds() {
         assertFalse(map.outOfBounds(0, 0));
     }
 }
