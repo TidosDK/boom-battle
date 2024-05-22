@@ -5,8 +5,8 @@ import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.data.entity.Entity;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

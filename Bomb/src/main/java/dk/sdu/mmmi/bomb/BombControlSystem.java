@@ -8,7 +8,7 @@ import dk.sdu.mmmi.common.data.world.GridPosition;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimatorController;
 import dk.sdu.mmmi.common.weapon.IWeaponController;
 
 import java.nio.file.Path;

@@ -1,7 +1,7 @@
 package dk.sdu.mmmi.textureAnimator;
 
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimator;
 
 import java.io.IOException;
 import java.nio.file.Files;

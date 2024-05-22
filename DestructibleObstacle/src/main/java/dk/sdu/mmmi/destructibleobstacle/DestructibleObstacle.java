@@ -6,8 +6,8 @@ import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.entityproperties.ICollidable;
-import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.textureanimator.IAnimatable;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimator;
 
 import java.nio.file.Path;
 import java.util.HashMap;

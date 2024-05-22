@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.services.textureanimator;
+package dk.sdu.mmmi.common.textureanimator;
 
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 
