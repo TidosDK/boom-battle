@@ -3,7 +3,7 @@ package dk.sdu.mmmi.textureAnimator;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.IGamePluginService;
-import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
+import dk.sdu.mmmi.common.textureanimator.IAnimatable;
 
 import java.util.Collection;
 import java.util.ServiceLoader;

@@ -5,5 +5,4 @@ module Common {
     exports dk.sdu.mmmi.common.services;
     exports dk.sdu.mmmi.common.services.entityproperties;
     exports dk.sdu.mmmi.common.services.map;
-    exports dk.sdu.mmmi.common.services.textureanimator;
 }

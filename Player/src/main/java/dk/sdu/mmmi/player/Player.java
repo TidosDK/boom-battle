@@ -3,8 +3,8 @@ package dk.sdu.mmmi.player;
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
-import dk.sdu.mmmi.common.services.textureanimator.IAnimatable;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.textureanimator.IAnimatable;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimator;
 import dk.sdu.mmmi.common.weapon.IWeapon;
 
 import java.nio.file.Path;
