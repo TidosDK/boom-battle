@@ -1,6 +1,5 @@
-package dk.sdu.mmmi.common.services.ai;
+package dk.sdu.mmmi.common.ai;
 
-import dk.sdu.mmmi.common.data.ai.Node;
 import dk.sdu.mmmi.common.data.world.Map;
 
 /**

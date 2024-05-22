@@ -29,6 +29,7 @@
         <module>Player</module>
         <module>TextureAnimator</module>
         <module>Ai</module>
+        <module>CommonAi</module>
     </modules>
 
     <properties>
@@ -141,7 +142,7 @@
                             <longModulepath>false</longModulepath>
                             <arguments>
                                 <!-- On Mac Devices this line should not be commented out  -->
-                                                        <argument>-XstartOnFirstThread</argument>
+<!--                                                        <argument>-XstartOnFirstThread</argument>-->
 
                                 <argument>-Dorg.lwjgl.util.Debug=true</argument>
                                 <argument>-Djava.library.path=libs</argument>
