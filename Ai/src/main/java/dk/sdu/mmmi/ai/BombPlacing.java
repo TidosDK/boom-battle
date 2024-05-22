@@ -1,8 +1,8 @@
 package dk.sdu.mmmi.ai;
 
-import dk.sdu.mmmi.common.data.ai.Node;
+import dk.sdu.mmmi.common.ai.Node;
 import dk.sdu.mmmi.common.data.world.Map;
-import dk.sdu.mmmi.common.services.ai.IOptimalBombPlacement;
+import dk.sdu.mmmi.common.ai.IOptimalBombPlacement;
 
 
 /**

@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.data.ai;
+package dk.sdu.mmmi.common.ai;
 
 /**
  * Node class that represents a node in the pathfinding algorithm.
