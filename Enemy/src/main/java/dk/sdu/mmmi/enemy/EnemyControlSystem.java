@@ -9,8 +9,8 @@ import dk.sdu.mmmi.common.services.ai.IOptimalBombPlacement;
 import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
-import dk.sdu.mmmi.common.services.weapon.IWeapon;
-import dk.sdu.mmmi.common.services.weapon.IWeaponController;
+import dk.sdu.mmmi.common.weapon.IWeapon;
+import dk.sdu.mmmi.common.weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.ai.IPathFinding;
 import dk.sdu.mmmi.common.data.ai.Node;
 

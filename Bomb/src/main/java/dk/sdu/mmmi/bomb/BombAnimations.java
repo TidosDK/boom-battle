@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.WeaponSystem;
+package dk.sdu.mmmi.bomb;
 
 public enum BombAnimations {
     PLACEMENT(1);

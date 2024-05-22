@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.WeaponSystem;
+package dk.sdu.mmmi.bomb;
 
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;

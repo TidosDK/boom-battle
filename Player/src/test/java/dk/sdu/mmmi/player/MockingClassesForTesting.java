@@ -2,8 +2,8 @@ package dk.sdu.mmmi.player;
 
 import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
-import dk.sdu.mmmi.common.services.weapon.IWeapon;
-import dk.sdu.mmmi.common.services.weapon.IWeaponController;
+import dk.sdu.mmmi.common.weapon.IWeapon;
+import dk.sdu.mmmi.common.weapon.IWeaponController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.common.services.weapon;
+package dk.sdu.mmmi.common.weapon;
 
 public interface IWeapon {
     int getDamagePoints();

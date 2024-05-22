@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.WeaponSystem;
+package dk.sdu.mmmi.bomb;
 
 import dk.sdu.mmmi.common.data.entity.Coordinates;
 import dk.sdu.mmmi.common.data.entity.Entity;
@@ -9,7 +9,7 @@ import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
-import dk.sdu.mmmi.common.services.weapon.IWeaponController;
+import dk.sdu.mmmi.common.weapon.IWeaponController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
