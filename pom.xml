@@ -27,6 +27,7 @@
         <module>Player</module>
         <module>TextureAnimator</module>
         <module>Ai</module>
+        <module>IntegrationTesting</module>
     </modules>
 
     <properties>
