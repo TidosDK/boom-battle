@@ -29,6 +29,10 @@ public class PathFinding implements IPathFinding {
 
     @Override
     public ArrayList<Node> pathFind(Node start, ArrayList<Node> listOfGoalNode, Map map) {
+        if (map == null) {
+            ArrayList<Node> emptyList = new ArrayList<>();
+            return emptyList;
+        }
         maxCol = map.getWidth();
         maxRow = map.getHeight();
         nodeMap = new Node[maxCol][maxRow];
@@ -69,13 +73,10 @@ public class PathFinding implements IPathFinding {
                 nodeMap[col][row] = new Node(col, row);
 
                 col++;
-
                 if (col == maxCol) {
                     col = 0;
                     row++;
                 }
-
-
             }
 
             for (Entity entity : world.getEntities()) {
