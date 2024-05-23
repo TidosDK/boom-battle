@@ -1,10 +1,13 @@
 package dk.sdu.mmmi.common.data.world;
 
+import dk.sdu.mmmi.common.services.map.IMap;
+import dk.sdu.mmmi.common.services.map.IMapProcessingService;
+
 /**
  * Represents a base class for a map.
  * The map is represented as a 2D boolean array.
  */
-public class Map {
+public abstract class Map implements IMap, IMapProcessingService {
 
     // A 2D boolean array representing the map
     private boolean[][] map;
@@ -16,7 +19,7 @@ public class Map {
     /**
      * Constructs a new Map with the given width and height.
      *
-     * @param width the width of the new map
+     * @param width  the width of the new map
      * @param height the height of the new map
      */
     public Map(int width, int height) {
@@ -60,4 +63,6 @@ public class Map {
     public int getHeight() {
         return this.height;
     }
+
+
 }
