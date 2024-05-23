@@ -112,9 +112,8 @@ public class PlayScreen implements Screen {
         for (IEntityProcessingService entityProcessingService : getEntityProcessingServices()) {
             entityProcessingService.process(world, gameData);
         }
-
+        // Update map
         getMapProcessingServices().stream().findFirst().ifPresent(IMapProcessingService::processMap);
-        
         gameStage.setEntitySprites(entitySprites);
         gameStage.setEntities(world.getEntities());
 
