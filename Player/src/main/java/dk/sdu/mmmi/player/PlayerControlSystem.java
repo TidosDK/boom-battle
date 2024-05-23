@@ -6,9 +6,9 @@ import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimator;
-import dk.sdu.mmmi.common.services.weapon.IWeapon;
-import dk.sdu.mmmi.common.services.weapon.IWeaponController;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimator;
+import dk.sdu.mmmi.common.weapon.IWeapon;
+import dk.sdu.mmmi.common.weapon.IWeaponController;
 import dk.sdu.mmmi.common.services.map.IMap;
 
 import java.util.ArrayList;

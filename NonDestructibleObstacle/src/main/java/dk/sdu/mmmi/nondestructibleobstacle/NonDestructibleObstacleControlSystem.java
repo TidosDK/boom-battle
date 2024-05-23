@@ -3,8 +3,8 @@ package dk.sdu.mmmi.nondestructibleobstacle;
 import dk.sdu.mmmi.common.data.entity.TextureLayer;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
-import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
-import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacleController;
+import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacle;
+import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacleController;
 
 import java.nio.file.Path;
 

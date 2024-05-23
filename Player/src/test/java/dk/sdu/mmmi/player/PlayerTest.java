@@ -6,7 +6,7 @@ import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.gameproperties.GameKeys;
 import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
-import dk.sdu.mmmi.common.services.weapon.IWeapon;
+import dk.sdu.mmmi.common.weapon.IWeapon;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

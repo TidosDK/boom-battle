@@ -4,10 +4,10 @@ import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.entity.TextureLayer;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacleController;
+import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
-import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacleController;
-import dk.sdu.mmmi.common.services.textureanimator.ITextureAnimatorController;
+import dk.sdu.mmmi.common.textureanimator.ITextureAnimatorController;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

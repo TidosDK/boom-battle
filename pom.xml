@@ -20,6 +20,10 @@
         <module>BasicMap</module>
         <module>Bomb</module>
         <module>Common</module>
+        <module>CommonAi</module>
+        <module>CommonObstacle</module>
+        <module>CommonTextureAnimator</module>
+        <module>CommonWeapon</module>
         <module>Core</module>
         <module>DestructibleObstacle</module>
         <module>Enemy</module>
@@ -139,7 +143,7 @@
                             <longModulepath>false</longModulepath>
                             <arguments>
                                 <!-- On Mac Devices this line should not be commented out  -->
-                                <!--                        <argument>-XstartOnFirstThread</argument>-->
+<!--                                                        <argument>-XstartOnFirstThread</argument>-->
 
                                 <argument>-Dorg.lwjgl.util.Debug=true</argument>
                                 <argument>-Djava.library.path=libs</argument>

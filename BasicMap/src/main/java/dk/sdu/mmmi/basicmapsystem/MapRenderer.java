@@ -6,10 +6,10 @@ import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.GridPosition;
 import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
-import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacle;
-import dk.sdu.mmmi.common.services.obstacle.destructible.IDestructibleObstacleController;
-import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacle;
-import dk.sdu.mmmi.common.services.obstacle.nondestructible.INonDestructibleObstacleController;
+import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacle;
+import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacleController;
+import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacle;
+import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacleController;
 
 import java.util.Collection;
 import java.util.ServiceLoader;
