@@ -13,6 +13,7 @@ import dk.sdu.mmmi.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.common.services.IGamePluginService;
 import dk.sdu.mmmi.common.services.entityproperties.IActor;
 import dk.sdu.mmmi.common.services.map.IMapGenerator;
+import dk.sdu.mmmi.common.services.map.IMapProcessingService;
 import dk.sdu.mmmi.main.CustomStages.CustomStage;
 import dk.sdu.mmmi.main.CustomStages.ICustomStage;
 import dk.sdu.mmmi.main.Main;
@@ -111,7 +112,8 @@ public class PlayScreen implements Screen {
         for (IEntityProcessingService entityProcessingService : getEntityProcessingServices()) {
             entityProcessingService.process(world, gameData);
         }
-
+        // Update map
+        getMapProcessingServices().stream().findFirst().ifPresent(IMapProcessingService::processMap);
         gameStage.setEntitySprites(entitySprites);
         gameStage.setEntities(world.getEntities());
 
@@ -198,6 +200,10 @@ public class PlayScreen implements Screen {
      */
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    }
+
+    private Collection<? extends IMapProcessingService> getMapProcessingServices() {
+        return ServiceLoader.load(IMapProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
 
