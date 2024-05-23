@@ -12,8 +12,8 @@ import java.util.ServiceLoader;
 import static java.util.stream.Collectors.toList;
 
 public class ObstacleFactory implements IObstacleFactory {
-    INonDestructibleObstacleController nonDestructibleObstacleController;
-    IDestructibleObstacleController destructibleObstacleController;
+    private final INonDestructibleObstacleController nonDestructibleObstacleController;
+    private final IDestructibleObstacleController destructibleObstacleController;
 
     public ObstacleFactory() {
         this.nonDestructibleObstacleController = getNonDestructibleObstacleControllers().stream().findFirst().orElse(null);

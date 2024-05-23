@@ -1,6 +1,5 @@
 package dk.sdu.mmmi.nondestructibleobstacle;
 
-import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.obstacle.Obstacle;
 import dk.sdu.mmmi.common.services.entityproperties.ICollidable;

@@ -1,23 +1,12 @@
 package dk.sdu.mmmi.basicmapsystem;
 
 import dk.sdu.mmmi.common.data.entity.Coordinates;
-import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.GridPosition;
-import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
 import dk.sdu.mmmi.common.obstacle.Obstacle;
-import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacle;
-import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacleController;
-import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacle;
-import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacleController;
-import dk.sdu.mmmi.common.obstacleFactory.IObstacleFactory;
 import dk.sdu.mmmi.common.obstacleFactory.ObstacleFactory;
 
-import java.util.Collection;
-import java.util.ServiceLoader;
-
-import static java.util.stream.Collectors.toList;
 
 public class MapRenderer {
 
