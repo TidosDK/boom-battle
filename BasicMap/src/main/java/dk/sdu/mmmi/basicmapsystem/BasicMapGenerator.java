@@ -7,11 +7,11 @@ import dk.sdu.mmmi.common.services.map.IMapGenerator;
 
 public class BasicMapGenerator implements IMapGenerator {
 
-
-    public void generateMap(World world) {
+    @Override
+    public Map generateMap(World world) {
         Map map = new BasicMap();
         map.setMap(basicMap(map.getWidth(), map.getHeight(), world, GameData.getInstance()));
-        world.setMap(map);
+        return map;
 
     }
 
