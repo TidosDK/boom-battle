@@ -233,7 +233,7 @@ public class PlayScreen implements Screen {
                 orElse(null);
         if (mapGenProvider != null) {
             IMapGenerator mapGen = (IMapGenerator) mapGenProvider.get();
-            mapGen.generateMap(world);
+            world.setMap(mapGen.generateMap(world));
         } else {
             world.generateDefaultMap();
         }
