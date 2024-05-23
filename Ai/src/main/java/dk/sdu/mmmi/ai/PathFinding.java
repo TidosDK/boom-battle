@@ -29,7 +29,7 @@ public class PathFinding implements IPathFinding {
 
     @Override
     public ArrayList<Node> pathFind(Node start, ArrayList<Node> listOfGoalNode, Map map) {
-        if(map == null){
+        if (map == null) {
             ArrayList<Node> emptyList = new ArrayList<>();
             return emptyList;
         }
