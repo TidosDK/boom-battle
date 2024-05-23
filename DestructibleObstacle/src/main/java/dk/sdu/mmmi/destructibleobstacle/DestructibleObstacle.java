@@ -1,7 +1,7 @@
 package dk.sdu.mmmi.destructibleobstacle;
 
-import dk.sdu.mmmi.common.data.entity.Entity;
 import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.obstacle.Obstacle;
 import dk.sdu.mmmi.common.services.entityproperties.IDamageable;
 import dk.sdu.mmmi.common.services.map.IMap;
 import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacle;
@@ -12,14 +12,12 @@ import dk.sdu.mmmi.common.textureanimator.ITextureAnimator;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-public class DestructibleObstacle extends Entity implements IDestructibleObstacle, ICollidable, IAnimatable, IDamageable {
-    private World world;
+public class DestructibleObstacle extends Obstacle implements IDestructibleObstacle, ICollidable, IAnimatable, IDamageable {
     private HashMap<Integer, ITextureAnimator> animators;
     private int lifePoints;
 
     public DestructibleObstacle(World world, float width, float height, Path texturePath) {
-        super(texturePath, width, height);
-        this.world = world;
+        super(texturePath, width, height, world);
         this.animators = new HashMap<>();
         this.lifePoints = 1;
     }
@@ -30,15 +28,15 @@ public class DestructibleObstacle extends Entity implements IDestructibleObstacl
         if (destroyAnimator != null) { // Guard for ITextureAnimator being module
             this.setTexturePath(destroyAnimator.getCurrentTexturePath());
             if (destroyAnimator.getCurrentTextureIndex() == destroyAnimator.getNumberOfTextures() - 1) {
-                world.removeEntity(this);
+                this.getWorld().removeEntity(this);
             }
             // TODO: You have to fix animation for destructible obstacle
-            world.removeEntity(this);
-            if (world.getMap() instanceof IMap map) {
+            this.getWorld().removeEntity(this);
+            if (this.getWorld().getMap() instanceof IMap map) {
                 map.setMapTile(this.getGridX(), this.getGridY(), false);
             }
         } else {
-            world.removeEntity(this);
+            this.getWorld().removeEntity(this);
         }
     }
 
