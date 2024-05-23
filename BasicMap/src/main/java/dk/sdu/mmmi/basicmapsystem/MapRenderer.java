@@ -6,10 +6,13 @@ import dk.sdu.mmmi.common.data.gameproperties.GameData;
 import dk.sdu.mmmi.common.data.world.GridPosition;
 import dk.sdu.mmmi.common.data.world.Map;
 import dk.sdu.mmmi.common.data.world.World;
+import dk.sdu.mmmi.common.obstacle.Obstacle;
 import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacle;
 import dk.sdu.mmmi.common.obstacle.destructible.IDestructibleObstacleController;
 import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacle;
 import dk.sdu.mmmi.common.obstacle.nondestructible.INonDestructibleObstacleController;
+import dk.sdu.mmmi.common.obstacleFactory.IObstacleFactory;
+import dk.sdu.mmmi.common.obstacleFactory.ObstacleFactory;
 
 import java.util.Collection;
 import java.util.ServiceLoader;
@@ -20,26 +23,23 @@ public class MapRenderer {
 
     private final GameData gameData;
     private final World world;
-    private final INonDestructibleObstacleController nonDestructObstCon;
-    private final IDestructibleObstacleController destructObstCon;
+    private final ObstacleFactory obstacleFactory;
 
     public MapRenderer(GameData gameData, World world) {
         this.gameData = gameData;
         this.world = world;
-        this.nonDestructObstCon = getNonDestructibleObstacleControllers().stream().findFirst().orElse(null);
-        this.destructObstCon = getDestructibleObstacleControllers().stream().findFirst().orElse(null);
+        this.obstacleFactory = new ObstacleFactory();
     }
 
     public void createNonDestructibleObstacle(int gridX, int gridY) {
-        if (nonDestructObstCon == null) {
+        if (!obstacleFactory.hasNonDestructibleObstacleController()) {
             return;
         }
 
-        INonDestructibleObstacle obst = nonDestructObstCon.createNonDestructibleObstacle(gameData, world);
-        if (obst instanceof Entity) {
-            ((Entity) obst).setCoordinates(new Coordinates(new GridPosition(gridX, gridY)));
-            world.addEntity((Entity) obst);
-        }
+        Obstacle obst = obstacleFactory.createNonDestructibleObstacle(gameData, world);
+
+        obst.setCoordinates(new Coordinates(new GridPosition(gridX, gridY)));
+        world.addEntity(obst);
     }
 
     public void createPathTile(int gridX, int gridY) {
@@ -49,40 +49,16 @@ public class MapRenderer {
     }
 
     public void createDestructibleObstacle(int gridX, int gridY) {
-        if (destructObstCon == null) {
+        if (!obstacleFactory.hasDestructibleObstacleController()) {
             return;
         }
-        IDestructibleObstacle obst = destructObstCon.createDestructibleObstacle(gameData, world);
-        if (obst instanceof Entity entity) {
-            entity.setCoordinates(new Coordinates(new GridPosition(gridX, gridY)));
-            world.addEntity(entity);
+        try {
+            Obstacle obst = obstacleFactory.createDestructibleObstacle(gameData, world);
+            obst.setCoordinates(new Coordinates(new GridPosition(gridX, gridY)));
+            world.addEntity(obst);
+        } catch (IllegalStateException e) {
+            System.out.println("Could not create destructible obstacle.");
         }
-    }
-
-
-    public void renderMap(Map map) {
-
-        if (nonDestructObstCon == null) {
-            return;
-        }
-
-
-        INonDestructibleObstacle obst = nonDestructObstCon.createNonDestructibleObstacle(gameData, world);
-        if (obst instanceof Entity) {
-            ((Entity) obst).setCoordinates(new Coordinates(new GridPosition(5, 5)));
-            world.addEntity((Entity) obst);
-        }
-
-    }
-
-    private Collection<? extends INonDestructibleObstacleController> getNonDestructibleObstacleControllers() {
-        return ServiceLoader.load(INonDestructibleObstacleController.class)
-                .stream().map(ServiceLoader.Provider::get).collect(toList());
-    }
-
-    private Collection<? extends IDestructibleObstacleController> getDestructibleObstacleControllers() {
-        return ServiceLoader.load(IDestructibleObstacleController.class)
-                .stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
 
