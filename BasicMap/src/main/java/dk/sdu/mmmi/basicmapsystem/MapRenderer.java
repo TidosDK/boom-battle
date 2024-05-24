@@ -20,15 +20,17 @@ public class MapRenderer {
         this.obstacleFactory = new ObstacleFactory();
     }
 
-    public void createNonDestructibleObstacle(int gridX, int gridY) {
+    public boolean createNonDestructibleObstacle(int gridX, int gridY) {
         if (!obstacleFactory.hasNonDestructibleObstacleController()) {
-            return;
+            return false;
         }
 
         Obstacle obst = obstacleFactory.createNonDestructibleObstacle(gameData, world);
 
         obst.setCoordinates(new Coordinates(new GridPosition(gridX, gridY)));
         world.addEntity(obst);
+
+        return true;
     }
 
     public void createPathTile(int gridX, int gridY) {
@@ -37,9 +39,9 @@ public class MapRenderer {
         world.addEntity(pathTile);
     }
 
-    public void createDestructibleObstacle(int gridX, int gridY) {
+    public boolean createDestructibleObstacle(int gridX, int gridY) {
         if (!obstacleFactory.hasDestructibleObstacleController()) {
-            return;
+            return false;
         }
         try {
             Obstacle obst = obstacleFactory.createDestructibleObstacle(gameData, world);
@@ -48,6 +50,8 @@ public class MapRenderer {
         } catch (IllegalStateException e) {
             System.out.println("Could not create destructible obstacle.");
         }
+
+        return true;
     }
 
 

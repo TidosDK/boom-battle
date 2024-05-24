@@ -37,15 +37,18 @@ public class BasicMapGenerator implements IMapGenerator {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if ((x % 2 == 1) && (y % 2 == 1)) {
-                    map[x][y] = true;
-                    mapRenderer.createNonDestructibleObstacle(x, y);
+                    map[x][y] = mapRenderer.createNonDestructibleObstacle(x, y);
+
+                    // Creates a grass tile if no Non-Destructible Obstacle exists
+                    if (!map[x][y]) {
+                        mapRenderer.createPathTile(x, y);
+                    }
                 } else if (isCorner(x, y, width, height)) {
                     map[x][y] = false;
                     mapRenderer.createPathTile(x, y);
                 } else {
-                    map[x][y] = true;
                     mapRenderer.createPathTile(x, y);
-                    mapRenderer.createDestructibleObstacle(x, y);
+                    map[x][y] = mapRenderer.createDestructibleObstacle(x, y);
                 }
             }
         }
